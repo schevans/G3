@@ -24,7 +24,8 @@ class PlanetView(game_view.GameView):
         
         self.current_system = systems.syslist[0]
         
-        ships[0].xy = Vector2(const.screen_width/2, const.screen_height/5)
+        ships[0].set_xy((const.screen_width/2, const.screen_height/5))
+        
         self.mobs = [ships[0]]
         for ship in self.ships:
             if ship.location.planet == self.planet:

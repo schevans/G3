@@ -22,7 +22,8 @@ class SolarView(game_view.GameView):
         
         game_view.GameView.__init__(self, screen, ships)
         
-        ships[0].xy = Vector2(const.screen_center) # FIXME: Need copy??
+        ships[0].set_xy(const.screen_center)
+
         
         self.mobs = [ships[0]]
         

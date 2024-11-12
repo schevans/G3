@@ -76,5 +76,7 @@ class Ship():
            return distance < self.resources['fuel']
         
         
-        
+    def set_xy(self, xy):
+        self.xy = Vector2(xy)
+        self.destination = self.xy
         
