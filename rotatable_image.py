@@ -6,19 +6,19 @@ Created on Sun Nov  3 19:11:19 2024
 @author: steve
 """
 import pygame
+from pygame.math import Vector2
 
-import point
 
 
 class RotatableImage():
     
     def __init__(self, center, image, angle_deg=0):
-        self.center = point.Point(center)
+        self.center = Vector2(center)
         self.original_image = image        
         self.angle_deg = angle_deg
         
     def update(self, center, angle_deg):
-        self.center = point.Point(center)
+        self.center = Vector2(center)
         self.angle_deg = angle_deg
         
     def draw(self, screen):

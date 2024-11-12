@@ -6,6 +6,49 @@ Created on Sun Nov  3 18:06:16 2024
 @author: steve
 """
 
+import pygame
+from pygame.math import Vector2
+import random
+import math
+
+import constants as const
+
+
+def angle_between_points(v1,v2):
+    return math.degrees(math.atan2(v1.x - v2.x, v1.y - v2.y))
+
+def fade_to_black(color, i, num_steps):
+    
+    # FIXME: Really?    
+    color0 = color[0] / (num_steps + 1) * (num_steps + 1 - i )
+    color1 = color[1] / (num_steps + 1) * (num_steps + 1 - i )
+    color2 = color[2] / (num_steps + 1) * (num_steps + 1 - i )
+    return (color0, color1, color2)
+
+
+def whiten_a_bit(color, a_bit):
+    # FIXME: Again, really???
+    color0 = color[0]  + (( 255 - color[0] ) * a_bit)
+    color1 = color[1]  + (( 255 - color[1] ) * a_bit)
+    color2 = color[2]  + (( 255 - color[2] ) * a_bit)
+    return (color0, color1, color2)    
+
+stars = []
+
+def init_stars(num_stars):
+    for i in range(0,num_stars):
+        randpos = Vector2(random.randint(1, const.screen_width), random.randint(1, const.screen_height))
+        stars.append(randpos)
+
+
+
+def draw_stars(screen):
+    for star in stars:
+        pygame.draw.circle(screen, 'white', star, 1)  
+
+
+
+
 class MaxableAmount():
     
     def __init__(self, max_amount, amount=None):
@@ -30,6 +73,16 @@ class MaxableAmount():
     def __call__(self):
         return self.amount
 
+class Location():
+
+    def __init__(self, galaxy_xy, system, planet):      
+        self.galaxy_xy = Vector2(galaxy_xy)
+        self.system = system
+        self.planet = planet
+        
+        
+        
+        
         
         
         

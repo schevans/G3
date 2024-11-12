@@ -1,0 +1,8 @@
+,laser,missile,projectile
+speed,20,5,7
+shield_damage,2,1,3
+armour_damage,1,2,3
+homing,TRUE,TRUE,FALSE
+image,Laser1.png,Missile1.png,Projectile1.png
+range,200,200,300
+activation,4,3,2

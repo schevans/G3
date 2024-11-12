@@ -1,0 +1,27 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Nov  4 19:14:08 2024
+
+@author: steve
+"""
+from pygame.math import Vector2
+
+screen_width = 1200
+screen_height = 800
+
+screen_center = Vector2(screen_width/2, screen_height/2)
+
+free_space_in_corners = 20
+
+num_stars = 600
+num_systems = 97
+
+planet_size_freq = [4,4,4,4,4,4,5,5,5,5,5,6,6,6,7,7,8,9,10]
+
+initial_resources = {
+    'credits': 10,
+    'fuel': 200,
+    'metal': 10,
+    'tech': 10
+    }
