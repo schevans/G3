@@ -22,7 +22,7 @@ class SolarView(game_view.GameView):
         
         game_view.GameView.__init__(self, screen, ships)
         
-        ships[0].set_xy(const.screen_center)
+        ships[0].reset_xy(const.screen_center)
 
         
         self.mobs = [ships[0]]

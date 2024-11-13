@@ -49,6 +49,7 @@ class Ship():
             
             self.xy.x -= math.sin(math.radians(self.heading)) * self.speed
             self.xy.y -= math.cos(math.radians(self.heading)) * self.speed
+            self.location.galaxy_xy = self.xy
         else:
             self.heading = 0
             self.image = self.image_still
@@ -63,7 +64,6 @@ class Ship():
     
     
     def is_moving(self):
-
         if self.xy.distance_to(self.destination) < self.speed:
             self.destination = self.xy
             return False
@@ -76,7 +76,7 @@ class Ship():
            return distance < self.resources['fuel']
         
         
-    def set_xy(self, xy):
+    def reset_xy(self, xy):
         self.xy = Vector2(xy)
         self.destination = self.xy
         

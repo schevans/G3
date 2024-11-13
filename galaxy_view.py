@@ -25,7 +25,8 @@ class GalaxyView(game_view.GameView):
     def __init__(self, screen, ships):
         game_view.GameView.__init__(self, screen, ships)
     
-        ships[0].xy = ships[0].location.galaxy_xy
+
+        ships[0].reset_xy(ships[0].location.galaxy_xy)
         # FIXME: heading too!
         
         self.current_system = systems.syslist[0]    # FIXME
