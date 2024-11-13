@@ -13,11 +13,15 @@ import constants as const
 import galaxy_view
 import planet_view
 import planets
+import utils
+
+SUN_SIZE_MULT = 3
 
 class SolarView(game_view.GameView):
     
     def __init__(self, screen, system, ships):
         self.system = system
+        
         
         
         game_view.GameView.__init__(self, screen, ships)
@@ -56,17 +60,17 @@ class SolarView(game_view.GameView):
         
         game_view.GameView.draw(self)
         
-
-        system_r = 10
-        planet_r = 176
+        #pygame.draw.circle(self.screen, utils.fade_to_black(system.color, 2, 3), system.xy, system.r+2)
         
         
-        pygame.draw.circle(self.screen, 'gray', const.screen_center, system_r*2)
-
         
-        #for planet in system.planets:
-        pygame.draw.circle(self.screen, 'white', const.screen_center, planet_r, 1)
-        #pygame.draw.circle(screen, planet_colors[planet.planet_type], [planet.x, planet.y], planet.size)
+        pygame.draw.circle(self.screen, utils.fade_to_black(self.system.color, 2, 3), const.screen_center, (self.system.r+2)*SUN_SIZE_MULT)
+        pygame.draw.circle(self.screen, utils.fade_to_black(self.system.color, 1, 3), const.screen_center, (self.system.r+1)*SUN_SIZE_MULT)
+        pygame.draw.circle(self.screen, self.system.color, const.screen_center, self.system.r*SUN_SIZE_MULT )
+        
+        for planet in self.system.planets:
+            pygame.draw.circle(self.screen, 'gray', const.screen_center, planet.r, 1)
+            pygame.draw.circle(self.screen, planet.color, planet.xy, planet.size)
         
         
         

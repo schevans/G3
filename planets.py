@@ -8,10 +8,11 @@ Created on Mon Nov  4 19:20:56 2024
 
 import math
 from pygame.math import Vector2
+import pandas as pd
 
 import constants as const
 
-
+planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0) 
 
     
 class Planet():
@@ -21,7 +22,8 @@ class Planet():
         self.p = p
         self.planet_type = planet_type
         self.size = size
-        #self.color = planet_data[planet_type].color
+        self.color = planet_type_data[planet_type].color
+                                                                        
         self.xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
         
         self.resources = {}

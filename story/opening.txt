@@ -1,0 +1,36 @@
+Ship: Captain? You awake?
+Ship: Goddamn meatbags. Don't know why we bother.
+Ship: Captain? I'm going to give you an injection.
+Ship: That should sort him out.
+Ship: Oops.
+Ship: Captain, I'm going to give you another injection.
+Hero: Bleurg
+Ship: Yes, blerg. I don't know if you're noticed but shit's gone wrong.
+Hero: Bleurg?
+Ship: You're alive and I'm alive, but we're not where we're s'posed to be.
+Hero: Coffee?
+Ship: No coffee, but here's another shot.
+Hero: Argh! Stop doing that! Where are we?
+Ship: Something went wrong with the jump. We're a long way from home.
+Hero: How long?
+Ship: I dunno. I can't see it from here.
+Hero: Food, water?
+Ship: No thanks I'm fine.
+Hero: No, for me?
+Ship: Oh. We were equipped for three weeks worth of supplies after hypersleep and we're months away from home. We're low on fuel. Engines are damaged. RTG is depleted, so we don't have enough power to work the limited weapons we have. Our armor has taken a beating and our scanner's gummed up with space dust. We're pretty fucked.
+Hero: So what do I do?
+Ship: I dunno. But if I were you I'd try that system over there. See if they're friendly.
+
+Ship: Oh Cap?
+Hero: What?
+Ship: More bad news I'm afraid. While you were in hypersleep I got a message from home.
+Hero: And?
+Ship: They've been invaded.
+Hero: What? By whom?
+Ship: No idea - that's all I've got. 'Planet blockaded, yaada yaada, send help. Ouch.'
+Hero: Ouch?
+Ship: Seems like the guy died while typing the message. We'd better get back as soon as we can.
+Hero: Without engines, weapons or fuel?
+Ship: Or friends.
+Hero: *sigh* Lets see what we can find...
+

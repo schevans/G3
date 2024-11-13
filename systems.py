@@ -28,11 +28,13 @@ system_types = ['Uninhabited', 'Neutral', 'Friendly', 'Hostile']
 
 syslist = []
 
+star_names = pd.read_csv('./data/star_names.csv')
+star_names = star_names.Name.tolist()
 
 def init_systems(num_systems):
     
-    star_names = pd.read_csv('./data/star_names.csv')
-    star_names = star_names.Name.tolist()
+    #star_names = pd.read_csv('./data/star_names.csv')
+    #star_names = star_names.Name.tolist()
     
     for i in range(0,num_systems):
         
@@ -77,6 +79,12 @@ def get_random_sys_location():
     return rand
 
 
+def find_system_at(xy): # FIXME - hack
+    for system in syslist:
+        if system.xy == xy:
+            return system
+    return None
+
 class System():
     
     def __init__(self, name, xy, r, color, system_type):
@@ -92,16 +100,16 @@ class System():
         
         for i in range(0, random.randint(1, 4)):
             r = self.get_random_r()
-            p =  math.radians(random.random() * 360)
-            planet_type = 'lava' #list(planet_types.keys())[random.randint(0, len(list(planet_types.keys()))-1)]
+            p =  math.radians(random.random() * 360)            
+            planet_type = planets.planet_type_data.columns.values[random.randint(0,len(planets.planet_type_data.columns.values)-1)]
             size = const.planet_size_freq[random.randint(0,len(const.planet_size_freq)-1)]
-            Xplanet = planets.Planet(r, p, planet_type, size) # FIXME: Xplanet
-            self.planets.append(Xplanet)
+            planet = planets.Planet(r, p, planet_type, size)
+            self.planets.append(planet)
             
     def get_random_r(self):
-        r = int(random.random() * ( const.screen_height/2 - 40 ) + 40)
+        r = int(random.random() * ( const.screen_height/2 - 80 ) + 40)
         
-        for Xplanet in self.planets: # FIXME: Xplanet
-            if math.isclose(r, Xplanet.r, abs_tol=20):
+        for planet in self.planets:
+            if math.isclose(r, planet.r, abs_tol=20):
                 return self.get_random_r()
         return r

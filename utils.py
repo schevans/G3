@@ -10,6 +10,8 @@ import pygame
 from pygame.math import Vector2
 import random
 import math
+import csv
+import pandas as pd
 
 import constants as const
 
@@ -81,6 +83,19 @@ class Location():
         self.planet = planet
         
         
+        
+def dict_loader():
+    file = './data/ship_systems.csv'
+    with open(file, newline='') as csvfile:
+
+        filereader = csv.reader(csvfile, delimiter=',')
+
+        header = next(filereader)
+        for row in filereader:
+            arr = row.split(',')
+            
+
+
         
         
         

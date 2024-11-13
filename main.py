@@ -29,13 +29,14 @@ pygame.font.init()
 font = pygame.font.SysFont('Comic Sans MS', 20)
 
 
+    
 
 utils.init_stars(const.num_stars)
 systems.init_systems(const.num_systems)
 
 
 current_planet = planets.Planet(177, 0.2, 'lava', 10 )
-current_system = systems.syslist[0]
+current_system = None
 planet2 = planets.Planet(177, 0.2, 'lava', 10 )
 
 hero_name = 'Hero'
@@ -47,7 +48,8 @@ myship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-
 shiplist = [ myship ]
 
 for system in systems.syslist:
-    shiplist.append(ships.Ship(system.name, system.xy, system, None, True))
+    if system.system_type != 'Uninhabited':
+        shiplist.append(ships.Ship(system.name, system.xy, system, None, True))
 
 
 

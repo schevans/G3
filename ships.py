@@ -14,6 +14,7 @@ import math
 import rotatable_image
 import utils
 import constants as const 
+import systems
 
 class Ship():
         
@@ -66,6 +67,7 @@ class Ship():
     def is_moving(self):
         if self.xy.distance_to(self.destination) < self.speed:
             self.destination = self.xy
+            #self.location.system = systems.find_system_at(self.xy)
             return False
         else:
             return True

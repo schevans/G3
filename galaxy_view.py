@@ -29,7 +29,7 @@ class GalaxyView(game_view.GameView):
         ships[0].reset_xy(ships[0].location.galaxy_xy)
         # FIXME: heading too!
         
-        self.current_system = systems.syslist[0]    # FIXME
+        self.current_system = None
         self.selected_system = None
         
         self.mobs = [ships[0]]
@@ -76,6 +76,8 @@ class GalaxyView(game_view.GameView):
         for system in systems.syslist:
             if system.xy.distance_to(mousepos) < MOUSE_RADIUS:
                 self.selected_system = system
+            if system.xy.distance_to(self.ships[0].xy) < MOUSE_RADIUS:
+                self.current_system = system
         
     def draw(self):
         
