@@ -20,10 +20,12 @@ class Ship():
         
     def __init__(self, name, xy, system, planet, is_npc):
         self.name = name
-        self.location = utils.Location(Vector2(xy), system, planet)
-        self.xy = self.location.galaxy_xy
+        self.xy = Vector2(xy)
+        self.system = system
+        self.planet = planet
         self.is_npc = is_npc
-
+        self.home_system = system
+        
         ship_systems_data = pd.read_csv('./data/ship_systems.csv', index_col=0)     # FIXME multiple reads
         self.shield = utils.MaxableAmount(float(ship_systems_data['0'].shield))
         self.armour = utils.MaxableAmount(float(ship_systems_data['0'].armour))
@@ -42,6 +44,10 @@ class Ship():
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying.png'))
         self.image = self.image_still
 
+        # dev mode
+        if self.name == 'Hero':
+            self.speed = 7
+
     def update(self):
         
         if self.is_moving():
@@ -50,7 +56,7 @@ class Ship():
             
             self.xy.x -= math.sin(math.radians(self.heading)) * self.speed
             self.xy.y -= math.cos(math.radians(self.heading)) * self.speed
-            self.location.galaxy_xy = self.xy
+
         else:
             self.heading = 0
             self.image = self.image_still
@@ -67,7 +73,6 @@ class Ship():
     def is_moving(self):
         if self.xy.distance_to(self.destination) < self.speed:
             self.destination = self.xy
-            #self.location.system = systems.find_system_at(self.xy)
             return False
         else:
             return True
@@ -81,4 +86,20 @@ class Ship():
     def reset_xy(self, xy):
         self.xy = Vector2(xy)
         self.destination = self.xy
+      
+
+
         
+
+
+
+
+
+
+
+
+
+
+
+
+

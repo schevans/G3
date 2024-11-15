@@ -17,13 +17,13 @@ planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0)
     
 class Planet():
     
-    def __init__(self, r, p, planet_type, size):
+    def __init__(self, r, p, planet_type, size, system):
         self.r = r
         self.p = p
         self.planet_type = planet_type
         self.size = size
         self.color = planet_type_data[planet_type].color
-                                                                        
+        self.system = system
         self.xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
         
         self.resources = {}

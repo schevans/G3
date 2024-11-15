@@ -52,7 +52,7 @@ def init_systems(num_systems):
         syslist.append(system)
     
     # home system
-    syslist.append(System('Home', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners) , HOME_STAR_SIZE, pygame.Color('turquoise2'), 'Friendly'))
+    syslist.append(System('Home', const.home, HOME_STAR_SIZE, pygame.Color('turquoise2'), 'Friendly'))
     
 def get_random_sys_location():
 
@@ -103,7 +103,7 @@ class System():
             p =  math.radians(random.random() * 360)            
             planet_type = planets.planet_type_data.columns.values[random.randint(0,len(planets.planet_type_data.columns.values)-1)]
             size = const.planet_size_freq[random.randint(0,len(const.planet_size_freq)-1)]
-            planet = planets.Planet(r, p, planet_type, size)
+            planet = planets.Planet(r, p, planet_type, size, self)
             self.planets.append(planet)
             
     def get_random_r(self):

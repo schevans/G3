@@ -12,7 +12,7 @@ import game_view
 import constants as const 
 import galaxy_view
 import solar_view
-import systems
+import orbital_ships
 
 class PlanetView(game_view.GameView):
     
@@ -22,15 +22,19 @@ class PlanetView(game_view.GameView):
         game_view.GameView.__init__(self, screen, ships)
         
         
-        self.current_system = systems.syslist[0]
-        
         ships[0].reset_xy((const.screen_width/2, const.screen_height/5))
+        ships[0].planet = planet
         
-        self.mobs = [ships[0]]
+        moo = orbital_ships.OrbitalShip(ships[0], 150, 90)
+        
+        self.mobs = [moo]
+        
+        
+        """
         for ship in self.ships:
-            if ship.location.planet == self.planet:
+            if ship.planet == self.planet:
                 self.mobs.append(ship)
-                
+        """        
                 
     def process_inputs(self):
         
@@ -43,9 +47,18 @@ class PlanetView(game_view.GameView):
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    view = solar_view.SolarView(self.screen, self.current_system, self.ships)
+                    view = solar_view.SolarView(self.screen, self.planet.system, self.planet, self.ships)
                 if event.key == pygame.K_g:
                     view = galaxy_view.GalaxyView(self.screen, self.ships)
+
+                       
+        keys = pygame.key.get_pressed() 
+        self.mobs[0].acceleration = 0
+        if keys[pygame.K_d]:
+            self.mobs[0].acceleration  = 1
+        if keys[pygame.K_a]:        
+            self.mobs[0].acceleration  = -1  
+                
 
         return view 
     
@@ -54,5 +67,5 @@ class PlanetView(game_view.GameView):
     
     def draw(self):      
         game_view.GameView.draw(self)
-        pygame.draw.circle(self.screen, 'darkgreen', const.screen_center, self.planet.size*8)
+        pygame.draw.circle(self.screen, self.planet.color, const.screen_center, self.planet.size*8)
         game_view.GameView.draw_objects(self)

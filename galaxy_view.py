@@ -8,6 +8,7 @@ Created on Sun Nov 10 17:48:16 2024
 
 import pygame
 from pygame.math import Vector2
+import random
 
 import game_view
 import systems
@@ -25,9 +26,8 @@ class GalaxyView(game_view.GameView):
     def __init__(self, screen, ships):
         game_view.GameView.__init__(self, screen, ships)
     
-
-        ships[0].reset_xy(ships[0].location.galaxy_xy)
-        # FIXME: heading too!
+        if ships[0].system:
+            ships[0].reset_xy(ships[0].system.xy)
         
         self.current_system = None
         self.selected_system = None
@@ -35,7 +35,7 @@ class GalaxyView(game_view.GameView):
         self.mobs = [ships[0]]
         
         for ship in self.ships:
-            if ship.destination != ship.location.galaxy_xy:
+            if ship.destination != ship.xy:
                 self.mobs.append(ship)
         
     def process_inputs(self):
@@ -49,21 +49,12 @@ class GalaxyView(game_view.GameView):
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    view = solar_view.SolarView(self.screen, self.current_system, self.ships)
+                    if self.current_system:
+                        view = solar_view.SolarView(self.screen, self.current_system, None, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_system and self.ships[0].can_jump(self.selected_system.xy):
                         self.ships[0].destination = self.selected_system.xy
-        """          
-        keys = pygame.key.get_pressed() 
-        if keys[pygame.K_d]:
-            self.ships[0].heading += 10
-        if keys[pygame.K_a]:      
-            self.ships[0].heading -= 10  
-        if keys[pygame.K_w]:
-            self.ships[0].xy.y -= 1  
-        if keys[pygame.K_x]:
-            self.ships[0].xy.y += 1     
-        """
+
         
         return view
             
@@ -78,6 +69,26 @@ class GalaxyView(game_view.GameView):
                 self.selected_system = system
             if system.xy.distance_to(self.ships[0].xy) < MOUSE_RADIUS:
                 self.current_system = system
+        
+        if self.ships[0].is_moving():
+            self.master_timer += 1
+            
+        
+        if self.master_timer == 50:
+            suitable = []
+            for ship in self.ships:
+                if ship.is_npc and ship.home_system.system_type == 'Hostile' and ship.xy != const.home:
+                    suitable.append(ship)
+            
+            suitable.sort(key=lambda x: x.xy.distance_to(const.home))
+            
+            
+            fresh_mob = suitable[0]
+            
+            
+            fresh_mob.destination = const.home
+            self.mobs.append(fresh_mob)
+        
         
     def draw(self):
         

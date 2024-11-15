@@ -24,14 +24,16 @@ class GameView():
 
         self.font = pygame.font.SysFont('Comic Sans MS', 22)
         self.mobs = []
+        self.master_timer = 1
         
     def process_inputs(self):
         pass
         
     def update(self):
         
-        for ship in self.ships:
-            ship.update()
+        for mob in self.mobs:
+            if mob.name == 'Hero' or self.ships[0].is_moving():
+                mob.update()
         
     def draw(self):
         

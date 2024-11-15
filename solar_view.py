@@ -16,25 +16,31 @@ import planets
 import utils
 
 SUN_SIZE_MULT = 3
+MOUSE_RADIUS = 5    # FIXME: DUP in galaxy_
+SYSTEM_HIGHLIGHT = 3 # FIXME: DUP in galaxy_
 
 class SolarView(game_view.GameView):
     
-    def __init__(self, screen, system, ships):
+    def __init__(self, screen, system, planet, ships):
         self.system = system
         
         
         
         game_view.GameView.__init__(self, screen, ships)
         
-        ships[0].reset_xy(const.screen_center)
+        ships[0].system = system
+        if planet:
+            ships[0].reset_xy(planet.xy)
+        else:
+            ships[0].reset_xy(const.screen_center)
 
-        
+        self.current_planet = None
+        self.selected_planet = None
+                
         self.mobs = [ships[0]]
         
-        self.current_planet = planets.Planet(177, 0.2, 'lava', 10 ) # FIXME
-        
         for ship in self.ships:
-            if ship.location.system == self.system:
+            if ship.system == self.system:
                 self.mobs.append(ship)
         
     def process_inputs(self):
@@ -50,11 +56,23 @@ class SolarView(game_view.GameView):
                 if event.key == pygame.K_g:
                     view = galaxy_view.GalaxyView(self.screen, self.ships)
                 if event.key == pygame.K_p:
-                    view = planet_view.PlanetView(self.screen, self.current_planet, self.ships)
+                    if self.current_planet:
+                        view = planet_view.PlanetView(self.screen, self.current_planet, self.ships)
+                if  event.key == pygame.K_j:   
+                    if self.selected_planet:
+                        self.ships[0].destination = self.selected_planet.xy
         return view
     
     def update(self):
         game_view.GameView.update(self)
+    
+        self.selected_planet = None
+        mousepos = Vector2(pygame.mouse.get_pos())
+        for planet in self.system.planets:
+            if planet.xy.distance_to(mousepos) < MOUSE_RADIUS:
+                self.selected_planet = planet
+            if planet.xy.distance_to(self.ships[0].xy) < MOUSE_RADIUS:
+                self.current_planet = planet
     
     def draw(self):
         
@@ -62,7 +80,10 @@ class SolarView(game_view.GameView):
         
         #pygame.draw.circle(self.screen, utils.fade_to_black(system.color, 2, 3), system.xy, system.r+2)
         
-        
+        if self.selected_planet:
+            pygame.draw.line(self.screen, 'white', self.ships[0].xy, self.selected_planet.xy)
+            pygame.draw.circle(self.screen, 'white', self.selected_planet.xy, self.selected_planet.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
+
         
         pygame.draw.circle(self.screen, utils.fade_to_black(self.system.color, 2, 3), const.screen_center, (self.system.r+2)*SUN_SIZE_MULT)
         pygame.draw.circle(self.screen, utils.fade_to_black(self.system.color, 1, 3), const.screen_center, (self.system.r+1)*SUN_SIZE_MULT)

@@ -35,9 +35,7 @@ utils.init_stars(const.num_stars)
 systems.init_systems(const.num_systems)
 
 
-current_planet = planets.Planet(177, 0.2, 'lava', 10 )
-current_system = None
-planet2 = planets.Planet(177, 0.2, 'lava', 10 )
+
 
 hero_name = 'Hero'
 
@@ -54,7 +52,7 @@ for system in systems.syslist:
 
 
 
-
+#orbital_ship =myship.OrbitalShip(100, 0, True)
 
 
 view = galaxy_view.GalaxyView(screen, shiplist)
@@ -78,7 +76,7 @@ while True:
     # Render the graphics here.
     view.draw()
 
-
+    #print(view.master_timer)
     
     pygame.display.flip()  # Refresh on-screen display
     clock.tick(24)
