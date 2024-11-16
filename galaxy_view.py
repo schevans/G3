@@ -20,6 +20,7 @@ import solar_view
 MOUSE_RADIUS = 5
 TEXT_OFFSET = 15
 SYSTEM_HIGHLIGHT = 3
+SHIP_LAUNCH_TIMER = 50
 
 class GalaxyView(game_view.GameView):
     
@@ -74,7 +75,7 @@ class GalaxyView(game_view.GameView):
             self.master_timer += 1
             
         
-        if self.master_timer == 50:
+        if self.master_timer % SHIP_LAUNCH_TIMER == 0:
             suitable = []
             for ship in self.ships:
                 if ship.is_npc and ship.home_system.system_type == 'Hostile' and ship.xy != const.home:
@@ -88,13 +89,31 @@ class GalaxyView(game_view.GameView):
             
             fresh_mob.destination = const.home
             self.mobs.append(fresh_mob)
+            
+        for mob in self.mobs:
+            if mob.is_npc and not mob.is_moving():
+                self.mobs.remove(mob)
+                if mob.xy == const.home:
+                    self.threat_level += 1
         
         
     def draw(self):
         
         game_view.GameView.draw(self)
 
-        
+        if self.threat_level >= 11:
+            text = "Game Over"
+            big_font = pygame.font.SysFont('Comic Sans MS', 100)
+            text_surface = big_font.render(text, False, 'white', 'black')
+            text_width, text_height = text_surface.get_size()
+            text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
+            self.screen.blit(text_surface, text_pos )
+            
+            pygame.display.flip() 
+            pygame.time.wait(10000)
+            pygame.quit()
+            raise SystemExit
+            
         for system in systems.syslist:
             
             pygame.draw.circle(self.screen, utils.fade_to_black(system.color, 2, 3), system.xy, system.r+2)
@@ -102,8 +121,8 @@ class GalaxyView(game_view.GameView):
             pygame.draw.circle(self.screen, system.color, system.xy, system.r )
 
     
-        threat_level = 3
-        pygame.draw.circle(self.screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, threat_level )
+        # draw red halo around home
+        pygame.draw.circle(self.screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
 
         if self.selected_system:
             

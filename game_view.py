@@ -25,6 +25,7 @@ class GameView():
         self.font = pygame.font.SysFont('Comic Sans MS', 22)
         self.mobs = []
         self.master_timer = 1
+        self.threat_level = 3
         
     def process_inputs(self):
         pass
