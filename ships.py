@@ -50,17 +50,22 @@ class Ship():
 
     def update(self):
         
+        
         if self.is_moving():
-            self.heading = utils.angle_between_points(self.xy ,self.destination)
-            self.image = self.image_flying
             
-            self.xy.x -= math.sin(math.radians(self.heading)) * self.speed
-            self.xy.y -= math.cos(math.radians(self.heading)) * self.speed
-
-        else:
-            self.heading = 0
-            self.image = self.image_still
-            
+            if self.xy.distance_to(self.destination) < self.speed:
+                # arrived
+                self.xy = Vector2(self.destination)
+                self.heading = 0
+                self.image = self.image_still
+            else:
+                # still moving
+                self.heading = utils.angle_between_points(self.xy ,self.destination)
+                self.image = self.image_flying
+                
+                self.xy.x -= math.sin(math.radians(self.heading)) * self.speed
+                self.xy.y -= math.cos(math.radians(self.heading)) * self.speed
+                          
         
         self.image.update(self.xy, self.heading)
     
@@ -71,11 +76,8 @@ class Ship():
     
     
     def is_moving(self):
-        if self.xy.distance_to(self.destination) < self.speed:
-            self.destination = self.xy
-            return False
-        else:
-            return True
+        return  self.xy != self.destination
+
         
         
     def can_jump(self, destination):

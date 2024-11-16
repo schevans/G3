@@ -49,7 +49,7 @@ class GalaxyView(game_view.GameView):
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    if self.current_system:
+                    if self.current_system and not self.ships[0].is_moving():
                         view = solar_view.SolarView(self.screen, self.current_system, None, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_system and self.ships[0].can_jump(self.selected_system.xy):
@@ -67,7 +67,7 @@ class GalaxyView(game_view.GameView):
         for system in systems.syslist:
             if system.xy.distance_to(mousepos) < MOUSE_RADIUS:
                 self.selected_system = system
-            if system.xy.distance_to(self.ships[0].xy) < MOUSE_RADIUS:
+            if self.ships[0].xy == system.xy:
                 self.current_system = system
         
         if self.ships[0].is_moving():
