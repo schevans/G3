@@ -13,7 +13,6 @@ import systems
 import constants as const
 import utils
 import galaxy_view
-import planets
 
 
 random.seed(43)

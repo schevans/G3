@@ -11,7 +11,6 @@ from pygame.math import Vector2
 import random
 import math
 import csv
-import pandas as pd
 
 import constants as const
 

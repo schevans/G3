@@ -8,7 +8,6 @@ Created on Sun Nov 10 17:48:16 2024
 
 import pygame
 from pygame.math import Vector2
-import random
 
 import game_view
 import systems

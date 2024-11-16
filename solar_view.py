@@ -12,7 +12,6 @@ import game_view
 import constants as const 
 import galaxy_view
 import planet_view
-import planets
 import utils
 
 SUN_SIZE_MULT = 3

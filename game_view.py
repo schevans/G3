@@ -7,12 +7,7 @@ Created on Wed Nov  6 18:55:32 2024
 """
 import pygame
 
-import systems
 import utils
-import constants as const 
-
-
-
 
 
 class GameView():

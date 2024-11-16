@@ -78,12 +78,15 @@ def get_random_sys_location():
         
     return rand
 
-
-def find_system_at(xy): # FIXME - hack
-    for system in syslist:
-        if system.xy == xy:
-            return system
-    return None
+def numbers_to_roman(i):
+    if i == 1:
+        return 'I'
+    elif i == 2:
+        return 'II'
+    elif i == 3:
+        return 'III'
+    elif i == 4:
+        return 'IV'
 
 class System():
     
@@ -103,9 +106,12 @@ class System():
             p =  math.radians(random.random() * 360)            
             planet_type = planets.planet_type_data.columns.values[random.randint(0,len(planets.planet_type_data.columns.values)-1)]
             size = const.planet_size_freq[random.randint(0,len(const.planet_size_freq)-1)]
-            planet = planets.Planet(r, p, planet_type, size, self)
+            planet_name = self.name + ' ' + numbers_to_roman(i+1)
+            planet = planets.Planet(planet_name, r, p, planet_type, size, self)
             self.planets.append(planet)
-            
+         
+
+         
     def get_random_r(self):
         r = int(random.random() * ( const.screen_height/2 - 80 ) + 40)
         

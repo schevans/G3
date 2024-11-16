@@ -7,6 +7,7 @@ Created on Sun Nov 10 17:48:26 2024
 """
 import pygame
 from pygame.math import Vector2
+import math
 
 import game_view
 import constants as const 
@@ -21,20 +22,29 @@ class PlanetView(game_view.GameView):
         
         game_view.GameView.__init__(self, screen, ships)
         
-        
-        ships[0].reset_xy((const.screen_width/2, const.screen_height/5))
+
         ships[0].planet = planet
         
-        moo = orbital_ships.OrbitalShip(ships[0], 150, 90)
+
+        angle_radians = 0
+        self.mobs = [orbital_ships.OrbitalShip(ships[0], planet, 150, angle_radians)]
         
-        self.mobs = [moo]
         
+        applicable_mobs = []
         
-        """
         for ship in self.ships:
-            if ship.planet == self.planet:
-                self.mobs.append(ship)
-        """        
+            if ship.planet == self.planet and ship.is_npc:
+                applicable_mobs.append(ship)
+                
+        angle_increment = math.pi / len(applicable_mobs)
+        
+        for mob in applicable_mobs:
+                               
+            if ship.is_npc:
+                angle_radians += angle_increment
+                self.mobs.append(orbital_ships.OrbitalShip(ship, planet, 150, angle_radians))
+
+                
                 
     def process_inputs(self):
         

@@ -17,7 +17,8 @@ planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0)
     
 class Planet():
     
-    def __init__(self, r, p, planet_type, size, system):
+    def __init__(self, name, r, p, planet_type, size, system):
+        self.name = name
         self.r = r
         self.p = p
         self.planet_type = planet_type
