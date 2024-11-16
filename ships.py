@@ -42,6 +42,11 @@ class Ship():
 
         self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship.png'))
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying.png'))
+        
+        if self.is_npc:
+            self.image_still.change_color(pygame.Color('red'))
+            self.image_flying.change_color(pygame.Color('red'))
+            
         self.image = self.image_still
 
         # dev mode
