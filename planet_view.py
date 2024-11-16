@@ -47,7 +47,7 @@ class PlanetView(game_view.GameView):
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    view = solar_view.SolarView(self.screen, self.planet.system, self.planet, self.ships)
+                    view = solar_view.SolarView(self.screen, self.planet.system, self.ships)
                 if event.key == pygame.K_g:
                     view = galaxy_view.GalaxyView(self.screen, self.ships)
 

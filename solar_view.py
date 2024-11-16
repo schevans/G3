@@ -21,7 +21,7 @@ SYSTEM_HIGHLIGHT = 3 # FIXME: DUP in galaxy_
 
 class SolarView(game_view.GameView):
     
-    def __init__(self, screen, system, planet, ships):
+    def __init__(self, screen, system, ships):
         self.system = system
         
         
@@ -29,10 +29,7 @@ class SolarView(game_view.GameView):
         game_view.GameView.__init__(self, screen, ships)
         
         ships[0].system = system
-        if planet:
-            ships[0].reset_xy(planet.xy)
-        else:
-            ships[0].reset_xy(const.screen_center)
+
 
         self.current_planet = None
         self.selected_planet = None
@@ -41,7 +38,14 @@ class SolarView(game_view.GameView):
         
         for ship in self.ships:
             if ship.system == self.system:
-                self.mobs.append(ship)
+                
+                if ship.planet:
+                    ship.reset_xy(ship.planet.xy)
+                else:
+                    ship.reset_xy(const.screen_center)
+                    
+                if ship.is_npc:
+                    self.mobs.append(ship)
         
     def process_inputs(self):
         view = self
@@ -74,11 +78,14 @@ class SolarView(game_view.GameView):
             if planet.xy.distance_to(self.ships[0].xy) < MOUSE_RADIUS:
                 self.current_planet = planet
     
+        
+    
     def draw(self):
         
         game_view.GameView.draw(self)
         
-        #pygame.draw.circle(self.screen, utils.fade_to_black(system.color, 2, 3), system.xy, system.r+2)
+        
+        #pygame.draw.circle(self.screen, 'white', self.mobs[1].xy, 50)
         
         if self.selected_planet:
             pygame.draw.line(self.screen, 'white', self.ships[0].xy, self.selected_planet.xy)

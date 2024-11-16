@@ -47,12 +47,10 @@ shiplist = [ myship ]
 
 for system in systems.syslist:
     if system.system_type != 'Uninhabited':
-        shiplist.append(ships.Ship(system.name, system.xy, system, None, True))
+        planet = system.planets[random.randint(0, len(system.planets)-1)]
+        shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
 
 
-
-
-#orbital_ship =myship.OrbitalShip(100, 0, True)
 
 
 view = galaxy_view.GalaxyView(screen, shiplist)

@@ -14,7 +14,8 @@ import math
 import rotatable_image
 import utils
 import constants as const 
-import systems
+
+
 
 class Ship():
         
@@ -25,6 +26,11 @@ class Ship():
         self.planet = planet
         self.is_npc = is_npc
         self.home_system = system
+        
+        if system:
+            self.species = system.system_type
+        else:
+            self.species = 'Hero'
         
         ship_systems_data = pd.read_csv('./data/ship_systems.csv', index_col=0)     # FIXME multiple reads
         self.shield = utils.MaxableAmount(float(ship_systems_data['0'].shield))
@@ -44,9 +50,16 @@ class Ship():
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying.png'))
         
         if self.is_npc:
-            self.image_still.change_color(pygame.Color('red'))
-            self.image_flying.change_color(pygame.Color('red'))
-            
+            if self.species == 'Hostile':
+                self.image_still.change_color(pygame.Color('red'))
+                self.image_flying.change_color(pygame.Color('red'))
+            elif self.species == 'Neutral':
+                self.image_still.change_color(pygame.Color('cyan'))
+                self.image_flying.change_color(pygame.Color('cyan'))
+            else:
+                self.image_still.change_color(pygame.Color('mediumspringgreen'))
+                self.image_flying.change_color(pygame.Color('mediumspringgreen'))
+                
         self.image = self.image_still
 
         # dev mode
@@ -75,7 +88,7 @@ class Ship():
         self.image.update(self.xy, self.heading)
     
     def draw(self, screen):
-        
+
         self.image.draw(screen)
 
     

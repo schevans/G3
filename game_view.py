@@ -33,8 +33,7 @@ class GameView():
     def update(self):
         
         for mob in self.mobs:
-            if mob.name == 'Hero' or self.ships[0].is_moving():
-                mob.update()
+            mob.update()
         
     def draw(self):
         

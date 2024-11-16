@@ -36,7 +36,7 @@ class GalaxyView(game_view.GameView):
         self.mobs = [ships[0]]
         
         for ship in self.ships:
-            if ship.destination != ship.xy:
+            if ship.is_moving():
                 self.mobs.append(ship)
         
     def process_inputs(self):
@@ -51,7 +51,7 @@ class GalaxyView(game_view.GameView):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
                     if self.current_system and not self.ships[0].is_moving():
-                        view = solar_view.SolarView(self.screen, self.current_system, None, self.ships)
+                        view = solar_view.SolarView(self.screen, self.current_system, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_system and self.ships[0].can_jump(self.selected_system.xy):
                         self.ships[0].destination = self.selected_system.xy
@@ -60,7 +60,11 @@ class GalaxyView(game_view.GameView):
         return view
             
     def update(self):
-        game_view.GameView.update(self)
+
+        
+        for mob in self.mobs:
+            if mob.name == 'Hero' or self.ships[0].is_moving():
+                mob.update()
     
     
         self.selected_system = None
@@ -78,7 +82,7 @@ class GalaxyView(game_view.GameView):
         if self.master_timer % SHIP_LAUNCH_TIMER == 0:
             suitable = []
             for ship in self.ships:
-                if ship.is_npc and ship.home_system.system_type == 'Hostile' and ship.xy != const.home:
+                if ship.is_npc and ship.species == 'Hostile' and ship.xy != const.home:
                     suitable.append(ship)
             
             suitable.sort(key=lambda x: x.xy.distance_to(const.home))
