@@ -17,6 +17,14 @@ class GameView():
         self.screen = screen
         self.ships = ships
 
+        self.myship = ships[0]
+        self.current_ship = self.myship      
+        self.myships = []
+        for ship in ships:
+            if not ship.is_npc:
+                self.myships.append(ship)
+        
+
         self.font = pygame.font.SysFont('Comic Sans MS', 22)
         self.mobs = []
         self.master_timer = 1

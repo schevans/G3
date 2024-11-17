@@ -27,13 +27,13 @@ class SolarView(game_view.GameView):
         
         game_view.GameView.__init__(self, screen, ships)
         
-        ships[0].system = system
+        self.current_ship.system = system
 
 
         self.current_planet = None
         self.selected_planet = None
                 
-        self.mobs = [ships[0]]
+        self.mobs = [self.current_ship]
         
         for ship in self.ships:
             if ship.system == self.system:
@@ -63,7 +63,7 @@ class SolarView(game_view.GameView):
                         view = planet_view.PlanetView(self.screen, self.current_planet, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_planet:
-                        self.ships[0].destination = self.selected_planet.xy
+                        self.current_ship.destination = self.selected_planet.xy
         return view
     
     def update(self):
@@ -74,7 +74,7 @@ class SolarView(game_view.GameView):
         for planet in self.system.planets:
             if planet.xy.distance_to(mousepos) < MOUSE_RADIUS:
                 self.selected_planet = planet
-            if planet.xy.distance_to(self.ships[0].xy) < MOUSE_RADIUS:
+            if planet.xy.distance_to(self.current_ship.xy) < MOUSE_RADIUS:
                 self.current_planet = planet
     
         
@@ -87,7 +87,7 @@ class SolarView(game_view.GameView):
         #pygame.draw.circle(self.screen, 'white', self.mobs[1].xy, 50)
         
         if self.selected_planet:
-            pygame.draw.line(self.screen, 'white', self.ships[0].xy, self.selected_planet.xy)
+            pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_planet.xy)
             pygame.draw.circle(self.screen, 'white', self.selected_planet.xy, self.selected_planet.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
         

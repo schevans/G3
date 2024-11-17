@@ -26,13 +26,13 @@ class GalaxyView(game_view.GameView):
     def __init__(self, screen, ships):
         game_view.GameView.__init__(self, screen, ships)
     
-        if ships[0].system:
-            ships[0].reset_xy(ships[0].system.xy)
+        if self.current_ship.system:
+            self.current_ship.reset_xy(self.current_ship.system.xy)
         
         self.current_system = None
         self.selected_system = None
         
-        self.mobs = [ships[0]]
+        self.mobs = [self.current_ship]
         
         for ship in self.ships:
             if ship.is_moving():
@@ -49,11 +49,11 @@ class GalaxyView(game_view.GameView):
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    if self.current_system and not self.ships[0].is_moving():
+                    if self.current_system and not self.current_ship.is_moving():
                         view = solar_view.SolarView(self.screen, self.current_system, self.ships)
                 if  event.key == pygame.K_j:   
-                    if self.selected_system and self.ships[0].can_jump(self.selected_system.xy):
-                        self.ships[0].destination = self.selected_system.xy
+                    if self.selected_system and self.current_ship.can_jump(self.selected_system.xy):
+                        self.current_ship.destination = self.selected_system.xy
 
         
         return view
@@ -62,7 +62,7 @@ class GalaxyView(game_view.GameView):
 
         
         for mob in self.mobs:
-            if mob.name == 'Hero' or self.ships[0].is_moving():
+            if mob.name == 'Hero' or self.current_ship.is_moving():
                 mob.update()
     
     
@@ -71,10 +71,10 @@ class GalaxyView(game_view.GameView):
         for system in systems.syslist:
             if system.xy.distance_to(mousepos) < MOUSE_RADIUS:
                 self.selected_system = system
-            if self.ships[0].xy == system.xy:
+            if self.current_ship.xy == system.xy:
                 self.current_system = system
         
-        if self.ships[0].is_moving():
+        if self.current_ship.is_moving():
             self.master_timer += 1
             
         
@@ -130,16 +130,16 @@ class GalaxyView(game_view.GameView):
         if self.selected_system:
             
 
-            if self.ships[0].can_jump(self.selected_system.xy):
-                pygame.draw.line(self.screen, 'white', self.ships[0].xy, self.selected_system.xy)
+            if self.current_ship.can_jump(self.selected_system.xy):
+                pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_system.xy)
                 pygame.draw.circle(self.screen, 'white', self.selected_system.xy, self.selected_system.r+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
             else:
-                distance = self.ships[0].xy.distance_to(self.selected_system.xy)
-                ratio = self.ships[0].resources['fuel'] / distance                
-                newpoint = self.ships[0].xy.lerp(self.selected_system.xy, ratio)
+                distance = self.current_ship.xy.distance_to(self.selected_system.xy)
+                ratio = self.current_ship.resources['fuel'] / distance                
+                newpoint = self.current_ship.xy.lerp(self.selected_system.xy, ratio)
 
-                pygame.draw.line(self.screen, 'white', self.ships[0].xy, newpoint) 
+                pygame.draw.line(self.screen, 'white', self.current_ship.xy, newpoint) 
                 pygame.draw.line(self.screen, 'red', newpoint, self.selected_system.xy) 
                 
                 
