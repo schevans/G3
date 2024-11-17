@@ -23,8 +23,8 @@ SHIP_LAUNCH_TIMER = 50
 
 class GalaxyView(game_view.GameView):
     
-    def __init__(self, screen, ships):
-        game_view.GameView.__init__(self, screen, ships)
+    def __init__(self, screen, current_ship, ships):
+        game_view.GameView.__init__(self, screen, current_ship, ships)
     
         if self.current_ship.system:
             self.current_ship.reset_xy(self.current_ship.system.xy)
@@ -49,7 +49,7 @@ class GalaxyView(game_view.GameView):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
                     if self.current_system and not self.current_ship.is_moving():
-                        view = solar_view.SolarView(self.screen, self.current_system, self.ships)
+                        view = solar_view.SolarView(self.screen, self.current_system, self.current_ship, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_system and self.current_ship.can_jump(self.selected_system.xy):
                         self.current_ship.destination = self.selected_system.xy

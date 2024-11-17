@@ -54,7 +54,7 @@ for ship in shiplist:
     if ship.name == 'Ascella':
         ship.is_npc = False
 
-view = galaxy_view.GalaxyView(screen, shiplist)
+view = galaxy_view.GalaxyView(screen, myship, shiplist)
 
 
 

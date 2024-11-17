@@ -19,10 +19,10 @@ DOCK_RADIUS = 15
 
 class PlanetView(game_view.GameView):
     
-    def __init__(self, screen, planet, ships):
+    def __init__(self, screen, planet, current_ship, ships):
         self.planet = planet
         
-        game_view.GameView.__init__(self, screen, ships)
+        game_view.GameView.__init__(self, screen, current_ship, ships)
         
 
         self.current_ship.planet = planet
@@ -60,9 +60,9 @@ class PlanetView(game_view.GameView):
                 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    view = solar_view.SolarView(self.screen, self.planet.system, self.ships)
+                    view = solar_view.SolarView(self.screen, self.planet.system, self.current_ship, self.ships)
                 if event.key == pygame.K_g:
-                    view = galaxy_view.GalaxyView(self.screen, self.ships)
+                    view = galaxy_view.GalaxyView(self.screen, self.current_ship, self.ships)
                 if event.key == pygame.K_w:
                     for mob in self.mobs:
                         if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:

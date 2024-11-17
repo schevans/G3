@@ -20,12 +20,12 @@ SYSTEM_HIGHLIGHT = 3 # FIXME: DUP in galaxy_
 
 class SolarView(game_view.GameView):
     
-    def __init__(self, screen, system, ships):
+    def __init__(self, screen, system, current_ship, ships):
         self.system = system
         
         
         
-        game_view.GameView.__init__(self, screen, ships)
+        game_view.GameView.__init__(self, screen, current_ship, ships)
         
         self.current_ship.system = system
 
@@ -57,10 +57,10 @@ class SolarView(game_view.GameView):
             if event.type == pygame.KEYDOWN:
 
                 if event.key == pygame.K_g:
-                    view = galaxy_view.GalaxyView(self.screen, self.ships)
+                    view = galaxy_view.GalaxyView(self.screen, self.current_ship, self.ships)
                 if event.key == pygame.K_p:
                     if self.current_planet:
-                        view = planet_view.PlanetView(self.screen, self.current_planet, self.ships)
+                        view = planet_view.PlanetView(self.screen, self.current_planet, self.current_ship, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_planet:
                         self.current_ship.destination = self.selected_planet.xy

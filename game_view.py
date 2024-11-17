@@ -13,12 +13,12 @@ import utils
 class GameView():
        
     
-    def __init__(self, screen, ships):
+    def __init__(self, screen, current_ship, ships):
         self.screen = screen
+        self.current_ship = current_ship 
         self.ships = ships
 
         self.myship = ships[0]
-        self.current_ship = self.myship      
         self.myships = []
         for ship in ships:
             if not ship.is_npc:
