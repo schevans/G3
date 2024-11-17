@@ -15,6 +15,8 @@ import galaxy_view
 import solar_view
 import orbital_ships
 
+DOCK_RADIUS = 15
+
 class PlanetView(game_view.GameView):
     
     def __init__(self, screen, planet, ships):
@@ -60,7 +62,11 @@ class PlanetView(game_view.GameView):
                     view = solar_view.SolarView(self.screen, self.planet.system, self.ships)
                 if event.key == pygame.K_g:
                     view = galaxy_view.GalaxyView(self.screen, self.ships)
-
+                if event.key == pygame.K_w:
+                    for mob in self.mobs:
+                        if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
+                            print('Docked! Star-Lord', mob.name )
+                            mob.is_npc = False
                        
         keys = pygame.key.get_pressed() 
         self.mobs[0].acceleration = 0

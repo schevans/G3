@@ -45,12 +45,14 @@ myship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-
 shiplist = [ myship ]
 
 for system in systems.syslist:
-    if system.system_type != 'Uninhabited':
+    if system.system_type != 'Uninhabited' and system.name != 'Home':           # FIXME: Code 'Home' somewhere
         planet = system.planets[random.randint(0, len(system.planets)-1)]
         shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
 
 
-
+for ship in shiplist:
+    if ship.name == 'Atria':
+        ship.is_npc = True
 
 view = galaxy_view.GalaxyView(screen, shiplist)
 
