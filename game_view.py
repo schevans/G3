@@ -49,6 +49,9 @@ class GameView():
         
         for mob in self.mobs:
             mob.draw(self.screen)
+            
+        # selected ship
+        pygame.draw.circle(self.screen, 'red', self.current_ship.xy, 3)
 
 
     

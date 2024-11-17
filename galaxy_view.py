@@ -32,11 +32,10 @@ class GalaxyView(game_view.GameView):
         self.current_system = None
         self.selected_system = None
         
-        self.mobs = [self.current_ship]
-        
         for ship in self.ships:
-            if ship.is_moving():
+            if ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
+        print()      
         
     def process_inputs(self):
         
@@ -54,6 +53,14 @@ class GalaxyView(game_view.GameView):
                 if  event.key == pygame.K_j:   
                     if self.selected_system and self.current_ship.can_jump(self.selected_system.xy):
                         self.current_ship.destination = self.selected_system.xy
+                if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
+
+                   index = self.myships.index(self.current_ship)
+                   if event.key == pygame.K_LEFTBRACKET:
+                       index = (index - 1) % len(self.myships)
+                   else:
+                       index = (index + 1) % len(self.myships)      
+                   self.current_ship = self.myships[index]
 
         
         return view
@@ -62,7 +69,7 @@ class GalaxyView(game_view.GameView):
 
         
         for mob in self.mobs:
-            if mob.name == 'Hero' or self.current_ship.is_moving():
+            if not mob.is_npc or self.current_ship.is_moving():
                 mob.update()
     
     

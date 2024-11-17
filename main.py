@@ -51,8 +51,8 @@ for system in systems.syslist:
 
 
 for ship in shiplist:
-    if ship.name == 'Atria':
-        ship.is_npc = True
+    if ship.name == 'Ascella':
+        ship.is_npc = False
 
 view = galaxy_view.GalaxyView(screen, shiplist)
 
