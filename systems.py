@@ -24,7 +24,7 @@ STAR_TEMP_FREQS = [3, 3, 12, 12, 60, 60, 300, 300, 700, 700, 1200, 1200, 70000, 
 STAR_TEMP_FREQS = [3, 3, 12, 12, 20, 20, 30, 30, 70, 70, 120, 120, 700, 700]
 HOME_STAR_SIZE = 10
 
-system_types = ['Uninhabited', 'Neutral', 'Friendly', 'Hostile']
+
 
 syslist = []
 
@@ -44,7 +44,7 @@ def init_systems(num_systems):
         randpos = get_random_sys_location()
         randr = random.randint(STAR_SIZE_MIN, STAR_SIZE_MAX)
         
-        system_type = system_types[random.randint(0, len(system_types)-1)]
+        system_type = const.system_types[random.randint(0, len(const.system_types)-1)]
         
         color = utils.whiten_a_bit(random.choices(STAR_TEMPERATURES, weights=STAR_TEMP_FREQS, k = 1)[0], 0.4)
         system = System(name, randpos ,randr, color, system_type)

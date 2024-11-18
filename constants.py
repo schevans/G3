@@ -29,3 +29,11 @@ initial_resources = {
     'metal': 10,
     'tech': 10
     }
+
+system_types = ['Uninhabited', 'Neutral', 'Friendly', 'Hostile']
+
+species = {
+      'Neutral': 'Neuties',
+      'Friendly': 'Goodies',
+      'Hostile': 'Baddies'
+    }
