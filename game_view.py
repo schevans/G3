@@ -12,6 +12,7 @@ import utils
 import constants as const
 
 TEXT_OFFSET = 15
+MOUSE_RADIUS = 5
 
 class GameView():
        
@@ -58,6 +59,7 @@ class GameView():
         # selected ship
         pygame.draw.circle(self.screen, 'red', self.current_ship.xy, 3)
         
+        # mouseover text
         if self.selected_item:
             
             textbox_width = 0
@@ -76,7 +78,7 @@ class GameView():
         
             
             text_pos = self.selected_item.xy + (TEXT_OFFSET,TEXT_OFFSET)
-            textbox_width, textbox_height = text_surface.get_size()
+
 
             if textbox_width > const.screen_width - text_pos[0]:
                 text_pos = self.selected_item.xy + (-textbox_width - TEXT_OFFSET,TEXT_OFFSET)
@@ -88,7 +90,12 @@ class GameView():
 
         
     
-    
+    def get_selected_item(self, items):
+        self.selected_item = None
+        mousepos = Vector2(pygame.mouse.get_pos())
+        for item in items:
+            if item.xy.distance_to(mousepos) < MOUSE_RADIUS:
+                self.selected_item = item
 
 
 

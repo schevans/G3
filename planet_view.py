@@ -66,7 +66,6 @@ class PlanetView(game_view.GameView):
                 if event.key == pygame.K_w:
                     for mob in self.mobs:
                         if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
-                            print('Docked! Star-Lord', mob.name )
                             mob.is_npc = False
                        
         keys = pygame.key.get_pressed() 
@@ -81,8 +80,24 @@ class PlanetView(game_view.GameView):
     
     def update(self):
         game_view.GameView.update(self)
+        
+        self.get_selected_item(self.mobs)
     
     def draw(self):      
         game_view.GameView.draw(self)
         pygame.draw.circle(self.screen, self.planet.color, const.screen_center, self.planet.size*8)
         game_view.GameView.draw_objects(self)
+        
+        
+        
+    def get_mouse_text(self):
+        return [self.selected_item.description()]
+        
+        
+        
+        
+        
+        
+        
+        
+        

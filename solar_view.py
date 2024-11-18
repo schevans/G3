@@ -69,11 +69,9 @@ class SolarView(game_view.GameView):
     def update(self):
         game_view.GameView.update(self)
     
-        self.selected_item = None
-        mousepos = Vector2(pygame.mouse.get_pos())
+        self.get_selected_item(self.system.planets)
+
         for planet in self.system.planets:
-            if planet.xy.distance_to(mousepos) < MOUSE_RADIUS:
-                self.selected_item = planet
             if planet.xy.distance_to(self.current_ship.xy) < MOUSE_RADIUS:
                 self.current_planet = planet
     
@@ -110,6 +108,6 @@ class SolarView(game_view.GameView):
             text.append(self.selected_item.description())
             for mob in self.mobs:
                 if mob.planet == self.selected_item:
-                    text.append('Space-Lord ' + mob.name)
+                    text.append(mob.description())
                     
         return text

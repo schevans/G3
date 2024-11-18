@@ -109,7 +109,7 @@ class Ship():
       
 
     def description(self):
-        return self.name
+        return 'Lord ' + self.name
         
 
 

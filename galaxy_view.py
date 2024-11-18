@@ -70,13 +70,10 @@ class GalaxyView(game_view.GameView):
         for mob in self.mobs:
             if not mob.is_npc or self.current_ship.is_moving():
                 mob.update()
-    
-    
-        self.selected_item = None
-        mousepos = Vector2(pygame.mouse.get_pos())
+        
+        self.get_selected_item(systems.syslist)
+
         for system in systems.syslist:
-            if system.xy.distance_to(mousepos) < MOUSE_RADIUS:
-                self.selected_item = system
             if self.current_ship.xy == system.xy:
                 self.current_system = system
         
@@ -158,7 +155,7 @@ class GalaxyView(game_view.GameView):
             text.append(self.selected_item.description())
             for mob in self.mobs:
                 if mob.system == self.selected_item:
-                    text.append('Space-Lord ' + mob.name)
+                    text.append(mob.description())
                     
         return text
             
