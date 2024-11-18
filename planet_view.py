@@ -43,9 +43,9 @@ class PlanetView(game_view.GameView):
             
             for mob in applicable_mobs:
                                    
-                if ship.is_npc:
+                if mob.is_npc:
                     angle_radians += angle_increment
-                    self.mobs.append(orbital_ships.OrbitalShip(ship, planet, 150, angle_radians))
+                    self.mobs.append(orbital_ships.OrbitalShip(mob, planet, 150, angle_radians))
 
                 
                 

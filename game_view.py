@@ -12,7 +12,7 @@ import utils
 import constants as const
 
 TEXT_OFFSET = 15
-MOUSE_RADIUS = 5
+MOUSE_RADIUS = 10
 
 class GameView():
        
