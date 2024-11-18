@@ -17,7 +17,7 @@ import solar_view
 
 
 MOUSE_RADIUS = 5
-TEXT_OFFSET = 15
+
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 50
 
@@ -30,12 +30,11 @@ class GalaxyView(game_view.GameView):
             self.current_ship.reset_xy(self.current_ship.system.xy)
         
         self.current_system = None
-        self.selected_system = None
         
         for ship in self.ships:
             if ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
-        print()      
+    
         
     def process_inputs(self):
         
@@ -51,8 +50,8 @@ class GalaxyView(game_view.GameView):
                     if self.current_system and not self.current_ship.is_moving():
                         view = solar_view.SolarView(self.screen, self.current_system, self.current_ship, self.ships)
                 if  event.key == pygame.K_j:   
-                    if self.selected_system and self.current_ship.can_jump(self.selected_system.xy):
-                        self.current_ship.destination = self.selected_system.xy
+                    if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
+                        self.current_ship.destination = self.selected_item.xy
                 if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
 
                    index = self.myships.index(self.current_ship)
@@ -73,11 +72,11 @@ class GalaxyView(game_view.GameView):
                 mob.update()
     
     
-        self.selected_system = None
+        self.selected_item = None
         mousepos = Vector2(pygame.mouse.get_pos())
         for system in systems.syslist:
             if system.xy.distance_to(mousepos) < MOUSE_RADIUS:
-                self.selected_system = system
+                self.selected_item = system
             if self.current_ship.xy == system.xy:
                 self.current_system = system
         
@@ -134,41 +133,35 @@ class GalaxyView(game_view.GameView):
         # draw red halo around home
         pygame.draw.circle(self.screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
 
-        if self.selected_system:
+        if self.selected_item:
             
 
-            if self.current_ship.can_jump(self.selected_system.xy):
-                pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_system.xy)
-                pygame.draw.circle(self.screen, 'white', self.selected_system.xy, self.selected_system.r+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
+            if self.current_ship.can_jump(self.selected_item.xy):
+                pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_item.xy)
+                pygame.draw.circle(self.screen, 'white', self.selected_item.xy, self.selected_item.r+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
             else:
-                distance = self.current_ship.xy.distance_to(self.selected_system.xy)
+                distance = self.current_ship.xy.distance_to(self.selected_item.xy)
                 ratio = self.current_ship.resources['fuel'] / distance                
-                newpoint = self.current_ship.xy.lerp(self.selected_system.xy, ratio)
+                newpoint = self.current_ship.xy.lerp(self.selected_item.xy, ratio)
 
                 pygame.draw.line(self.screen, 'white', self.current_ship.xy, newpoint) 
-                pygame.draw.line(self.screen, 'red', newpoint, self.selected_system.xy) 
+                pygame.draw.line(self.screen, 'red', newpoint, self.selected_item.xy) 
                 
-                
-
-            text = self.selected_system.name + ': ' + self.selected_system.system_type
-            text_surface = self.font.render(text, True, 'white', 'black')
-            
-            text_width, text_height = text_surface.get_size()
-            text_pos = self.selected_system.xy + (TEXT_OFFSET,TEXT_OFFSET)
-            
-            if text_width > const.screen_width - text_pos[0]:
-                text_pos = self.selected_system.xy + (-text_width - TEXT_OFFSET,TEXT_OFFSET)
-            
-            if text_height > const.screen_height - text_pos[1]:
-                text_pos = self.selected_system.xy + (TEXT_OFFSET, -text_height - TEXT_OFFSET)
-
-            self.screen.blit(text_surface, text_pos )
                 
         game_view.GameView.draw_objects(self) 
         
         
-        
+    def get_mouse_text(self):
+        text = []
+        if self.selected_item:
+            text.append(self.selected_item.description())
+            for mob in self.mobs:
+                if mob.system == self.selected_item:
+                    text.append('Space-Lord ' + mob.name)
+                    
+        return text
+            
         
         
         

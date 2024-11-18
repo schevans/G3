@@ -119,3 +119,13 @@ class System():
             if math.isclose(r, planet.r, abs_tol=20):
                 return self.get_random_r()
         return r
+    
+    
+    def description(self):
+        return self.name + ': ' + self.system_type
+
+                
+    
+
+
+

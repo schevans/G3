@@ -108,7 +108,8 @@ class Ship():
         self.destination = self.xy
       
 
-
+    def description(self):
+        return self.name
         
 
 

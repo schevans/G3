@@ -31,7 +31,7 @@ class SolarView(game_view.GameView):
 
 
         self.current_planet = None
-        self.selected_planet = None
+        self.selected_item = None
                 
         self.mobs = [self.current_ship]
         
@@ -62,18 +62,18 @@ class SolarView(game_view.GameView):
                     if self.current_planet:
                         view = planet_view.PlanetView(self.screen, self.current_planet, self.current_ship, self.ships)
                 if  event.key == pygame.K_j:   
-                    if self.selected_planet:
-                        self.current_ship.destination = self.selected_planet.xy
+                    if self.selected_item:
+                        self.current_ship.destination = self.selected_item.xy
         return view
     
     def update(self):
         game_view.GameView.update(self)
     
-        self.selected_planet = None
+        self.selected_item = None
         mousepos = Vector2(pygame.mouse.get_pos())
         for planet in self.system.planets:
             if planet.xy.distance_to(mousepos) < MOUSE_RADIUS:
-                self.selected_planet = planet
+                self.selected_item = planet
             if planet.xy.distance_to(self.current_ship.xy) < MOUSE_RADIUS:
                 self.current_planet = planet
     
@@ -86,9 +86,9 @@ class SolarView(game_view.GameView):
         
         #pygame.draw.circle(self.screen, 'white', self.mobs[1].xy, 50)
         
-        if self.selected_planet:
-            pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_planet.xy)
-            pygame.draw.circle(self.screen, 'white', self.selected_planet.xy, self.selected_planet.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
+        if self.selected_item:
+            pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_item.xy)
+            pygame.draw.circle(self.screen, 'white', self.selected_item.xy, self.selected_item.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
         
         pygame.draw.circle(self.screen, utils.fade_to_black(self.system.color, 2, 3), const.screen_center, (self.system.r+2)*SUN_SIZE_MULT)
@@ -102,3 +102,14 @@ class SolarView(game_view.GameView):
         
         
         game_view.GameView.draw_objects(self)
+        
+        
+    def get_mouse_text(self):
+        text = []
+        if self.selected_item:
+            text.append(self.selected_item.description())
+            for mob in self.mobs:
+                if mob.planet == self.selected_item:
+                    text.append('Space-Lord ' + mob.name)
+                    
+        return text

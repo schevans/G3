@@ -36,3 +36,5 @@ class Planet():
         #    amount = random.randint(1, 10) * resource_mult[resource]
         #    self.resources[resource] = amount
             
+    def description(self):
+        return self.name
