@@ -53,7 +53,7 @@ for system in systems.syslist:
 for ship in shiplist:
     if ship.name == 'Ascella':
         ship.is_npc = False
-        ship.loyalty = hero_name
+        ship.liege = hero_name
         
         
 view = galaxy_view.GalaxyView(screen, myship, shiplist)

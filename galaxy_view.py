@@ -84,7 +84,7 @@ class GalaxyView(game_view.GameView):
         if self.master_timer % SHIP_LAUNCH_TIMER == 0:
             suitable = []
             for ship in self.ships:
-                if ship.is_npc and ship.liege == 'Kotharg' and ship.xy != const.home:     # FIXME: Kotharg 
+                if ship.is_npc and ship.liege == 'Baddies' and ship.xy != const.home:     # FIXME: Baddies 
                     suitable.append(ship)
             
             suitable.sort(key=lambda x: x.xy.distance_to(const.home))

@@ -50,10 +50,10 @@ class Ship():
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying.png'))
         
         if self.is_npc:
-            if self.liege == 'Hostile':
+            if self.liege == 'Baddies':
                 self.image_still.change_color(pygame.Color('red'))
                 self.image_flying.change_color(pygame.Color('red'))
-            elif self.liege == 'Neutral':
+            elif self.liege == 'Neuties':
                 self.image_still.change_color(pygame.Color('cyan'))
                 self.image_flying.change_color(pygame.Color('cyan'))
             else:
