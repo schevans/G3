@@ -98,5 +98,8 @@ class GameView():
                 self.selected_item = item
 
 
-
+    def process_event(self, event):
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            raise SystemExit
         
