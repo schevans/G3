@@ -35,17 +35,15 @@ class PlanetView(game_view.GameView):
         applicable_mobs = []
         
         for ship in self.ships:
-            if ship.planet == self.planet and ship.is_npc:
+            if ship.planet == self.planet and ship != self.myship:
                 applicable_mobs.append(ship)
            
         if applicable_mobs:
-            angle_increment = math.pi / len(applicable_mobs)
+            angle_increment = ( math.pi * 2 ) / (len(applicable_mobs)+1)
             
-            for mob in applicable_mobs:
-                                   
-                if mob.is_npc:
-                    angle_radians += angle_increment
-                    self.mobs.append(orbital_ships.OrbitalShip(mob, planet, 150, angle_radians))
+            for mob in applicable_mobs:                                 
+                angle_radians += angle_increment
+                self.mobs.append(orbital_ships.OrbitalShip(mob, planet, 150, angle_radians))
 
                 
                 
