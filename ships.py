@@ -44,7 +44,7 @@ class Ship():
         
         self.is_alive = True
         self.heading = 0
-        self.destination = self.xy
+        self.destination = None
 
         self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship.png'))
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying.png'))
@@ -71,14 +71,14 @@ class Ship():
         
         if self.is_moving():
             
-            if self.xy.distance_to(self.destination) < self.speed:
+            if self.xy.distance_to(self.destination.xy) < self.speed:
                 # arrived
-                self.xy = Vector2(self.destination)
+                self.xy = Vector2(self.destination.xy)
                 self.heading = 0
                 self.image = self.image_still
             else:
                 # still moving
-                self.heading = utils.angle_between_points(self.xy ,self.destination)
+                self.heading = utils.angle_between_points(self.xy ,self.destination.xy)
                 self.image = self.image_flying
                 
                 self.xy.x -= math.sin(math.radians(self.heading)) * self.speed
@@ -94,18 +94,18 @@ class Ship():
     
     
     def is_moving(self):
-        return  self.xy != self.destination
+        return  self.destination and self.xy != self.destination.xy
 
         
         
     def can_jump(self, destination):
-           distance = self.xy.distance_to(destination)
+           distance = self.xy.distance_to(destination.xy)
            return distance < self.resources['fuel']
         
         
     def reset_xy(self, xy):
         self.xy = Vector2(xy)
-        self.destination = self.xy
+        self.destination = None
       
 
     def description(self):

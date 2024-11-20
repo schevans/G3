@@ -32,9 +32,9 @@ star_names = pd.read_csv('./data/star_names.csv')
 star_names = star_names.Name.tolist()
 
 def init_systems(num_systems):
-    
-    #star_names = pd.read_csv('./data/star_names.csv')
-    #star_names = star_names.Name.tolist()
+        
+    # home system
+    syslist.append(System('Home', const.home, HOME_STAR_SIZE, pygame.Color('turquoise2'), 'Friendly'))
     
     for i in range(0,num_systems):
         
@@ -51,8 +51,7 @@ def init_systems(num_systems):
         
         syslist.append(system)
     
-    # home system
-    syslist.append(System('Home', const.home, HOME_STAR_SIZE, pygame.Color('turquoise2'), 'Friendly'))
+
     
 def get_random_sys_location():
 

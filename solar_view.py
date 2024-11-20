@@ -60,7 +60,7 @@ class SolarView(game_view.GameView):
                         view = planet_view.PlanetView(self.screen, self.current_planet, self.current_ship, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_item:
-                        self.current_ship.destination = self.selected_item.xy
+                        self.current_ship.destination = self.selected_item
         return view
     
     def update(self):

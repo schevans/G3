@@ -26,6 +26,8 @@ class GalaxyView(game_view.GameView):
     def __init__(self, screen, current_ship, ships):
         game_view.GameView.__init__(self, screen, current_ship, ships)
     
+        self.home_system = systems.syslist[0]
+    
         if self.current_ship.system:
             self.current_ship.reset_xy(self.current_ship.system.xy)
         
@@ -49,7 +51,7 @@ class GalaxyView(game_view.GameView):
                         view = solar_view.SolarView(self.screen, self.current_system, self.current_ship, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
-                        self.current_ship.destination = self.selected_item.xy
+                        self.current_ship.destination = self.selected_item
 
         
         return view
@@ -83,7 +85,7 @@ class GalaxyView(game_view.GameView):
             fresh_mob = suitable[0]
             
             
-            fresh_mob.destination = const.home
+            fresh_mob.destination = self.home_system
             self.mobs.append(fresh_mob)
             
         for mob in self.mobs:
