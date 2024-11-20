@@ -27,13 +27,14 @@ class GalaxyView(game_view.GameView):
     
         self.home_system = systems.syslist[0]
     
-        if self.current_ship.system:
-            self.current_ship.reset_xy(self.current_ship.system.xy)
+        #if self.current_ship.system:
+        #    self.current_ship.reset_xy(self.current_ship.system.xy)
         
         for ship in self.ships:
             if ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
-    
+                if ship.system:
+                    ship.reset_xy(ship.system.xy)
         
     def process_inputs(self):
         

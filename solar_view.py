@@ -24,8 +24,6 @@ class SolarView(game_view.GameView):
         self.system = system
         
         game_view.GameView.__init__(self, screen, current_ship, ships)
-        
-        self.current_ship.system = system
                       
         for ship in self.ships:
             if ship.system == self.system:

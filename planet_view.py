@@ -23,23 +23,19 @@ class PlanetView(game_view.GameView):
         self.planet = planet
         
         game_view.GameView.__init__(self, screen, current_ship, ships)
-        
-
-        self.current_ship.planet = planet
-        
-
+    
         angle_radians = 0
-        self.mobs = [orbital_ships.OrbitalShip(self.current_ship, planet, 150, angle_radians)]
+        #self.mobs = [orbital_ships.OrbitalShip(self.current_ship, planet, 150, angle_radians)]
         
         
         applicable_mobs = []
         
         for ship in self.ships:
-            if ship.planet == self.planet and ship != self.myship:
+            if ship.planet == self.planet:
                 applicable_mobs.append(ship)
            
         if applicable_mobs:
-            angle_increment = ( math.pi * 2 ) / (len(applicable_mobs)+1)
+            angle_increment = ( math.pi * 2 ) / len(applicable_mobs)
             
             for mob in applicable_mobs:                                 
                 angle_radians += angle_increment

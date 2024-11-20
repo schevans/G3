@@ -28,7 +28,7 @@ class OrbitalShip(ships.Ship):
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
         
         self.mass = 7000 / planet.size # FIXME
-        print(self.mass)
+        
         self.w = math.sqrt(G*self.mass/math.pow(r, 3)) 
 
         
