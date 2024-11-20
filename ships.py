@@ -70,9 +70,9 @@ class Ship():
     def update(self):
         
         
-        if self.is_moving():
+        if self.destination:
             
-            if self.xy.distance_to(self.destination.xy) < self.speed:
+            if self.xy.distance_to(self.destination.xy) <= self.speed:
                 # arrived
                 self.xy = Vector2(self.destination.xy)
                 self.heading = 0
@@ -89,7 +89,6 @@ class Ship():
                 
                 self.xy.x -= math.sin(math.radians(self.heading)) * self.speed
                 self.xy.y -= math.cos(math.radians(self.heading)) * self.speed
-        
 
         if not self.is_npc:
             if self.is_current:
