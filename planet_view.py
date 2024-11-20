@@ -57,7 +57,10 @@ class PlanetView(game_view.GameView):
                     for mob in self.mobs:
                         if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
                             mob.is_npc = False
-                       
+                            mob.liege = 'Hero'
+                            #mob.tmpship.is_npc = False  # FIXME: Better solution
+                            #mob.tmpship.liege = 'Hero'
+                            
         keys = pygame.key.get_pressed() 
         self.mobs[0].acceleration = 0
         if keys[pygame.K_d]:

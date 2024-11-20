@@ -20,6 +20,7 @@ class OrbitalShip(ships.Ship):
         
         self.__dict__.update(vars(ship))
         
+        self.tmpship = ship   # FIXME: Better solution
        
         self.r = r
         self.p = p
