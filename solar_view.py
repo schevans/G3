@@ -60,7 +60,7 @@ class SolarView(game_view.GameView):
     def update(self):
         game_view.GameView.update(self)
     
-        self.get_selected_item(self.system.planets + [x for x in self.mobs if x.is_moving()] + [self.myship])
+        self.get_selected_item(self.system.planets + self.mobs)
 
 
     def draw(self):

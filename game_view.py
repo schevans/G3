@@ -96,6 +96,7 @@ class GameView():
         for item in items:
             if item.xy.distance_to(mousepos) < MOUSE_RADIUS:
                 self.selected_item = item
+                break
 
 
     def process_event(self, event):
