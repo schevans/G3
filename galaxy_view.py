@@ -50,14 +50,6 @@ class GalaxyView(game_view.GameView):
                 if  event.key == pygame.K_j:   
                     if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
                         self.current_ship.destination = self.selected_item.xy
-                if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
-
-                   index = self.myships.index(self.current_ship)
-                   if event.key == pygame.K_LEFTBRACKET:
-                       index = (index - 1) % len(self.myships)
-                   else:
-                       index = (index + 1) % len(self.myships)      
-                   self.current_ship = self.myships[index]
 
         
         return view

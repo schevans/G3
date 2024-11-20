@@ -56,7 +56,7 @@ class GameView():
         for mob in self.mobs:
             mob.draw(self.screen)
             
-        # selected ship
+        # mark selected ship
         pygame.draw.circle(self.screen, 'red', self.current_ship.xy, 3)
         
         # mouseover text
@@ -99,7 +99,17 @@ class GameView():
 
 
     def process_event(self, event):
+        
         if event.type == pygame.QUIT:
             pygame.quit()
             raise SystemExit
         
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
+
+               index = self.myships.index(self.current_ship)
+               if event.key == pygame.K_LEFTBRACKET:
+                   index = (index - 1) % len(self.myships)
+               else:
+                   index = (index + 1) % len(self.myships)      
+               self.current_ship = self.myships[index]

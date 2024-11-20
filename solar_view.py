@@ -32,9 +32,7 @@ class SolarView(game_view.GameView):
 
         self.current_planet = None
         self.selected_item = None
-                
-        self.mobs = [self.current_ship]
-        
+                      
         for ship in self.ships:
             if ship.system == self.system:
                 
@@ -43,9 +41,10 @@ class SolarView(game_view.GameView):
                 else:
                     ship.reset_xy(const.screen_center)
                     
-                if ship.is_npc:
-                    self.mobs.append(ship)
-        
+
+                self.mobs.append(ship)
+
+
     def process_inputs(self):
         view = self
         
