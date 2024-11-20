@@ -15,7 +15,7 @@ import planet_view
 import utils
 
 SUN_SIZE_MULT = 3
-MOUSE_RADIUS = 5    # FIXME: DUP in galaxy_
+
 SYSTEM_HIGHLIGHT = 3 # FIXME: DUP in galaxy_
 
 class SolarView(game_view.GameView):
@@ -63,15 +63,9 @@ class SolarView(game_view.GameView):
         self.get_selected_item(self.system.planets)
 
 
-    
-        
-    
     def draw(self):
         
         game_view.GameView.draw(self)
-        
-        
-        #pygame.draw.circle(self.screen, 'white', self.mobs[1].xy, 50)
         
         if self.selected_item:
             pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_item.xy)

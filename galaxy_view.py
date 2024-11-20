@@ -16,7 +16,6 @@ import constants as const
 import solar_view
 
 
-MOUSE_RADIUS = 5
 
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 50
@@ -92,19 +91,6 @@ class GalaxyView(game_view.GameView):
     def draw(self):
         
         game_view.GameView.draw(self)
-
-        if self.threat_level >= 11:
-            text = "Game Over"
-            big_font = pygame.font.SysFont('Comic Sans MS', 100)
-            text_surface = big_font.render(text, False, 'white', 'black')
-            text_width, text_height = text_surface.get_size()
-            text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
-            self.screen.blit(text_surface, text_pos )
-            
-            pygame.display.flip() 
-            pygame.time.wait(10000)
-            pygame.quit()
-            raise SystemExit
             
         for system in systems.syslist:
             
@@ -115,6 +101,15 @@ class GalaxyView(game_view.GameView):
     
         # draw red halo around home
         pygame.draw.circle(self.screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
+
+        if self.threat_level >= 11:
+            text = "Game Over"
+            big_font = pygame.font.SysFont('Comic Sans MS', 100)
+            text_surface = big_font.render(text, False, 'white', 'black')
+            text_width, text_height = text_surface.get_size()
+            text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
+            self.screen.blit(text_surface, text_pos )
+
 
         if self.selected_item:
             
