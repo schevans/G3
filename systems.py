@@ -124,7 +124,8 @@ class System():
         return self.name + ': ' + self.system_type
 
                 
-    
+    def item_type(self):
+        return "System"
 
 
 

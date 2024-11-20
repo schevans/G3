@@ -31,8 +31,6 @@ class GalaxyView(game_view.GameView):
         if self.current_ship.system:
             self.current_ship.reset_xy(self.current_ship.system.xy)
         
-        self.current_system = None
-        
         for ship in self.ships:
             if ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
@@ -47,8 +45,8 @@ class GalaxyView(game_view.GameView):
             
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_s:
-                    if self.current_system and not self.current_ship.is_moving():
-                        view = solar_view.SolarView(self.screen, self.current_system, self.current_ship, self.ships)
+                    if self.current_ship.system and not self.current_ship.is_moving():
+                        view = solar_view.SolarView(self.screen, self.current_ship.system, self.current_ship, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
                         self.current_ship.destination = self.selected_item
@@ -64,10 +62,6 @@ class GalaxyView(game_view.GameView):
                 mob.update()
         
         self.get_selected_item(systems.syslist)
-
-        for system in systems.syslist:
-            if self.current_ship.xy == system.xy:
-                self.current_system = system
         
         if self.current_ship.is_moving():
             self.master_timer += 1

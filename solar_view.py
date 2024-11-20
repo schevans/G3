@@ -23,15 +23,9 @@ class SolarView(game_view.GameView):
     def __init__(self, screen, system, current_ship, ships):
         self.system = system
         
-        
-        
         game_view.GameView.__init__(self, screen, current_ship, ships)
         
         self.current_ship.system = system
-
-
-        self.current_planet = None
-        self.selected_item = None
                       
         for ship in self.ships:
             if ship.system == self.system:
@@ -56,8 +50,8 @@ class SolarView(game_view.GameView):
                 if event.key == pygame.K_g:
                     view = galaxy_view.GalaxyView(self.screen, self.current_ship, self.ships)
                 if event.key == pygame.K_p:
-                    if self.current_planet:
-                        view = planet_view.PlanetView(self.screen, self.current_planet, self.current_ship, self.ships)
+                    if self.current_ship.planet:
+                        view = planet_view.PlanetView(self.screen, self.current_ship.planet, self.current_ship, self.ships)
                 if  event.key == pygame.K_j:   
                     if self.selected_item:
                         self.current_ship.destination = self.selected_item
@@ -68,9 +62,7 @@ class SolarView(game_view.GameView):
     
         self.get_selected_item(self.system.planets)
 
-        for planet in self.system.planets:
-            if planet.xy.distance_to(self.current_ship.xy) < MOUSE_RADIUS:
-                self.current_planet = planet
+
     
         
     

@@ -76,6 +76,10 @@ class Ship():
                 self.xy = Vector2(self.destination.xy)
                 self.heading = 0
                 self.image = self.image_still
+                if self.destination.item_type() == 'Planet':
+                    self.planet = self.destination
+                else:
+                    self.system = self.destination
             else:
                 # still moving
                 self.heading = utils.angle_between_points(self.xy ,self.destination.xy)
@@ -92,12 +96,10 @@ class Ship():
         self.image.draw(screen)
 
     
-    
     def is_moving(self):
-        return  self.destination and self.xy != self.destination.xy
+        return self.destination and self.xy != self.destination.xy
 
-        
-        
+
     def can_jump(self, destination):
            distance = self.xy.distance_to(destination.xy)
            return distance < self.resources['fuel']
