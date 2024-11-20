@@ -25,16 +25,16 @@ clock = pygame.time.Clock()
 
 pygame.font.init() 
 
-font = pygame.font.SysFont('Comic Sans MS', 20)
+font = pygame.font.SysFont('Ariel', 20)
 
 
-    
+pygame.display.set_caption('Far From Home')
 
 utils.init_stars(const.num_stars)
 systems.init_systems(const.num_systems)
 
 
-
+home_system = systems.syslist[0]
 
 hero_name = 'Hero'
 
@@ -42,10 +42,11 @@ myship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-
 
 
 
+
 shiplist = [ myship ]
 
 for system in systems.syslist:
-    if system.system_type != 'Uninhabited' and system.name != 'Home':           # FIXME: Code 'Home' somewhere
+    if system.system_type != 'Uninhabited' and system != home_system:
         planet = system.planets[random.randint(0, len(system.planets)-1)]
         shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
 

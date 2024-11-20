@@ -60,7 +60,7 @@ class GalaxyView(game_view.GameView):
             if not mob.is_npc or self.current_ship.is_moving():
                 mob.update()
         
-        self.get_selected_item(systems.syslist)
+        self.get_selected_item(systems.syslist + [x for x in self.mobs if x.is_moving()] + [self.myship])
         
         if self.current_ship.is_moving():
             self.master_timer += 1
@@ -111,7 +111,7 @@ class GalaxyView(game_view.GameView):
             self.screen.blit(text_surface, text_pos )
 
 
-        if self.selected_item:
+        if self.selected_item and self.selected_item.item_type() != 'Ship':
             
 
             if self.current_ship.can_jump(self.selected_item.xy):

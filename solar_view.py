@@ -60,14 +60,14 @@ class SolarView(game_view.GameView):
     def update(self):
         game_view.GameView.update(self)
     
-        self.get_selected_item(self.system.planets)
+        self.get_selected_item(self.system.planets + [x for x in self.mobs if x.is_moving()] + [self.myship])
 
 
     def draw(self):
         
         game_view.GameView.draw(self)
         
-        if self.selected_item:
+        if self.selected_item and self.selected_item.item_type() != 'Ship':
             pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_item.xy)
             pygame.draw.circle(self.screen, 'white', self.selected_item.xy, self.selected_item.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 

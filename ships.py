@@ -111,10 +111,14 @@ class Ship():
       
 
     def description(self):
-        return 'Lord ' + self.name + ', liege: ' + self.liege
+        if self.name == 'Hero':
+            return self.name
+        else:
+            return 'Lord ' + self.name + ', liege: ' + self.liege
         
 
-
+    def item_type(self):
+        return "Ship"
 
 
 
