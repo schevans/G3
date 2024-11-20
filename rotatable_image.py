@@ -33,11 +33,12 @@ class RotatableImage():
 
         screen.blit(rotated_image, new_rect)
         
-    def change_color(self, color):
+    def change_color(self, old_color, new_color):
         width, height = self.original_image.get_size()
-        new_red, new_green, new_blue, _ = color
+        old_red, old_green, old_blue, _ = old_color
+        new_red, new_green, new_blue, _ = new_color
         for x in range(width):
             for y in range(height):
                 red, green, blue, alpha = self.original_image.get_at((x, y))
-                if red == 255 and green == 255 and blue == 255:
+                if red == old_red and green == old_green and blue == old_blue:
                     self.original_image.set_at((x, y), pygame.Color(new_red, new_green, new_blue, alpha))

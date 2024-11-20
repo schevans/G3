@@ -26,9 +26,6 @@ class GalaxyView(game_view.GameView):
         game_view.GameView.__init__(self, screen, current_ship, ships)
     
         self.home_system = systems.syslist[0]
-    
-        #if self.current_ship.system:
-        #    self.current_ship.reset_xy(self.current_ship.system.xy)
         
         for ship in self.ships:
             if ship.is_moving() or not ship.is_npc:
@@ -63,11 +60,13 @@ class GalaxyView(game_view.GameView):
         
         self.get_selected_item(systems.syslist + self.mobs)
         
-        if self.current_ship.is_moving():
+        if self.current_ship == self.myship and self.current_ship.is_moving():
             self.master_timer += 1
             
         
         if self.master_timer % SHIP_LAUNCH_TIMER == 0:
+            self.master_timer += 1
+            
             suitable = []
             for ship in self.ships:
                 if ship.is_npc and ship.liege == 'Baddies' and ship.xy != const.home:     # FIXME: Baddies 
@@ -75,12 +74,11 @@ class GalaxyView(game_view.GameView):
             
             suitable.sort(key=lambda x: x.xy.distance_to(const.home))
             
-            
             fresh_mob = suitable[0]
-            
-            
+
             fresh_mob.destination = self.home_system
             self.mobs.append(fresh_mob)
+            
             
         for mob in self.mobs:
             if mob.is_npc and not mob.is_moving():

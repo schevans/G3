@@ -39,7 +39,7 @@ home_system = systems.syslist[0]
 hero_name = 'Hero'
 
 myship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-const.free_space_in_corners), None, None, False)
-
+myship.is_current = True
 
 
 

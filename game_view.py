@@ -55,9 +55,6 @@ class GameView():
         
         for mob in self.mobs:
             mob.draw(self.screen)
-            
-        # mark selected ship
-        pygame.draw.circle(self.screen, 'red', self.current_ship.xy, 3)
         
         # mouseover text
         if self.selected_item:
@@ -112,5 +109,8 @@ class GameView():
                if event.key == pygame.K_LEFTBRACKET:
                    index = (index - 1) % len(self.myships)
                else:
-                   index = (index + 1) % len(self.myships)      
+                   index = (index + 1) % len(self.myships)   
+                   
+               self.current_ship.is_current = False
                self.current_ship = self.myships[index]
+               self.current_ship.is_current = True

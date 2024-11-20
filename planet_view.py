@@ -25,8 +25,6 @@ class PlanetView(game_view.GameView):
         game_view.GameView.__init__(self, screen, current_ship, ships)
     
         angle_radians = 0
-        #self.mobs = [orbital_ships.OrbitalShip(self.current_ship, planet, 150, angle_radians)]
-        
         
         applicable_mobs = []
         

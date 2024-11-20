@@ -45,20 +45,21 @@ class Ship():
         self.is_alive = True
         self.heading = 0
         self.destination = None
+        self.is_current = False
 
         self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship.png'))
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying.png'))
         
         if self.is_npc:
             if self.liege == 'Baddies':
-                self.image_still.change_color(pygame.Color('red'))
-                self.image_flying.change_color(pygame.Color('red'))
+                self.image_still.change_color(pygame.Color('white'), pygame.Color('red'))
+                self.image_flying.change_color(pygame.Color('white'), pygame.Color('red'))
             elif self.liege == 'Neuties':
-                self.image_still.change_color(pygame.Color('cyan'))
-                self.image_flying.change_color(pygame.Color('cyan'))
+                self.image_still.change_color(pygame.Color('white'), pygame.Color('cyan'))
+                self.image_flying.change_color(pygame.Color('white'), pygame.Color('cyan'))
             else:
-                self.image_still.change_color(pygame.Color('mediumspringgreen'))
-                self.image_flying.change_color(pygame.Color('mediumspringgreen'))
+                self.image_still.change_color(pygame.Color('white'), pygame.Color('mediumspringgreen'))
+                self.image_flying.change_color(pygame.Color('white'), pygame.Color('mediumspringgreen'))
                 
         self.image = self.image_still
 
@@ -88,8 +89,14 @@ class Ship():
                 
                 self.xy.x -= math.sin(math.radians(self.heading)) * self.speed
                 self.xy.y -= math.cos(math.radians(self.heading)) * self.speed
-                          
         
+
+        if not self.is_npc:
+            if self.is_current:
+                 self.image.change_color(pygame.Color('black'), pygame.Color('red')) 
+            else:
+                self.image.change_color(pygame.Color('red'), pygame.Color('black')) 
+            
         self.image.update(self.xy, self.heading)
     
     def draw(self, screen):
