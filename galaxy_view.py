@@ -32,6 +32,8 @@ class GalaxyView(game_view.GameView):
                 self.mobs.append(ship)
                 if ship.system:
                     ship.reset_xy(ship.system.xy)
+
+        self.is_waiting = False
         
     def process_inputs(self):
         
@@ -47,7 +49,11 @@ class GalaxyView(game_view.GameView):
                 if  event.key == pygame.K_j:   
                     if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
                         self.current_ship.destination = self.selected_item
-
+        
+        keys = pygame.key.get_pressed() 
+        self.is_waiting = False
+        if keys[pygame.K_z]:
+            self.is_waiting = True      
         
         return view
             
@@ -55,12 +61,12 @@ class GalaxyView(game_view.GameView):
 
         
         for mob in self.mobs:
-            if not mob.is_npc or self.current_ship.is_moving():
+            if not mob.is_npc or self.current_ship.is_moving() or self.is_waiting:
                 mob.update()
         
         self.get_selected_item(systems.syslist + self.mobs)
         
-        if self.current_ship == self.myship and self.current_ship.is_moving():
+        if self.current_ship == self.myship and ( self.current_ship.is_moving() or self.is_waiting):
             self.master_timer += 1
             
         
@@ -98,6 +104,11 @@ class GalaxyView(game_view.GameView):
             pygame.draw.circle(self.screen, system.color, system.xy, system.r )
 
     
+        text = 'Days passed: ' + str(self.master_timer)
+        font = pygame.font.SysFont('Comic Sans MS', 20)
+        text_surface = font.render(text, True, 'white', 'black')
+        self.screen.blit(text_surface, (15, 15) )
+        
         # draw red halo around home
         pygame.draw.circle(self.screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
 

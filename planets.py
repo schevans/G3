@@ -37,7 +37,7 @@ class Planet():
         #    self.resources[resource] = amount
             
     def description(self):
-        return self.name
+        return self.name + ', ' + self.planet_type
     
     def item_type(self):
         return "Planet"
