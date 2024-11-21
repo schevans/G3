@@ -39,7 +39,7 @@ class PlanetView(game_view.GameView):
                 angle_radians += angle_increment
                 self.mobs.append(orbital_ships.OrbitalShip(mob, planet, 150, angle_radians))
 
-                
+        self.is_paused = False      
                 
     def process_inputs(self):
         
@@ -53,6 +53,8 @@ class PlanetView(game_view.GameView):
                     view = solar_view.SolarView(self.screen, self.planet.system, self.current_ship, self.ships)
                 if event.key == pygame.K_g:
                     view = galaxy_view.GalaxyView(self.screen, self.current_ship, self.ships)
+                if event.key == pygame.K_SPACE:
+                    self.is_paused = not self.is_paused
                 if event.key == pygame.K_w:
                     for mob in self.mobs:
                         if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
@@ -72,8 +74,10 @@ class PlanetView(game_view.GameView):
         return view 
     
     def update(self):
-        game_view.GameView.update(self)
         
+        if not self.is_paused:
+            game_view.GameView.update(self)
+ 
         self.get_selected_item(self.mobs)
     
     def draw(self):      
@@ -81,7 +85,13 @@ class PlanetView(game_view.GameView):
         pygame.draw.circle(self.screen, self.planet.color, const.screen_center, self.planet.size*8)
         game_view.GameView.draw_objects(self)
         
-        
+        if self.is_paused:
+            text = '[ Paused ]'
+            font = pygame.font.SysFont('Comic Sans MS', 30)
+            text_surface = font.render(text, True, 'white', 'black')
+            text_width, text_height = text_surface.get_size()
+            text_pos = Vector2(const.screen_width / 2 - text_width / 2, text_height + 10)
+            self.screen.blit(text_surface, text_pos )
         
     def get_mouse_text(self):
         return [self.selected_item.description()]
