@@ -12,7 +12,7 @@ screen_height = 800
 
 screen_center = Vector2(screen_width/2, screen_height/2)
 
-
+random_seed = 43
 
 free_space_in_corners = 20
 

@@ -5,56 +5,89 @@ Created on Wed Nov  6 18:55:32 2024
 
 @author: steve
 """
+
 import pygame
 from pygame.math import Vector2
+from enum import Enum
+import random
 
-import utils
+import ships
+import systems
 import constants as const
+import utils
 
 TEXT_OFFSET = 15
 MOUSE_RADIUS = 10
 
-class GameView():
-       
-    
-    def __init__(self, screen, current_ship, ships):
-        self.screen = screen
-        self.current_ship = current_ship 
-        self.ships = ships
+class View(Enum):
+    MENU = 1
+    GALAXY = 2
+    SOLAR = 3
+    PLANET = 4
+    FITTING = 5
+    DOCKING = 6
+    KEY_BINDINGS = 7
+    LOAD_SAVE = 8
+    SHIP_SELECT = 9
+    GAME_OVER = 10
+    CREDITS = 11
 
-        self.myship = ships[0]
+class GameView():
+    
+    hero_name = 'Hero'      # FIXME: Move to Menu
+    
+    # FIXME: Move all this?
+    utils.init_stars(const.num_stars)       
+    systems.init_systems(const.num_systems)
+    
+    
+    home_system = systems.syslist[0]
+
+    myship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-const.free_space_in_corners), None, None, False)
+    myship.is_current = True
+
+
+
+    shiplist = [ myship ]
+
+    for system in systems.syslist:
+        if system.system_type != 'Uninhabited' and system != home_system:
+            planet = system.planets[random.randint(0, len(system.planets)-1)]
+            shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
+    
+    
+    def __init__(self):
+        self.next_view = None     
+        self.font = pygame.font.SysFont('Ariel', 20)
+        self.ships = GameView.shiplist
+        self.current_ship = GameView.myship
+        
         self.myships = []
-        for ship in ships:
+        for ship in self.ships:
             if not ship.is_npc:
                 self.myships.append(ship)
-        
-
-        self.font = pygame.font.SysFont('Comic Sans MS', 22)
+    
         self.mobs = []
         self.master_timer = 1
         self.threat_level = 3
         
         self.selected_item = None
         
-    def process_inputs(self):
-        pass
-        
     def update(self):
         
         for mob in self.mobs:
             mob.update()
         
-    def draw(self):
+    def draw(self, screen):
         
-        self.screen.fill('black') 
+        screen.fill('black') 
         
-        utils.draw_stars(self.screen)
-        
-
-    def draw_objects(self):
+        utils.draw_stars(screen)
+  
+    def draw_objects(self, screen):
         
         for mob in self.mobs:
-            mob.draw(self.screen)
+            mob.draw(screen)
         
         # mouseover text
         if self.selected_item:
@@ -83,10 +116,8 @@ class GameView():
             if textbox_height > const.screen_height - text_pos[1]:
                 text_pos = self.selected_item.xy + (TEXT_OFFSET, -textbox_height - TEXT_OFFSET)
         
-            self.screen.blit(surface, text_pos )
-
-        
-    
+            screen.blit(surface, text_pos )
+            
     def get_selected_item(self, items):
         self.selected_item = None
         mousepos = Vector2(pygame.mouse.get_pos())
@@ -94,23 +125,56 @@ class GameView():
             if item.xy.distance_to(mousepos) < MOUSE_RADIUS:
                 self.selected_item = item
                 break
+            
 
-
-    def process_event(self, event):
+            
+class ViewManager():
+    
+    def __init__(self):
+        self.screen = pygame.display.set_mode((const.screen_width, const.screen_height))
+        self.clock = pygame.time.Clock()
+        pygame.font.init()
+        random.seed(const.random_seed)
         
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            raise SystemExit
-        
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
+    def setup_views(self, view_dict, start_view):
+        self.view_dict = view_dict
+        self.view = self.view_dict[start_view]
+        self.view.startup(None)
 
-               index = self.myships.index(self.current_ship)
-               if event.key == pygame.K_LEFTBRACKET:
-                   index = (index - 1) % len(self.myships)
-               else:
-                   index = (index + 1) % len(self.myships)   
-                   
-               self.current_ship.is_current = False
-               self.current_ship = self.myships[index]
-               self.current_ship.is_current = True
+        
+    def update(self):
+            
+        if self.view.next_view:
+            view_name = self.view.next_view[0]
+            view_body = self.view.next_view[1]
+            self.view.cleanup()
+            self.view = self.view_dict[view_name]
+            self.view.startup(view_body)
+            self.view.next_view = None
+            
+        self.view.update()
+        
+    def draw(self):
+        self.view.draw(self.screen)
+        
+    def event_loop(self):
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                raise SystemExit
+                
+            self.view.process_event(event)
+            
+    def run(self):
+        
+        while True:
+            self.event_loop()
+            self.update()
+            self.draw()
+            pygame.display.update()
+            self.clock.tick(24)
+
+
+    
+    

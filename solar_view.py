@@ -6,25 +6,29 @@ Created on Sun Nov 10 17:48:27 2024
 @author: steve
 """
 import pygame
-from pygame.math import Vector2
 
-import game_view
 import constants as const 
-import galaxy_view
-import planet_view
 import utils
 
-SUN_SIZE_MULT = 3
+from game_view import GameView, View
 
+SUN_SIZE_MULT = 3   
 SYSTEM_HIGHLIGHT = 3 # FIXME: DUP in galaxy_
-
-class SolarView(game_view.GameView):
+  
+  
+class SolarView(GameView):
     
-    def __init__(self, screen, system, current_ship, ships):
-        self.system = system
+    def __init__(self):
+        GameView.__init__(self)   
         
-        game_view.GameView.__init__(self, screen, current_ship, ships)
-                      
+        self.system = self.current_ship.system
+        
+    def cleanup(self):
+        self.mobs = []
+        
+    def startup(self, system):  
+        self.system = system
+
         for ship in self.ships:
             if ship.system == self.system:
                 
@@ -35,52 +39,42 @@ class SolarView(game_view.GameView):
                     
 
                 self.mobs.append(ship)
-
-
-    def process_inputs(self):
-        view = self
         
-        for event in pygame.event.get():
-            self.process_event(event)
-            
-            if event.type == pygame.KEYDOWN:
-
-                if event.key == pygame.K_g:
-                    view = galaxy_view.GalaxyView(self.screen, self.current_ship, self.ships)
-                if event.key == pygame.K_p:
-                    if self.current_ship.planet:
-                        view = planet_view.PlanetView(self.screen, self.current_ship.planet, self.current_ship, self.ships)
-                if  event.key == pygame.K_j:   
-                    if self.selected_item:
-                        self.current_ship.destination = self.selected_item
-        return view
-    
+    def process_event(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_g:
+                self.next_view = (View.GALAXY, self.system)
+            if event.key == pygame.K_p:
+                self.next_view = (View.PLANET, self.selected_item)
+            if  event.key == pygame.K_j:   
+                if self.selected_item:
+                    self.current_ship.destination = self.selected_item       
+                    
+                    
     def update(self):
-        game_view.GameView.update(self)
+        GameView.update(self)
     
         self.get_selected_item(self.system.planets + self.mobs)
-
-
-    def draw(self):
-        
-        game_view.GameView.draw(self)
+    
+    def draw(self, screen):
+        GameView.draw(self, screen)
         
         if self.selected_item and self.selected_item.item_type() != 'Ship':
-            pygame.draw.line(self.screen, 'white', self.current_ship.xy, self.selected_item.xy)
-            pygame.draw.circle(self.screen, 'white', self.selected_item.xy, self.selected_item.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
+            pygame.draw.line(screen, 'white', self.current_ship.xy, self.selected_item.xy)
+            pygame.draw.circle(screen, 'white', self.selected_item.xy, self.selected_item.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
         
-        pygame.draw.circle(self.screen, utils.fade_to_black(self.system.color, 2, 3), const.screen_center, (self.system.r+2)*SUN_SIZE_MULT)
-        pygame.draw.circle(self.screen, utils.fade_to_black(self.system.color, 1, 3), const.screen_center, (self.system.r+1)*SUN_SIZE_MULT)
-        pygame.draw.circle(self.screen, self.system.color, const.screen_center, self.system.r*SUN_SIZE_MULT )
+        pygame.draw.circle(screen, utils.fade_to_black(self.system.color, 2, 3), const.screen_center, (self.system.r+2)*SUN_SIZE_MULT)
+        pygame.draw.circle(screen, utils.fade_to_black(self.system.color, 1, 3), const.screen_center, (self.system.r+1)*SUN_SIZE_MULT)
+        pygame.draw.circle(screen, self.system.color, const.screen_center, self.system.r*SUN_SIZE_MULT )
         
         for planet in self.system.planets:
-            pygame.draw.circle(self.screen, 'gray', const.screen_center, planet.r, 1)
-            pygame.draw.circle(self.screen, planet.color, planet.xy, planet.size)
+            pygame.draw.circle(screen, 'gray', const.screen_center, planet.r, 1)
+            pygame.draw.circle(screen, planet.color, planet.xy, planet.size)
         
         
         
-        game_view.GameView.draw_objects(self)
+        GameView.draw_objects(self, screen)
         
         
     def get_mouse_text(self):
@@ -92,3 +86,4 @@ class SolarView(game_view.GameView):
                     text.append(mob.description())
                     
         return text
+    

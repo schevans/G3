@@ -5,81 +5,26 @@ Created on Sun Nov  3 17:46:52 2024
 
 @author: steve
 """
-import pygame
-import random
 
-import ships
-import systems
-import constants as const
-import utils
-import galaxy_view
+import sys
 
-
-random.seed(43)
-
-pygame.init()
-
-screen = pygame.display.set_mode((const.screen_width, const.screen_height))
-
-clock = pygame.time.Clock()
-
-pygame.font.init() 
-
-font = pygame.font.SysFont('Ariel', 20)
-
-
-pygame.display.set_caption('Far From Home')
-
-utils.init_stars(const.num_stars)
-systems.init_systems(const.num_systems)
-
-
-home_system = systems.syslist[0]
-
-hero_name = 'Hero'
-
-myship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-const.free_space_in_corners), None, None, False)
-myship.is_current = True
+from game_view import ViewManager, View
+from galaxy_view import GalaxyView
+from solar_view import SolarView
+from planet_view import PlanetView
 
 
 
-shiplist = [ myship ]
+view = ViewManager()
 
-for system in systems.syslist:
-    if system.system_type != 'Uninhabited' and system != home_system:
-        planet = system.planets[random.randint(0, len(system.planets)-1)]
-        shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
+view_dict = {
+    View.GALAXY: GalaxyView(),
+    View.SOLAR: SolarView(),
+    View.PLANET: PlanetView()
+}
 
+view.setup_views(view_dict, View.GALAXY)
 
-"""
-for ship in shiplist:
-    if ship.name == 'Ascella':
-        ship.is_npc = False
-        ship.liege = hero_name
-"""        
-        
-view = galaxy_view.GalaxyView(screen, myship, shiplist)
+view.run()
 
-
-
-while True:
-    
-    # Process player inputs.
-    view = view.process_inputs()
-           
- 
-
-    # Do logical updates here.
-    # AI
-
-    # then
-    # Physics
-    view.update()  
-    
-    # Render the graphics here.
-    view.draw()
-
-    #print(view.master_timer)
-    
-    pygame.display.flip()  # Refresh on-screen display
-    clock.tick(24)
+sys.exit()
