@@ -92,10 +92,18 @@ def dict_loader():
         header = next(filereader)
         for row in filereader:
             arr = row.split(',')
-            
+ 
 
+pygame.font.init()
+font_dir = 'Days'    
+font_name = 'Days'
+font_file = './fonts/'+ font_dir + '/' + font_name + '.otf'
 
-        
+fonts = {
+       20: pygame.font.Font(font_file, 20),
+       30: pygame.font.Font(font_file, 30),
+       100: pygame.font.Font(font_file, 100)
+   } 
         
         
         

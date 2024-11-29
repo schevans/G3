@@ -98,8 +98,7 @@ class GalaxyView(GameView):
 
     
         text = 'Days passed: ' + str(self.master_timer)
-        font = pygame.font.SysFont('Ariel', 20)
-        text_surface = font.render(text, True, 'white', 'black')
+        text_surface = utils.fonts[20].render(text, True, 'white', 'black')
         screen.blit(text_surface, (15, 15) )
         
         # draw red halo around home
@@ -107,8 +106,7 @@ class GalaxyView(GameView):
 
         if self.threat_level >= 11:
             text = "Game Over"
-            big_font = pygame.font.SysFont('Ariel', 100)
-            text_surface = big_font.render(text, False, 'white', 'black')
+            text_surface = utils.fonts[100].render(text, False, 'white', 'black')
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
             screen.blit(text_surface, text_pos )

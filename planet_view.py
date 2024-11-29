@@ -14,7 +14,7 @@ import constants as const
 import galaxy_view
 import solar_view
 import orbital_ships
-
+import utils
 from game_view import GameView, View
 
 DOCK_RADIUS = 15
@@ -75,8 +75,7 @@ class PlanetView(GameView):
         
         if self.is_paused:
             text = '[ Paused ]'
-            font = pygame.font.SysFont('Comic Sans MS', 30)
-            text_surface = font.render(text, True, 'white', 'black')
+            text_surface = utils.fonts[30].render(text, True, 'white', 'black')
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, text_height + 10)
             screen.blit(text_surface, text_pos )
@@ -156,8 +155,7 @@ class PlanetView2(game_view.GameView):
         
         if self.is_paused:
             text = '[ Paused ]'
-            font = pygame.font.SysFont('Comic Sans MS', 30)
-            text_surface = font.render(text, True, 'white', 'black')
+            text_surface = utils.fonts[30].render(text, True, 'white', 'black')
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, text_height + 10)
             self.screen.blit(text_surface, text_pos )

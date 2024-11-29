@@ -58,7 +58,7 @@ class GameView():
     
     def __init__(self):
         self.next_view = None     
-        self.font = pygame.font.SysFont('Ariel', 20)
+        self.font = utils.fonts[20]
         self.ships = GameView.shiplist
         self.current_ship = GameView.myship
         
@@ -133,7 +133,6 @@ class ViewManager():
     def __init__(self):
         self.screen = pygame.display.set_mode((const.screen_width, const.screen_height))
         self.clock = pygame.time.Clock()
-        pygame.font.init()
         random.seed(const.random_seed)
         
     def setup_views(self, view_dict, start_view):
