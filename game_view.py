@@ -133,6 +133,7 @@ class ViewManager():
     def __init__(self):
         self.screen = pygame.display.set_mode((const.screen_width, const.screen_height))
         self.clock = pygame.time.Clock()
+        pygame.display.set_caption('Return to Polaris')
         random.seed(const.random_seed)
         
     def setup_views(self, view_dict, start_view):

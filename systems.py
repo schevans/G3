@@ -34,7 +34,7 @@ star_names = star_names.Name.tolist()
 def init_systems(num_systems):
         
     # home system
-    syslist.append(System('Home', const.home, HOME_STAR_SIZE, pygame.Color('turquoise2'), 'Friendly'))
+    syslist.append(System('Polaris', const.home, HOME_STAR_SIZE, pygame.Color('turquoise2'), 'Home'))
     
     for i in range(0,num_systems):
         
