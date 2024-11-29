@@ -61,6 +61,13 @@ class PlanetView(GameView):
                         mob.tmpship.is_npc = False  # FIXME: Better solution
                         mob.tmpship.liege = 'Hero'
                         
+        keys = pygame.key.get_pressed() 
+        self.mobs[0].acceleration = 0
+        if keys[pygame.K_d]:
+            self.mobs[0].acceleration  = 1
+        if keys[pygame.K_a]:        
+            self.mobs[0].acceleration  = -1  
+                        
     def update(self):
         if not self.is_paused:
             game_view.GameView.update(self)

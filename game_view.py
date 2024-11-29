@@ -56,6 +56,12 @@ class GameView():
             shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
     
     
+    for ship in shiplist:
+        if ship.name == 'Ainalrami':
+            ship.is_npc = False
+            ship.liege = hero_name
+    
+
     def __init__(self):
         self.next_view = None     
         self.font = utils.fonts[20]
@@ -125,7 +131,21 @@ class GameView():
             if item.xy.distance_to(mousepos) < MOUSE_RADIUS:
                 self.selected_item = item
                 break
-            
+        
+    def process_game_event(self, event):
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
+
+               index = self.myships.index(self.current_ship)
+               if event.key == pygame.K_LEFTBRACKET:
+                   index = (index - 1) % len(self.myships)
+               else:
+                   index = (index + 1) % len(self.myships)   
+                   
+               self.current_ship.is_current = False
+               self.current_ship = self.myships[index]
+               self.current_ship.is_current = True
 
             
 class ViewManager():
@@ -164,6 +184,7 @@ class ViewManager():
                 pygame.quit()
                 raise SystemExit
                 
+            self.view.process_game_event(event)
             self.view.process_event(event)
             
     def run(self):
