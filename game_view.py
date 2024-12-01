@@ -56,12 +56,12 @@ class GameView():
             planet = system.planets[random.randint(0, len(system.planets)-1)]
             shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
     
-    """
+    
     for ship in shiplist:
-        if ship.name == 'Ainalrami':
+        if ship.name == 'Ainalrami' or ship.name == 'Menkent':
             ship.is_npc = False
             ship.liege = hero_name
-    """
+    
 
     def __init__(self):
         self.next_view = None     
@@ -69,11 +69,6 @@ class GameView():
         self.ships = GameView.shiplist
         self.current_ship = GameView.myship
         
-        self.myships = []
-        for ship in self.ships:
-            if not ship.is_npc:
-                self.myships.append(ship)
-    
         self.mobs = []
         self.master_timer = 1
         self.threat_level = 3
@@ -154,17 +149,18 @@ class GameView():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
 
-               index = self.myships.index(self.current_ship)
-               if event.key == pygame.K_LEFTBRACKET:
-                   index = (index - 1) % len(self.myships)
-               else:
-                   index = (index + 1) % len(self.myships)   
-                   
-               self.current_ship.is_current = False
-               self.current_ship = self.myships[index]
-               self.current_ship.is_current = True
+                allied_ships = self.get_local_allies()
+                index = allied_ships.index(self.current_ship)
+                if event.key == pygame.K_LEFTBRACKET:
+                    index = (index - 1) % len(allied_ships)
+                else:
+                    index = (index + 1) % len(allied_ships)   
+                
+                self.current_ship.is_current = False
+                self.current_ship = allied_ships[index]
+                self.current_ship.is_current = True
 
-            
+ 
 class ViewManager():
     
     def __init__(self):

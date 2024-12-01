@@ -140,5 +140,10 @@ class GalaxyView(GameView):
                     
         return text
         
-        
+    def get_local_allies(self):
+        allies = []
+        for ship in self.ships:
+            if not ship.is_npc:
+                allies.append(ship)
+        return allies        
         

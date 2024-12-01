@@ -90,7 +90,12 @@ class PlanetView(GameView):
     def get_mouse_text(self):
         return [self.selected_item.description()]
 
-
+    def get_local_allies(self):
+        allies = []
+        for ship in self.ships:
+            if not ship.is_npc and ship.planet == self.current_ship.planet:
+                allies.append(ship)
+        return allies   
 
 class PlanetView2(game_view.GameView):
     

@@ -87,3 +87,10 @@ class SolarView(GameView):
                     
         return text
     
+    
+    def get_local_allies(self):
+        allies = []
+        for ship in self.ships:
+            if not ship.is_npc and ship.system == self.current_ship.system:
+                allies.append(ship)
+        return allies     
