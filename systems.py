@@ -34,7 +34,12 @@ star_names = star_names.Name.tolist()
 def init_systems(num_systems):
         
     # home system
-    syslist.append(System('Polaris', const.home, HOME_STAR_SIZE, pygame.Color('turquoise2'), 'Home'))
+    syslist.append(System(const.our_capital, const.home, HOME_STAR_SIZE, const.species_color[const.our_capital], 'Home'))
+    
+    # capitals
+    syslist.append(System(const.neutral_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX), const.species_color[const.neutral_capital], 'Neutral')) # FIXME: Much redundancy
+    syslist.append(System(const.friendly_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX), const.species_color[const.friendly_capital], 'Friendly'))
+    syslist.append(System(const.hostile_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX), const.species_color[const.hostile_capital], 'Hostile'))
     
     for i in range(0,num_systems):
         

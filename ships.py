@@ -51,16 +51,9 @@ class Ship():
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying.png'))
         
         if self.is_npc:
-            if self.liege == 'Baddies':
-                self.image_still.change_color(pygame.Color('white'), pygame.Color('red'))
-                self.image_flying.change_color(pygame.Color('white'), pygame.Color('red'))
-            elif self.liege == 'Neuties':
-                self.image_still.change_color(pygame.Color('white'), pygame.Color('cyan'))
-                self.image_flying.change_color(pygame.Color('white'), pygame.Color('cyan'))
-            else:
-                self.image_still.change_color(pygame.Color('white'), pygame.Color('mediumspringgreen'))
-                self.image_flying.change_color(pygame.Color('white'), pygame.Color('mediumspringgreen'))
-                
+            self.image_still.change_color(pygame.Color('white'), const.species_color[self.liege])
+            self.image_flying.change_color(pygame.Color('white'), const.species_color[self.liege])
+
         self.image = self.image_still
         
         self.resources = const.initial_resources
@@ -123,7 +116,7 @@ class Ship():
         if self.name == 'Hero':
             return self.name
         else:
-            return 'Lord ' + self.name + ', liege: ' + self.liege
+            return 'Lord ' + self.name + ', for ' + self.liege
         
 
     def item_type(self):

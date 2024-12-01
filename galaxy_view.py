@@ -69,7 +69,7 @@ class GalaxyView(GameView):
             
             suitable = []
             for ship in self.ships:
-                if ship.is_npc and ship.liege == 'Baddies' and ship.xy != const.home:     # FIXME: Baddies 
+                if ship.is_npc and ship.liege == const.hostile_capital and ship.xy != const.home:
                     suitable.append(ship)
             
             suitable.sort(key=lambda x: x.xy.distance_to(const.home))
