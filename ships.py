@@ -62,6 +62,8 @@ class Ship():
                 self.image_flying.change_color(pygame.Color('white'), pygame.Color('mediumspringgreen'))
                 
         self.image = self.image_still
+        
+        self.resources = const.initial_resources
 
         # dev mode
         if self.name == 'Hero':

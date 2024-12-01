@@ -18,6 +18,7 @@ import utils
 
 TEXT_OFFSET = 15
 MOUSE_RADIUS = 10
+TEXTBOX_HEIGHT = 40
 
 class View(Enum):
     MENU = 1
@@ -55,12 +56,12 @@ class GameView():
             planet = system.planets[random.randint(0, len(system.planets)-1)]
             shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
     
-    
+    """
     for ship in shiplist:
         if ship.name == 'Ainalrami':
             ship.is_npc = False
             ship.liege = hero_name
-    
+    """
 
     def __init__(self):
         self.next_view = None     
@@ -89,7 +90,23 @@ class GameView():
         screen.fill('black') 
         
         utils.draw_stars(screen)
+        
+        self.draw_textbox(screen)
   
+    def draw_textbox(self, screen): 
+        
+        pygame.draw.rect(screen, 'white', [0, const.screen_height , const.screen_width, 2])
+        
+        resource_str = ''
+        for key in self.current_ship.resources.keys():
+            resource_str = resource_str + (key.capitalize() + ': {:4.1f}    '.format(self.current_ship.resources[key]))
+
+        text_surface = self.font.render(resource_str, True, 'white')      
+        font_height = self.font.size(resource_str)[1]       
+        text_offset = (TEXTBOX_HEIGHT - font_height) /2        
+        screen.blit(text_surface, (10, const.screen_height+text_offset))
+
+        
     def draw_objects(self, screen):
         
         for mob in self.mobs:
@@ -151,7 +168,7 @@ class GameView():
 class ViewManager():
     
     def __init__(self):
-        self.screen = pygame.display.set_mode((const.screen_width, const.screen_height))
+        self.screen = pygame.display.set_mode((const.screen_width, const.screen_height+TEXTBOX_HEIGHT))
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Return to Polaris')
         random.seed(const.random_seed)
