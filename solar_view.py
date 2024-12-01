@@ -94,3 +94,9 @@ class SolarView(GameView):
             if not ship.is_npc and ship.system == self.current_ship.system:
                 allies.append(ship)
         return allies     
+    
+    
+    
+    
+
+

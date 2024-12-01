@@ -9,7 +9,6 @@ import pygame
 from pygame.math import Vector2
 import math
 
-import game_view
 import constants as const 
 import galaxy_view
 import solar_view
@@ -97,7 +96,7 @@ class PlanetView(GameView):
                 allies.append(ship)
         return allies   
 
-class PlanetView2(game_view.GameView):
+class PlanetView2(GameView):
     
     def __init__(self, screen, planet, current_ship, ships):
         self.planet = planet
