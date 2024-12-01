@@ -8,7 +8,7 @@ Created on Sun Nov  3 18:06:16 2024
 
 import pygame
 from pygame.math import Vector2
-import random
+import my_random
 import math
 import csv
 
@@ -38,7 +38,7 @@ stars = []
 
 def init_stars(num_stars):
     for i in range(0,num_stars):
-        randpos = Vector2(random.randint(1, const.screen_width), random.randint(1, const.screen_height))
+        randpos = Vector2(my_random.my_randint(1, const.screen_width), my_random.my_randint(1, const.screen_height))
         stars.append(randpos)
 
 

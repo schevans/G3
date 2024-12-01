@@ -5,7 +5,7 @@ Created on Mon Nov  4 19:10:48 2024
 
 @author: steve
 """
-import random
+import my_random
 import pygame
 from pygame.math import Vector2
 import math
@@ -38,15 +38,15 @@ def init_systems(num_systems):
     
     for i in range(0,num_systems):
         
-        name = star_names[random.randint(0, len(star_names)-1)]
+        name = star_names[my_random.my_randint(0, len(star_names)-1)]
         star_names.remove(name)
         
         randpos = get_random_sys_location()
-        randr = random.randint(STAR_SIZE_MIN, STAR_SIZE_MAX)
+        randr = my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX)
         
-        system_type = const.system_types[random.randint(0, len(const.system_types)-1)]
+        system_type = const.system_types[my_random.my_randint(0, len(const.system_types)-1)]
         
-        color = utils.whiten_a_bit(random.choices(STAR_TEMPERATURES, weights=STAR_TEMP_FREQS, k = 1)[0], 0.4)
+        color = utils.whiten_a_bit(my_random.my_choices(STAR_TEMPERATURES, weights=STAR_TEMP_FREQS, k = 1)[0], 0.4)
         system = System(name, randpos ,randr, color, system_type)
         
         syslist.append(system)
@@ -56,7 +56,7 @@ def init_systems(num_systems):
 def get_random_sys_location():
 
     
-    rand = Vector2(random.randint(1, const.screen_width), random.randint(1, const.screen_height) )
+    rand = Vector2(my_random.my_randint(1, const.screen_width), my_random.my_randint(1, const.screen_height) )
     
     # don't spawn by the edges of the screen
     if rand.x < STAR_SIZE_MAX or rand.x > const.screen_width - STAR_SIZE_MAX or rand.y < STAR_SIZE_MAX or rand.y > const.screen_height - STAR_SIZE_MAX:
@@ -100,11 +100,11 @@ class System():
         
         
         
-        for i in range(0, random.randint(1, 4)):
+        for i in range(0, my_random.my_randint(1, 4)):
             r = self.get_random_r()
-            p =  math.radians(random.random() * 360)            
-            planet_type = planets.planet_type_data.columns.values[random.randint(0,len(planets.planet_type_data.columns.values)-1)]
-            size = const.planet_size_freq[random.randint(0,len(const.planet_size_freq)-1)]
+            p =  math.radians(my_random.my_random() * 360)            
+            planet_type = planets.planet_type_data.columns.values[my_random.my_randint(0,len(planets.planet_type_data.columns.values)-1)]
+            size = const.planet_size_freq[my_random.my_randint(0,len(const.planet_size_freq)-1)]
             planet_name = self.name + ' ' + numbers_to_roman(i+1)
             planet = planets.Planet(planet_name, r, p, planet_type, size, self)
             self.planets.append(planet)
@@ -112,7 +112,7 @@ class System():
 
          
     def get_random_r(self):
-        r = int(random.random() * ( const.screen_height/2 - 80 ) + 40)
+        r = int(my_random.my_random() * ( const.screen_height/2 - 80 ) + 40)
         
         for planet in self.planets:
             if math.isclose(r, planet.r, abs_tol=20):

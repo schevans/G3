@@ -35,5 +35,8 @@ system_types = ['Uninhabited', 'Neutral', 'Friendly', 'Hostile']
 species = {
       'Neutral': 'Neuties',
       'Friendly': 'Goodies',
-      'Hostile': 'Baddies'
+      'Hostile': 'Baddies',
+      'Home': 'Polarians'
     }
+
+

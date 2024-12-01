@@ -69,7 +69,7 @@ class PlanetView(GameView):
                         
     def update(self):
         if not self.is_paused:
-            game_view.GameView.update(self)
+            GameView.update(self)
  
         self.get_selected_item(self.mobs)
 
@@ -77,7 +77,7 @@ class PlanetView(GameView):
         
         GameView.draw(self, screen)
         pygame.draw.circle(screen, self.planet.color, const.screen_center, self.planet.size*8)
-        game_view.GameView.draw_objects(self, screen)
+        GameView.draw_objects(self, screen)
         
         if self.is_paused:
             text = '[ Paused ]'
@@ -101,7 +101,7 @@ class PlanetView2(GameView):
     def __init__(self, screen, planet, current_ship, ships):
         self.planet = planet
         
-        game_view.GameView.__init__(self, screen, current_ship, ships)
+        GameView.__init__(self, screen, current_ship, ships)
     
         angle_radians = 0
         
@@ -155,14 +155,14 @@ class PlanetView2(GameView):
     def update(self):
         
         if not self.is_paused:
-            game_view.GameView.update(self)
+            GameView.update(self)
  
         self.get_selected_item(self.mobs)
     
     def draw(self):      
-        game_view.GameView.draw(self)
+        GameView.draw(self)
         pygame.draw.circle(self.screen, self.planet.color, const.screen_center, self.planet.size*8)
-        game_view.GameView.draw_objects(self)
+        GameView.draw_objects(self)
         
         if self.is_paused:
             text = '[ Paused ]'

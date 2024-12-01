@@ -9,7 +9,7 @@ Created on Wed Nov  6 18:55:32 2024
 import pygame
 from pygame.math import Vector2
 from enum import Enum
-import random
+import my_random
 
 import ships
 import systems
@@ -53,7 +53,7 @@ class GameView():
 
     for system in systems.syslist:
         if system.system_type != 'Uninhabited' and system != home_system:
-            planet = system.planets[random.randint(0, len(system.planets)-1)]
+            planet = system.planets[my_random.my_randint(0, len(system.planets)-1)]
             shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
     
     
@@ -167,7 +167,7 @@ class ViewManager():
         self.screen = pygame.display.set_mode((const.screen_width, const.screen_height+TEXTBOX_HEIGHT))
         self.clock = pygame.time.Clock()
         pygame.display.set_caption('Return to Polaris')
-        random.seed(const.random_seed)
+        
         
     def setup_views(self, view_dict, start_view):
         self.view_dict = view_dict
