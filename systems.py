@@ -112,10 +112,13 @@ class System():
 
          
     def get_random_r(self):
-        r = int(my_random.my_random() * ( const.screen_height/2 - 80 ) + 40)
+        
+        max_planet_r = max(const.planet_size_freq)
+        
+        r = int((my_random.my_random() * ( const.screen_height/2 - self.r - 80 - max_planet_r )) + 40)
         
         for planet in self.planets:
-            if math.isclose(r, planet.r, abs_tol=20):
+            if math.isclose(r, planet.r, abs_tol=max_planet_r*2):
                 return self.get_random_r()
         return r
     

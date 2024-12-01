@@ -26,3 +26,5 @@ def my_choices(mylist, weights=None, cum_weights=None, k=1):
     return random.choices(mylist, weights=weights, cum_weights=cum_weights, k=k)
 
 
+def my_gauss(mu=0.5, sigma=0.1):
+    return random.gauss(mu=mu, sigma=sigma)

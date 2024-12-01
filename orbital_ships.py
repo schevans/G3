@@ -56,10 +56,11 @@ class OrbitalShip(ships.Ship):
             
         self.image.update(self.xy, self.heading+reverse)
     
-        
 
-            #self.image = pygame.transform.rotate(self.image, 180)
 
-            
+
+
+
+
             
             
