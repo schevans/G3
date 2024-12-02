@@ -22,14 +22,14 @@ class PlanetView(GameView):
     def __init__(self):
         GameView.__init__(self)
         
-        self.planet_r = self.planet.size*8
-
+        
     def cleanup(self):
         self.mobs = []
 
     def startup(self, planet):
         self.planet = planet
-
+        self.planet_r = self.planet.size*8
+        
         angle_radians = 0
         
         applicable_mobs = []
