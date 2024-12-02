@@ -25,12 +25,12 @@ class Ship():
         self.system = system
         self.planet = planet
         self.is_npc = is_npc
-        self.home_system = system
+
         
         if system:
             self.liege = const.species[system.system_type]
         else:
-            self.liege = 'Hero'
+            self.liege = 'Home'
         
         ship_systems_data = pd.read_csv('./data/ship_systems.csv', index_col=0)     # FIXME multiple reads
         self.shield = utils.MaxableAmount(float(ship_systems_data['0'].shield))
@@ -47,8 +47,9 @@ class Ship():
         self.destination = None
         self.is_current = False
 
-        self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship.png'))
-        self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying.png'))
+        ship_image_number = str(const.ship_image_number[self.liege])
+        self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship' + ship_image_number + '.png'))
+        self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying' + ship_image_number + '.png'))
         
         if self.is_npc:
             self.image_still.change_color(pygame.Color('white'), const.species_color[self.liege])

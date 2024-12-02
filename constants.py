@@ -47,6 +47,13 @@ species = {
       'Home': our_capital
     }
 
+ship_image_number = {
+      neutral_capital: 3,
+      friendly_capital: 2,
+      hostile_capital: 5,
+      'Home': 1  
+}
+
 species_color = {
       neutral_capital: pygame.Color('cyan'),
       friendly_capital: pygame.Color('mediumspringgreen'),
