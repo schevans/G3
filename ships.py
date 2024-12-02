@@ -19,26 +19,31 @@ import constants as const
 
 class Ship():
         
-    def __init__(self, name, xy, system, planet, is_npc):
+
+    def __init__(self, name, xy, system, planet, is_npc, fit=None):
         self.name = name
         self.xy = Vector2(xy)
         self.system = system
         self.planet = planet
         self.is_npc = is_npc
 
-        
         if system:
             self.liege = const.species[system.system_type]
         else:
             self.liege = 'Home'
         
+        if not fit:
+            fit = '000000'
+
+        self.fit = self.Fit(fit)
+
         ship_systems_data = pd.read_csv('./data/ship_systems.csv', index_col=0)     # FIXME multiple reads
-        self.shield = utils.MaxableAmount(float(ship_systems_data['0'].shield))
-        self.armour = utils.MaxableAmount(float(ship_systems_data['0'].armour))
-        self.capacitor = utils.MaxableAmount(float(ship_systems_data['0'].capacitor))
+        self.shield = utils.MaxableAmount(float(ship_systems_data[self.fit.shield()].shield))
+        self.armour = utils.MaxableAmount(float(ship_systems_data[self.fit.armour()].armour))
+        self.capacitor = utils.MaxableAmount(float(ship_systems_data[self.fit.capacitor()].capacitor))
         
-        self.speed = int(ship_systems_data['0'].engine)
-        self.reactor = float(ship_systems_data['0'].reactor)
+        self.speed = int(ship_systems_data[self.fit.engine()].engine)
+        self.reactor = float(ship_systems_data[self.fit.reactor()].reactor)
 
         self.resources = const.initial_resources
         
@@ -117,18 +122,36 @@ class Ship():
         if self.name == 'Hero':
             return self.name
         else:
-            return 'Lord ' + self.name + ', for ' + self.liege
+            if self.name in const.species_color.keys():
+                title = 'First Lord '
+            else:
+                title = 'Lord '
+            return title + self.name + ', ' + self.liege + ' [' + self.fit.fit + ']'
         
 
     def item_type(self):
         return "Ship"
 
 
+    class Fit():
+        
+        def __init__(self, fit):
+            self.fit = fit
+            
+        def shield(self):
+            return self.fit[0]
 
+        def armour(self):
+            return self.fit[1]
 
+        def capacitor(self):
+            return self.fit[2]
 
+        def reactor(self):
+            return self.fit[3]
 
-
+        def engine(self):
+            return self.fit[4]
 
 
 
