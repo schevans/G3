@@ -40,23 +40,17 @@ class Button():
             is_active = True
         else:
             self.button_color = self.color
-    
-        mouse = None
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and is_active:
-            mouse = 'left down'
-            
-        
-        if mouse == 'left down':
+              
+        leftclick, _, _ = pygame.mouse.get_pressed()
+
+        if leftclick and is_active:
             self.button_color = self.darker_color
             self.border_color = 'black'
     
     def update(self):
         pass
 
-            
-            
-            
-            
+
     def draw(self, screen):
         
         self.surface.fill(self.button_color)
@@ -94,7 +88,11 @@ class FittingView(GameView):
         
         self.buttons = []
         
-        self.buttons.append(Button((20,20), (100, 30), 'Hello', 'gray'))
+        y_offset = 20
+        for key in self.current_ship.fit.newfit.keys():
+            self.buttons.append(Button((20, y_offset), (120, 30), key, 'gray'))
+            y_offset += 40
+        
         
     def cleanup(self):
         pass
@@ -138,14 +136,6 @@ class FittingView(GameView):
         width, height = ship_image.get_size()
         
         screen.blit(ship_image, (const.screen_width/2 - width/2, const.screen_height/2 - height/2 + 60))
-        
-
-        
-        text = "FITTING!!"
-        text_surface = utils.fonts[100].render(text, False, 'white', 'black')
-        text_width, text_height = text_surface.get_size()
-        text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
-        #screen.blit(text_surface, text_pos )
         
         for button in self.buttons:
             button.draw(screen)

@@ -37,14 +37,6 @@ class Ship():
 
         self.fit = self.Fit(fit)
 
-        ship_systems_data = pd.read_csv('./data/ship_systems.csv', index_col=0)     # FIXME multiple reads
-        self.shield = utils.MaxableAmount(float(ship_systems_data[self.fit.shield()].shield))
-        self.armour = utils.MaxableAmount(float(ship_systems_data[self.fit.armour()].armour))
-        self.capacitor = utils.MaxableAmount(float(ship_systems_data[self.fit.capacitor()].capacitor))
-        
-        self.speed = int(ship_systems_data[self.fit.engine()].engine)
-        self.reactor = float(ship_systems_data[self.fit.reactor()].reactor)
-
         self.resources = const.initial_resources
         
         self.is_alive = True
@@ -132,11 +124,35 @@ class Ship():
     def item_type(self):
         return "Ship"
 
+    NewFit = {
+        'shield': 0,
+        'armour': 0,
+        'capacitor': 0,
+        'speed': 0,
+        'reactor': 0
+        }
 
     class Fit():
         
+        ship_systems_data = pd.read_csv('./data/ship_systems.csv', index_col=0)
+        
         def __init__(self, fit):
             self.fit = fit
+            
+            self.shield = utils.MaxableAmount(float(Ship.Fit.ship_systems_data[self.shield()].shield))
+            self.armour = utils.MaxableAmount(float(Ship.Fit.ship_systems_data[self.armour()].armour))
+            self.capacitor = utils.MaxableAmount(float(Ship.Fit.ship_systems_data[self.capacitor()].capacitor))
+            
+            self.speed = int(Ship.Fit.ship_systems_data[self.engine()].engine)
+            self.reactor = float(Ship.Fit.ship_systems_data[self.reactor()].reactor)
+            
+            self.newfit = Ship.NewFit
+            self.newfit['shield'] = self.shield
+            self.newfit['armour'] = self.armour
+            self.newfit['capacitor'] = self.capacitor
+            self.newfit['speed'] = self.speed
+            self.newfit['reactor'] = self.reactor
+            
             
         def shield(self):
             return self.fit[0]
