@@ -12,7 +12,7 @@ from game_view import ViewManager, View
 from galaxy_view import GalaxyView
 from solar_view import SolarView
 from planet_view import PlanetView
-
+from fitting_view import FittingView
 
 
 view = ViewManager()
@@ -20,7 +20,8 @@ view = ViewManager()
 view_dict = {
     View.GALAXY: GalaxyView(),
     View.SOLAR: SolarView(),
-    View.PLANET: PlanetView()
+    View.PLANET: PlanetView(),
+    View.FITTING: FittingView()
 }
 
 view.setup_views(view_dict, View.GALAXY)
