@@ -11,6 +11,8 @@ from pygame.math import Vector2
 import my_random
 import math
 import csv
+import collections
+
 
 import constants as const
 
@@ -83,16 +85,19 @@ class Location():
         
         
         
-def dict_loader():
-    file = './data/ship_systems.csv'
-    with open(file, newline='') as csvfile:
-
+def csv_loader(filename):
+    
+    output = collections.defaultdict(dict)
+    
+    with open(filename, newline='') as csvfile:
         filereader = csv.reader(csvfile, delimiter=',')
-
         header = next(filereader)
         for row in filereader:
-            arr = row.split(',')
- 
+            for col in range(1, 4):
+                output[row[0]][header[col]] = float(row[col])
+                
+    return output
+
 
 pygame.font.init()
 font_dir = 'Days'    
