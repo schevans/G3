@@ -8,7 +8,7 @@ Created on Mon Dec  2 18:53:23 2024
 
 import pygame
 from pygame.math import Vector2
-
+import collections
 
 import utils
 import constants as const
@@ -77,7 +77,8 @@ class Button():
         
         screen.blit(self.surface, self.xy)
         
-
+    def set_color(self, color):
+        self.color = pygame.Color(color)
 
 class FittingView(GameView):
     
@@ -86,12 +87,38 @@ class FittingView(GameView):
         
         self.old_view = None
         
-        self.buttons = []
+        self.buttons = collections.defaultdict(dict)
         
-        y_offset = 20
-        for key in self.current_ship.fit.newfit.keys():
-            self.buttons.append(Button((20, y_offset), (120, 30), key, 'gray'))
-            y_offset += 40
+        
+        label_width = 120
+        button_width = 80
+        space = 20
+        
+        x_spacing = [0, label_width+space, space+button_width,  space+button_width,   space+button_width]
+        
+        width = sum(x_spacing) + button_width
+        height = (len(self.current_ship.fit.fit_level.keys()) * 40) - 10
+        
+        pos = Vector2(const.screen_width / 2 - width / 2, const.screen_height / 2 - height / 2)
+        
+        x = pos[0]
+        col = 0
+        while col <= 4:
+            x += x_spacing[col]
+            y_offset = pos[1]
+            if col == 0:
+                for key in self.current_ship.fit.fit_level.keys():
+                    self.buttons[col][key] = Button((x,y_offset), (label_width, 30), key, 'gray')
+                    y_offset += 40
+            else:
+                for key in self.current_ship.fit.fit_level.keys():                    
+                    self.buttons[col][key] = Button((x, y_offset), (button_width, 30), utils.numbers_to_roman(col), 'gray')
+                    y_offset += 40
+            col += 1
+            
+            
+
+        
         
         
     def cleanup(self):
@@ -104,17 +131,27 @@ class FittingView(GameView):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_f:
                 self.next_view = self.old_view
-                
-        for button in self.buttons:
-            button.process_event(event)
+             
+        for col in self.buttons:
+            for system in self.buttons[col]:                    
+                self.buttons[col][system].process_event(event)
                     
     def update(self):
 
-        for button in self.buttons:
-            button.update()
+              
+
+        for system in self.current_ship.fit.fit_level.keys():
+            level = int(self.current_ship.fit.fit_level[system])
+            for backfill in range(0, level+1):
+                self.buttons[backfill+1][system].set_color('darkgreen')
+                
+
+            
+        for col in self.buttons:
+            for system in self.buttons[col]:            
+                self.buttons[col][system].update()
     
-    
-    def draw(self, screen):
+    def draw_background(self, screen):
         GameView.draw(self, screen)
         
         ship_image = self.current_ship.image_still.original_image.copy()
@@ -135,10 +172,19 @@ class FittingView(GameView):
         
         width, height = ship_image.get_size()
         
-        screen.blit(ship_image, (const.screen_width/2 - width/2, const.screen_height/2 - height/2 + 60))
+        screen.blit(ship_image, (const.screen_width/2 - width/2, const.screen_height/2 - height/2 + 60))        
+    
+    def draw(self, screen):
+
+        self.draw_background(screen)
         
-        for button in self.buttons:
-            button.draw(screen)
+        for col in self.buttons:
+            for system in self.buttons[col]:            
+                self.buttons[col][system].draw(screen)
+        
+
+
+        
 
 
 

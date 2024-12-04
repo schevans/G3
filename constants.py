@@ -60,3 +60,5 @@ species_color = {
       hostile_capital: pygame.Color('red'),
       our_capital: pygame.Color('turquoise2')
     }
+
+upgrade_mult = 2.5

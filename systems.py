@@ -82,15 +82,7 @@ def get_random_sys_location():
         
     return rand
 
-def numbers_to_roman(i):
-    if i == 1:
-        return 'I'
-    elif i == 2:
-        return 'II'
-    elif i == 3:
-        return 'III'
-    elif i == 4:
-        return 'IV'
+
 
 class System():
     
@@ -110,7 +102,7 @@ class System():
             p =  math.radians(my_random.my_random() * 360)            
             planet_type = planets.planet_type_data.columns.values[my_random.my_randint(0,len(planets.planet_type_data.columns.values)-1)]
             size = const.planet_size_freq[my_random.my_randint(0,len(const.planet_size_freq)-1)]
-            planet_name = self.name + ' ' + numbers_to_roman(i+1)
+            planet_name = self.name + ' ' + utils.numbers_to_roman(i+1)
             planet = planets.Planet(planet_name, r, p, planet_type, size, self)
             self.planets.append(planet)
          

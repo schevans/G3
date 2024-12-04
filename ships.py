@@ -132,42 +132,30 @@ class Ship():
         'reactor': 0
         }
 
+    FitLevel = {
+        'shield': 0,
+        'armour': 0,
+        'capacitor': 0,
+        'speed': 0,
+        'reactor': 0
+        }
+
     class Fit():
         
         ship_systems_data = pd.read_csv('./data/ship_systems.csv', index_col=0)
+        ship_systems_upgrade_data = pd.read_csv('./data/ship_systems_upgrade.csv', index_col=0)
         
         def __init__(self, fit):
             self.fit = fit
             
-            self.shield = utils.MaxableAmount(float(Ship.Fit.ship_systems_data[self.shield()].shield))
-            self.armour = utils.MaxableAmount(float(Ship.Fit.ship_systems_data[self.armour()].armour))
-            self.capacitor = utils.MaxableAmount(float(Ship.Fit.ship_systems_data[self.capacitor()].capacitor))
+            self.fit_level = Ship.FitLevel
+            self.fit_level['shield'] = self.fit[0]
+            self.fit_level['armour'] = self.fit[1]
+            self.fit_level['capacitor'] = self.fit[2]
+            self.fit_level['reactor'] = self.fit[3]
+            self.fit_level['engine'] = self.fit[4]
             
-            self.speed = int(Ship.Fit.ship_systems_data[self.engine()].engine)
-            self.reactor = float(Ship.Fit.ship_systems_data[self.reactor()].reactor)
-            
-            self.newfit = Ship.NewFit
-            self.newfit['shield'] = self.shield
-            self.newfit['armour'] = self.armour
-            self.newfit['capacitor'] = self.capacitor
-            self.newfit['speed'] = self.speed
-            self.newfit['reactor'] = self.reactor
-            
-            
-        def shield(self):
-            return self.fit[0]
 
-        def armour(self):
-            return self.fit[1]
-
-        def capacitor(self):
-            return self.fit[2]
-
-        def reactor(self):
-            return self.fit[3]
-
-        def engine(self):
-            return self.fit[4]
 
 
 

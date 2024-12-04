@@ -105,6 +105,19 @@ fonts = {
        100: pygame.font.Font(font_file, 100)
    } 
         
-        
-        
-        
+
+def numbers_to_roman(i):
+    if i == 1:
+        return 'I'
+    elif i == 2:
+        return 'II'
+    elif i == 3:
+        return 'III'
+    elif i == 4:
+        return 'IV'
+
+
+
+
+
+
