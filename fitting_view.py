@@ -13,10 +13,48 @@ import collections
 import utils
 import constants as const
 from game_view import GameView
-import fit
+
 
 game_color = (255, 181, 108)
 
+class Label():
+    
+    def __init__(self, xy, size, text, color):
+        self.xy = xy
+        self.size = size
+        self.text = text
+        self.color = pygame.Color(color)
+        
+        self.surface =  pygame.Surface(size)
+        
+    def process_event(self, event):
+        pass
+            
+    def update(self):
+        pass
+                
+                
+    def draw(self, screen):
+        self.surface.fill(self.color)
+        
+        # border
+        rect = self.surface.get_rect()
+        pygame.draw.rect(self.surface, game_color, rect, 1)
+
+        # text
+        font = utils.fonts[20]
+        text_surface = font.render(self.text, True, 'black')
+        
+        text_width, text_height = text_surface.get_size()
+        surface_width, surface_height = self.surface.get_size()
+        text_pos = Vector2(surface_width / 2 - text_width / 2, surface_height / 2 - text_height / 2)
+        
+        self.surface.blit(text_surface, text_pos)
+        
+        screen.blit(self.surface, self.xy)  
+        
+        
+        
 class Button():
     
     def __init__(self, xy, size, text, color, mouseover_text):
@@ -32,27 +70,35 @@ class Button():
         self.button_color = self.color
         
         self.is_active = False
+        self.is_disabled = False
         self.surface =  pygame.Surface(size)
 
         
     def process_event(self, event):
-        self.is_active = False
-        mousepos = pygame.mouse.get_pos()
-        if pygame.Rect(self.xy, self.size).collidepoint(mousepos):
-            self.button_color = self.lighter_color
-            self.is_active = True
-        else:
-            self.button_color = self.color
-              
-        leftclick, _, _ = pygame.mouse.get_pressed()
-
-        if leftclick and self.is_active:
-            self.button_color = self.darker_color
-            self.border_color = 'black'
+        
+        if not self.is_disabled:
+            self.is_active = False
+            mousepos = pygame.mouse.get_pos()
+            if pygame.Rect(self.xy, self.size).collidepoint(mousepos):
+                self.button_color = self.lighter_color
+                self.is_active = True
+            else:
+                self.button_color = self.color
+                  
+            leftclick, _, _ = pygame.mouse.get_pressed()
     
+            if leftclick and self.is_active:
+                self.button_color = self.darker_color
+                self.border_color = 'black'
+            else:
+                self.border_color = self.lighter_color
+                self.button_color = self.color
+            
     def update(self):
-        pass
-
+        
+        if self.is_disabled:
+            self.button_color = self.darker_color
+            self.border_color = self.darker_color
 
     def draw(self, screen):
         
@@ -93,7 +139,7 @@ class FittingView(GameView):
         self.old_view = None
         
         self.buttons = collections.defaultdict(dict)
-        
+        self.labels = []
         
         label_width = 120
         button_width = 80
@@ -107,19 +153,21 @@ class FittingView(GameView):
         pos = Vector2(const.screen_width / 2 - width / 2, const.screen_height / 2 - height / 2)
         
         x = pos[0]
+        y_offset = pos[1]
+        for key in self.current_ship.fit.system_names:             
+            self.labels.append(Label((x,y_offset), (label_width, 30), key.title(), 'gray'))
+            y_offset += 40
+        
         col = 0
-        while col <= 4:
-            x += x_spacing[col]
+        x += label_width+space
+        while col <= 3:
             y_offset = pos[1]
             for key in self.current_ship.fit.system_names:             
-                mousover_text = self.current_ship.fit.systems[key].get_upgrade_cost(col)    
-                if col == 0:           
-                    self.buttons[col][key] = Button((x,y_offset), (label_width, 30), key, 'gray', mousover_text)
-                else:
-                    self.buttons[col][key] = Button((x, y_offset), (button_width, 30), utils.numbers_to_roman(col), 'gray', mousover_text)
+                mousover_text = self.current_ship.fit.systems[key].get_upgrade_cost(col)  
+                self.buttons[col][key] = Button((x, y_offset), (button_width, 30), utils.numbers_to_roman(col+1), 'gray', mousover_text)
                 y_offset += 40            
             col += 1
-            
+            x += space+button_width
             
 
         
@@ -147,7 +195,7 @@ class FittingView(GameView):
         for system in self.current_ship.fit.system_names:
             level = int(self.current_ship.fit.systems[system].level)
             for backfill in range(0, level+1):
-                self.buttons[backfill+1][system].set_color('darkgreen')
+                self.buttons[backfill][system].is_disabled = True
                 
 
             
@@ -189,9 +237,10 @@ class FittingView(GameView):
         for col in self.buttons:
             for system in self.buttons[col]:  
                 if self.buttons[col][system].is_active:
-                    self.draw_mouseover_text(screen, pygame.mouse.get_pos(), [self.buttons[col][system].mouseover_text])
-                    
-                #self.buttons[col][system].draw(screen)
+                    self.draw_mouseover_text(screen, pygame.mouse.get_pos(), self.buttons[col][system].mouseover_text)
+        
+        for label in self.labels:             
+            label.draw(screen)
 
         
 

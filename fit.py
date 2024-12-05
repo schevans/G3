@@ -27,11 +27,9 @@ class ShipSystem():
 
     def get_upgrade_cost(self, level):
         
-        text = ''
+        text = []
         for key in self.upgrade:      
-            text += (key + ': ' + str(self.upgrade[key] * (level+1) * const.upgrade_mult))
-            if list(self.upgrade)[-1] != key:
-                text += ' '
+            text.append(key.title() + ': ' + str(self.upgrade[key] * const.upgrade_cost_mults[level]))
                 
         return text
 

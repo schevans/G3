@@ -61,4 +61,5 @@ species_color = {
       our_capital: pygame.Color('turquoise2')
     }
 
-upgrade_mult = 2.5
+
+upgrade_cost_mults = [ 0, 1, 5, 10]
