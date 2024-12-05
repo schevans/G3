@@ -37,6 +37,23 @@ class Button():
         
     def process_event(self, event):
         
+        if self.is_active:
+            self.is_pressed = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    self.is_pressed = True
+                    print('Pressed')
+                      
+        
+            if self.is_pressed:
+                self.button_color = self.darker_color
+                self.border_color = 'black'
+            else:
+                self.border_color = self.lighter_color
+                self.button_color = self.color
+            
+    def update(self):
+        
         if not self.is_disabled:
             self.is_active = False
             mousepos = pygame.mouse.get_pos()
@@ -45,23 +62,11 @@ class Button():
                 self.is_active = True
             else:
                 self.button_color = self.color
-                  
-            leftclick, _, _ = pygame.mouse.get_pressed()
-    
-            if leftclick and self.is_active:
-                self.button_color = self.darker_color
-                self.border_color = 'black'
-                self.is_pressed = True
-            else:
-                self.border_color = self.lighter_color
-                self.button_color = self.color
-                self.is_pressed = False
-            
-    def update(self):
         
         if self.is_disabled:
             self.button_color = self.darker_color
             self.border_color = self.darker_color
+            
 
     def draw(self, screen):
         

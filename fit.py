@@ -33,7 +33,11 @@ class ShipSystem():
                 
         return text
 
-
+    def upgrade_system(self):
+        self.level += 1
+        
+        
+        
 class Fit():
     
 
@@ -49,7 +53,13 @@ class Fit():
         count = 0
         self.systems = {}
         for system in self.system_names:
-            self.systems[system] = ShipSystem(system, self.fit[count])
+            self.systems[system] = ShipSystem(system, int(self.fit[count]))
             count += 1
         
+    def upgrade(self, system):
+        self.systems[system].upgrade_system()
         
+        print(self.systems[system].level)
+        
+
+

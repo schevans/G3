@@ -74,24 +74,27 @@ class FittingView(GameView):
                     
     def update(self):
 
-              
 
+        for col in self.buttons:
+            for system in self.buttons[col]:  
+                if not self.buttons[col][system].is_disabled:
+                    if self.buttons[col][system].is_pressed:
+                        print('update ', self.buttons[col][system])
+                        self.buttons[col][system].is_disabled = True
+                        self.current_ship.fit.upgrade(system)
+
+
+
+        for col in self.buttons:
+            for system in self.buttons[col]:                  
+                self.buttons[col][system].update()
+                
+
+                    
         for system in self.current_ship.fit.system_names:
             level = int(self.current_ship.fit.systems[system].level)
             for backfill in range(0, level+1):
                 self.buttons[backfill][system].is_disabled = True
-                
-
-        button_pressed = None   
-        for col in self.buttons:
-            for system in self.buttons[col]:            
-                self.buttons[col][system].update()
-                
-                if self.buttons[col][system].is_pressed:
-                    button_pressed = self.buttons[col][system]
-                    
-        if button_pressed:
-            print(button_pressed.text)
     
     def draw_background(self, screen):
         GameView.draw(self, screen)

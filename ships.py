@@ -125,8 +125,15 @@ class Ship():
         return "Ship"
 
 
-
-            
+    def can_upgrade(self, system, level):
+        return True
+    
+    def upgrade_system(self, system):
+        self.fit.systems[system].upgrade_system()
+        
+        for resource in self.fit.systems[system].upgrade:
+            self.resources[resource] -= self.fit.systems[system].upgrade[resource]
+             
 
 
 
