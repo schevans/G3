@@ -55,7 +55,7 @@ class GameView():
         if system.system_type != 'Uninhabited' and system != home_system:
             planet = system.planets[my_random.my_randint(0, len(system.planets)-1)]
             if system.name in const.species_color.keys():
-                shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '222222'))
+                shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '22222'))
             else:
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
     
@@ -112,32 +112,36 @@ class GameView():
         
         # mouseover text
         if self.selected_item:
-            
-            textbox_width = 0
-            textbox_height = 0
-            text_arr = self.get_mouse_text()
-            for text in text_arr:
-                size = self.font.size(text)
-                textbox_width = textbox_width if size[0] < textbox_width else size[0]
-                textbox_height += size[1]
-                
-            surface = pygame.Surface((textbox_width, textbox_height))
-            
-            for i in range(0, len(text_arr)):
-                text_surface = self.font.render(text_arr[i], True, 'white', 'black')
-                surface.blit(text_surface,  (0, size[1] * (i)))
-        
-            
-            text_pos = self.selected_item.xy + (TEXT_OFFSET,TEXT_OFFSET)
+            self.draw_mouseover_text(screen, pygame.mouse.get_pos(), self.get_mouse_text())
 
 
-            if textbox_width > const.screen_width - text_pos[0]:
-                text_pos = self.selected_item.xy + (-textbox_width - TEXT_OFFSET,TEXT_OFFSET)
-            
-            if textbox_height > const.screen_height - text_pos[1]:
-                text_pos = self.selected_item.xy + (TEXT_OFFSET, -textbox_height - TEXT_OFFSET)
+    def draw_mouseover_text(self, screen, mousepos, text_arr):
         
-            screen.blit(surface, text_pos )
+        textbox_width = 0
+        textbox_height = 0
+        for text in text_arr:
+            size = self.font.size(text)
+            textbox_width = textbox_width if size[0] < textbox_width else size[0]
+            textbox_height += size[1]
+            
+        surface = pygame.Surface((textbox_width, textbox_height))
+        
+        for i in range(0, len(text_arr)):
+            text_surface = self.font.render(text_arr[i], True, 'white', 'black')
+            surface.blit(text_surface,  (0, size[1] * (i)))
+    
+        
+        text_pos = Vector2(mousepos) + (TEXT_OFFSET,TEXT_OFFSET)
+    
+    
+        if textbox_width > const.screen_width - text_pos[0]:
+            text_pos = mousepos + (-textbox_width - TEXT_OFFSET,TEXT_OFFSET)
+        
+        if textbox_height > const.screen_height - text_pos[1]:
+            text_pos = mousepos + (TEXT_OFFSET, -textbox_height - TEXT_OFFSET)
+    
+        screen.blit(surface, text_pos )
+
             
     def get_selected_item(self, items):
         self.selected_item = None

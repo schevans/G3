@@ -13,37 +13,40 @@ import collections
 import utils
 import constants as const
 from game_view import GameView
+import fit
 
 game_color = (255, 181, 108)
 
 class Button():
     
-    def __init__(self, xy, size, text, color):
+    def __init__(self, xy, size, text, color, mouseover_text):
         self.xy = xy
         self.size = size
         self.text = text
         self.color = pygame.Color(color)
+        self.mouseover_text = mouseover_text
         
         self.lighter_color = utils.whiten_a_bit(self.color, 0.5)
         self.darker_color = utils.fade_to_black(self.color, 1, 2)
         self.border_color = self.lighter_color
         self.button_color = self.color
         
+        self.is_active = False
         self.surface =  pygame.Surface(size)
 
         
     def process_event(self, event):
-        is_active = False
+        self.is_active = False
         mousepos = pygame.mouse.get_pos()
         if pygame.Rect(self.xy, self.size).collidepoint(mousepos):
             self.button_color = self.lighter_color
-            is_active = True
+            self.is_active = True
         else:
             self.button_color = self.color
               
         leftclick, _, _ = pygame.mouse.get_pressed()
 
-        if leftclick and is_active:
+        if leftclick and self.is_active:
             self.button_color = self.darker_color
             self.border_color = 'black'
     
@@ -77,6 +80,8 @@ class Button():
         
         screen.blit(self.surface, self.xy)
         
+
+        
     def set_color(self, color):
         self.color = pygame.Color(color)
 
@@ -97,7 +102,7 @@ class FittingView(GameView):
         x_spacing = [0, label_width+space, space+button_width,  space+button_width,   space+button_width]
         
         width = sum(x_spacing) + button_width
-        height = (len(self.current_ship.fit.fit_level.keys()) * 40) - 10
+        height = (len(self.current_ship.fit.system_names) * 40) - 10
         
         pos = Vector2(const.screen_width / 2 - width / 2, const.screen_height / 2 - height / 2)
         
@@ -106,14 +111,13 @@ class FittingView(GameView):
         while col <= 4:
             x += x_spacing[col]
             y_offset = pos[1]
-            if col == 0:
-                for key in self.current_ship.fit.fit_level.keys():
-                    self.buttons[col][key] = Button((x,y_offset), (label_width, 30), key, 'gray')
-                    y_offset += 40
-            else:
-                for key in self.current_ship.fit.fit_level.keys():                    
-                    self.buttons[col][key] = Button((x, y_offset), (button_width, 30), utils.numbers_to_roman(col), 'gray')
-                    y_offset += 40
+            for key in self.current_ship.fit.system_names:             
+                mousover_text = self.current_ship.fit.systems[key].get_upgrade_cost(col)    
+                if col == 0:           
+                    self.buttons[col][key] = Button((x,y_offset), (label_width, 30), key, 'gray', mousover_text)
+                else:
+                    self.buttons[col][key] = Button((x, y_offset), (button_width, 30), utils.numbers_to_roman(col), 'gray', mousover_text)
+                y_offset += 40            
             col += 1
             
             
@@ -140,8 +144,8 @@ class FittingView(GameView):
 
               
 
-        for system in self.current_ship.fit.fit_level.keys():
-            level = int(self.current_ship.fit.fit_level[system])
+        for system in self.current_ship.fit.system_names:
+            level = int(self.current_ship.fit.systems[system].level)
             for backfill in range(0, level+1):
                 self.buttons[backfill+1][system].set_color('darkgreen')
                 
@@ -182,7 +186,12 @@ class FittingView(GameView):
             for system in self.buttons[col]:            
                 self.buttons[col][system].draw(screen)
         
-
+        for col in self.buttons:
+            for system in self.buttons[col]:  
+                if self.buttons[col][system].is_active:
+                    self.draw_mouseover_text(screen, pygame.mouse.get_pos(), [self.buttons[col][system].mouseover_text])
+                    
+                #self.buttons[col][system].draw(screen)
 
         
 

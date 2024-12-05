@@ -14,13 +14,13 @@ import math
 import rotatable_image
 import utils
 import constants as const 
-
+import fit
 
 
 class Ship():
         
 
-    def __init__(self, name, xy, system, planet, is_npc, fit=None):
+    def __init__(self, name, xy, system, planet, is_npc, fit_string=None):
         self.name = name
         self.xy = Vector2(xy)
         self.system = system
@@ -32,10 +32,10 @@ class Ship():
         else:
             self.liege = 'Home'
         
-        if not fit:
-            fit = '000000'
+        if not fit_string:
+            fit_string = '00000'
 
-        self.fit = self.Fit(fit)
+        self.fit = fit.Fit(fit_string)
 
         self.resources = const.initial_resources
         
@@ -124,36 +124,8 @@ class Ship():
     def item_type(self):
         return "Ship"
 
-    NewFit = {
-        'shield': 0,
-        'armour': 0,
-        'capacitor': 0,
-        'speed': 0,
-        'reactor': 0
-        }
 
-    FitLevel = {
-        'shield': 0,
-        'armour': 0,
-        'capacitor': 0,
-        'speed': 0,
-        'reactor': 0
-        }
 
-    class Fit():
-        
-        ship_systems_data = pd.read_csv('./data/ship_systems.csv', index_col=0)
-        ship_systems_upgrade_data = pd.read_csv('./data/ship_systems_upgrade.csv', index_col=0)
-        
-        def __init__(self, fit):
-            self.fit = fit
-            
-            self.fit_level = Ship.FitLevel
-            self.fit_level['shield'] = self.fit[0]
-            self.fit_level['armour'] = self.fit[1]
-            self.fit_level['capacitor'] = self.fit[2]
-            self.fit_level['reactor'] = self.fit[3]
-            self.fit_level['engine'] = self.fit[4]
             
 
 
