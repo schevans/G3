@@ -25,6 +25,7 @@ class ShipSystem():
             
         self.upgrade = ship_systems_upgrade_data[name]
 
+
     def get_upgrade_cost(self, level):
         
         text = []
@@ -43,7 +44,6 @@ class Fit():
 
     
     def __init__(self, fit):
-        self.fit = fit
         
         self.system_names = ship_systems_data.keys()
         
@@ -52,14 +52,31 @@ class Fit():
         
         count = 0
         self.systems = {}
-        for system in self.system_names:
-            self.systems[system] = ShipSystem(system, int(self.fit[count]))
+        for system_name in self.system_names:
+            self.systems[system_name] = ShipSystem(system_name, int(fit[count]))
             count += 1
         
     def upgrade(self, system):
         self.systems[system].upgrade_system()
-        
-        print(self.systems[system].level)
-        
+
+    def to_string(self):
+        retval = ''
+        for system_name in self.system_names:
+            retval += str(self.systems[system_name].level)
+            
+        return retval
+            
+
+    def speed(self):
+        return self.systems['engine'].data[str(self.systems['engine'].level)]
+
+    def __call__(self, system_name):
+        return self.systems[system_name].data[str(self.systems[system_name].level)]
+
+
+
+
+
+
 
 

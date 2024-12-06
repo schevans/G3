@@ -61,7 +61,7 @@ class GameView():
     
     
     for ship in shiplist:
-        if ship.name == 'Ainalrami' or ship.name == 'Menkent':
+        if ship.name == 'Fulu':
             ship.is_npc = False
             ship.liege = hero_name
     

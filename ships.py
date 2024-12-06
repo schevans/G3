@@ -44,6 +44,7 @@ class Ship():
         self.destination = None
         self.is_current = False
 
+        print(name, self.liege)
         ship_image_number = str(const.ship_image_number[self.liege])
         self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship' + ship_image_number + '.png'))
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying' + ship_image_number + '.png'))
@@ -58,14 +59,16 @@ class Ship():
 
         # dev mode
         if self.name == 'Hero':
-            self.speed = 7
+            self.fit.upgrade('engine')
+            self.fit.upgrade('engine')
+
 
     def update(self):
         
         
         if self.destination:
             
-            if self.xy.distance_to(self.destination.xy) <= self.speed:
+            if self.xy.distance_to(self.destination.xy) <= self.fit.speed():
                 # arrived
                 self.xy = Vector2(self.destination.xy)
                 self.heading = 0
@@ -80,8 +83,8 @@ class Ship():
                 self.heading = utils.angle_between_points(self.xy ,self.destination.xy)
                 self.image = self.image_flying
                 
-                self.xy.x -= math.sin(math.radians(self.heading)) * self.speed
-                self.xy.y -= math.cos(math.radians(self.heading)) * self.speed
+                self.xy.x -= math.sin(math.radians(self.heading)) * self.fit.speed()
+                self.xy.y -= math.cos(math.radians(self.heading)) * self.fit.speed()
 
         if not self.is_npc:
             if self.is_current:
@@ -118,7 +121,7 @@ class Ship():
                 title = 'First Lord '
             else:
                 title = 'Lord '
-            return title + self.name + ', ' + self.liege + ' [' + self.fit.fit + ']'
+            return title + self.name + ', ' + self.liege + ' [' + self.fit.to_string() + ']'
         
 
     def item_type(self):
