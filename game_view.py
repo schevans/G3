@@ -135,10 +135,10 @@ class GameView():
     
     
         if textbox_width > const.screen_width - text_pos[0]:
-            text_pos = mousepos + (-textbox_width - TEXT_OFFSET,TEXT_OFFSET)
+            text_pos = mousepos + Vector2(-textbox_width - TEXT_OFFSET,TEXT_OFFSET)
         
         if textbox_height > const.screen_height - text_pos[1]:
-            text_pos = mousepos + (TEXT_OFFSET, -textbox_height - TEXT_OFFSET)
+            text_pos = mousepos + Vector2(TEXT_OFFSET, -textbox_height - TEXT_OFFSET)
     
         screen.blit(surface, text_pos )
 
