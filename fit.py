@@ -69,6 +69,9 @@ class Fit():
 
     def speed(self):
         return self.systems['engine'].data[str(self.systems['engine'].level)]
+    
+    def level(self, system_name):
+        return self.systems[system_name].level
 
     def __call__(self, system_name):
         return self.systems[system_name].data[str(self.systems[system_name].level)]
