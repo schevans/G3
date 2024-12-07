@@ -50,7 +50,7 @@ class FittingView(GameView):
             while level <= 3:
                 
                 function = key.title() + ': ' + str(self.current_ship.fit.systems[key].data[str(level)])
-                upgrade_cost = self.current_ship.fit.systems[key].get_upgrade_cost(level)  
+                upgrade_cost = self.current_ship.fit.systems[key].get_upgrade_cost_str(level)  
                 
                 is_disabled = True
                 mousover_text = [function]
@@ -92,12 +92,13 @@ class FittingView(GameView):
     def update(self):
         
         # TODO PROFILE: Allways called. 
+        # FIXME: Dup with init
         for button in self.button_map.keys():
             key, level = self.button_map[button]
             current_level = self.current_ship.fit.level(key)
             
             function = key.title() + ': ' + str(self.current_ship.fit.systems[key].data[str(level)])
-            upgrade_cost = self.current_ship.fit.systems[key].get_upgrade_cost(level)  
+            upgrade_cost = self.current_ship.fit.systems[key].get_upgrade_cost_str(level)  
             
             button.is_disabled = True
             button.mousover_text = [function]

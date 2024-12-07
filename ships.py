@@ -134,7 +134,7 @@ class Ship():
         self.fit.systems[system].upgrade_system()
         
         for resource in self.fit.systems[system].upgrade:
-            self.resources[resource] -= self.fit.systems[system].upgrade[resource]
+            self.resources[resource] -= self.fit.systems[system].get_upgrade_cost(self.fit.level(system)+1, resource)
              
 
 

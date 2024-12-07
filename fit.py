@@ -25,12 +25,17 @@ class ShipSystem():
             
         self.upgrade = ship_systems_upgrade_data[name]
 
+    def get_upgrade_cost(self, level, resource):
+        if level > 3:  # FIXME: Hack
+            return 0.0
+        else:
+            return self.upgrade[resource] * const.upgrade_cost_mults[level]
 
-    def get_upgrade_cost(self, level):
+    def get_upgrade_cost_str(self, level):
         
         text = []
         for key in self.upgrade:      
-            text.append(key.title() + ': ' + str(self.upgrade[key] * const.upgrade_cost_mults[level]))
+            text.append(key.title() + ': ' + str(self.get_upgrade_cost(level, key)))
                 
         return text
 
