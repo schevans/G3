@@ -153,21 +153,21 @@ class GameView():
                 self.selected_item = item
                 break
         
-    def process_game_event(self, event):
+    def do_ship_swap(self, current_ship, event_key):
         
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
 
-                allied_ships = self.get_local_allies()
-                index = allied_ships.index(self.current_ship)
-                if event.key == pygame.K_LEFTBRACKET:
-                    index = (index - 1) % len(allied_ships)
-                else:
-                    index = (index + 1) % len(allied_ships)   
-                
-                self.current_ship.is_current = False
-                self.current_ship = allied_ships[index]
-                self.current_ship.is_current = True
+        allied_ships = self.get_local_allies()
+        index = allied_ships.index(self.current_ship)
+        if event_key == pygame.K_LEFTBRACKET:
+            index = (index - 1) % len(allied_ships)
+        else:
+            index = (index + 1) % len(allied_ships)   
+        
+        current_ship.is_current = False
+        current_ship = allied_ships[index]
+        current_ship.is_current = True
+        
+        return current_ship
 
  
 class ViewManager():
@@ -181,7 +181,15 @@ class ViewManager():
     def setup_views(self, view_dict, start_view):
         self.view_dict = view_dict
         self.view = self.view_dict[start_view]
-        self.view.startup(None)
+        
+        shared_dict = {
+            'current_ship': GameView.myship,
+            'system': None,
+            'planet': None,
+            'prev_view': None
+            }
+        
+        self.view.startup(shared_dict)
 
         
     def update(self):
@@ -206,7 +214,6 @@ class ViewManager():
                 pygame.quit()
                 raise SystemExit
                 
-            self.view.process_game_event(event)
             self.view.process_event(event)
             
     def run(self):

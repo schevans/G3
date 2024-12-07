@@ -28,8 +28,10 @@ class GalaxyView(GameView):
     def cleanup(self):
         self.mobs = []
         
-    def startup(self, body):
-        
+    def startup(self, shared_dict):
+        self.shared_dict = shared_dict
+        self.current_ship = self.shared_dict['current_ship']
+              
         for ship in self.ships:
             if ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
@@ -42,12 +44,17 @@ class GalaxyView(GameView):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
                 if self.current_ship.system and not self.current_ship.is_moving():
-                    self.next_view = (View.SOLAR, self.current_ship.system)
+                    self.shared_dict['system'] = self.current_ship.system
+                    self.next_view = (View.SOLAR, self.shared_dict)
             if event.key == pygame.K_j:   
                 if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
                     self.current_ship.destination = self.selected_item
-            if event.key == pygame.K_f:   
-                self.next_view = (View.FITTING, self)
+            if event.key == pygame.K_f:
+                self.shared_dict['prev_view'] = View.GALAXY
+                self.next_view = (View.FITTING, self.shared_dict)
+            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
+                self.current_ship = self.do_ship_swap(self.current_ship, event.key)
+                self.shared_dict['current_ship'] = self.current_ship
                     
         keys = pygame.key.get_pressed() 
         self.is_waiting = False

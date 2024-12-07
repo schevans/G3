@@ -72,22 +72,47 @@ class FittingView(GameView):
                 x += button_width+space
             y += 40
         
-
-        
+            
     def cleanup(self):
         pass
         
-    def startup(self, view):  
-        pass
-    
+    def startup(self, shared_dict):
+        self.shared_dict = shared_dict
+        self.current_ship = self.shared_dict['current_ship']
+        
     def process_event(self, event):
              
-        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_b:
+                self.next_view = (self.shared_dict['prev_view'], self.shared_dict)
         for button in self.button_map.keys():
             button.process_event(event)
             
         
     def update(self):
+        
+        # TODO PROFILE: Allways called. 
+        for button in self.button_map.keys():
+            key, level = self.button_map[button]
+            current_level = self.current_ship.fit.level(key)
+            
+            function = key.title() + ': ' + str(self.current_ship.fit.systems[key].data[str(level)])
+            upgrade_cost = self.current_ship.fit.systems[key].get_upgrade_cost(level)  
+            
+            button.is_disabled = True
+            button.mousover_text = [function]
+            color = unavilable_color
+            if level <= current_level:
+                color = got_color                  
+            elif level == current_level + 1:
+                color = available_color
+                button.is_disabled = False
+                button.mousover_text += upgrade_cost
+            else:
+                button.mousover_text += upgrade_cost   
+                
+            button.set_color(color)
+            
 
         for button in self.button_map.keys():
             button.update()       

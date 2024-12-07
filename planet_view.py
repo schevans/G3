@@ -26,8 +26,10 @@ class PlanetView(GameView):
     def cleanup(self):
         self.mobs = []
 
-    def startup(self, planet):
-        self.planet = planet
+    def startup(self, shared_dict):
+        self.shared_dict = shared_dict
+        self.current_ship = self.shared_dict['crrent_ship']
+        self.planet = shared_dict['planet']
         self.planet_r = self.planet.size*8
         
         angle_radians = 0
@@ -43,14 +45,15 @@ class PlanetView(GameView):
             
             for mob in applicable_mobs:                                 
                 angle_radians += angle_increment
-                self.mobs.append(orbital_ships.OrbitalShip(mob, planet, self.get_random_r(), angle_radians))
+                self.mobs.append(orbital_ships.OrbitalShip(mob, self.planet, self.get_random_r(), angle_radians))
 
         self.is_paused = False 
 
     def process_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
-                self.next_view = (View.SOLAR, self.planet.system)
+                self.shared_dict['system'] = self.planet.system
+                self.next_view = (View.SOLAR, self.shared_dict)
             if event.key == pygame.K_SPACE:
                 self.is_paused = not self.is_paused
             if event.key == pygame.K_w:

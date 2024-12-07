@@ -21,13 +21,15 @@ class SolarView(GameView):
     def __init__(self):
         GameView.__init__(self)   
         
-        self.system = self.current_ship.system
+        self.system = None
         
     def cleanup(self):
         self.mobs = []
         
-    def startup(self, system):  
-        self.system = system
+    def startup(self, shared_dict):  
+        self.shared_dict = shared_dict
+        self.current_ship = self.shared_dict['current_ship']
+        self.system = shared_dict['system']
 
         for ship in self.ships:
             if ship.system == self.system:
@@ -43,15 +45,20 @@ class SolarView(GameView):
     def process_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_g:
-                self.next_view = (View.GALAXY, self.system)
+                self.shared_dict['system'] = self.system
+                self.next_view = (View.GALAXY, self.shared_dict)
             if event.key == pygame.K_p:
                 if self.current_ship.planet and not self.current_ship.is_moving():
-                    self.next_view = (View.PLANET, self.current_ship.planet)
+                    self.shared_dict['planet'] = self.current_ship.planet
+                    self.next_view = (View.PLANET, self.shared_dict)
             if  event.key == pygame.K_j:   
                 if self.selected_item:
                     self.current_ship.destination = self.selected_item       
-                    
-                    
+            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
+                self.current_ship = self.do_ship_swap(self.current_ship, event.key)    
+                self.shared_dict['current_ship'] = self.current_ship
+                
+                
     def update(self):
         GameView.update(self)
     
