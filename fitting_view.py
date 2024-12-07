@@ -8,93 +8,90 @@ Created on Mon Dec  2 18:53:23 2024
 
 import pygame
 from pygame.math import Vector2
-import collections
 
 import utils
 import constants as const
 from game_view import GameView
 from gui import Label, Button
 
+got_color = 'green'
+available_color = 'grey'
+unavilable_color = 'blue'
+
 class FittingView(GameView):
+    
+
     
     def __init__(self):
         GameView.__init__(self)   
         
-        self.old_view = None
-        
-        self.buttons = collections.defaultdict(dict)
+        self.button_map = {}
+        self.rev_button_map = {}
         self.labels = []
         
         label_width = 120
         button_width = 80
         space = 20
         
-        x_spacing = [0, label_width+space, space+button_width,  space+button_width,   space+button_width]
-        
-        width = sum(x_spacing) + button_width
+        width = label_width + (space+button_width) * 4
         height = (len(self.current_ship.fit.system_names) * 40) - 10
         
         pos = Vector2(const.screen_width / 2 - width / 2, const.screen_height / 2 - height / 2)
         
         x = pos[0]
-        y_offset = pos[1]
-        for key in self.current_ship.fit.system_names:             
-            self.labels.append(Label((x,y_offset), (label_width, 30), key.title(), 'gray'))
-            y_offset += 40
-        
-        col = 0
-        x += label_width+space
-        while col <= 3:
-            y_offset = pos[1]
-            for key in self.current_ship.fit.system_names:             
-                mousover_text = self.current_ship.fit.systems[key].get_upgrade_cost(col)  
-                self.buttons[col][key] = Button((x, y_offset), (button_width, 30), utils.numbers_to_roman(col+1), 'gray', mousover_text)
-                y_offset += 40            
-            col += 1
-            x += space+button_width
+        y = pos[1]
+        for key in self.current_ship.fit.system_names:   
+            x = pos[0]
+            self.labels.append(Label((x,y), (label_width, 30), key.title(), 'gray'))
             
+            x += label_width+space
+            current_level = self.current_ship.fit.level(key)
+            level = 0
+            while level <= 3:
+                
+                function = key.title() + ': ' + str(self.current_ship.fit.systems[key].data[str(level)])
+                upgrade_cost = self.current_ship.fit.systems[key].get_upgrade_cost(level)  
+                
+                is_disabled = True
+                mousover_text = [function]
+                if level <= current_level:
+                    color = got_color                  
+                elif level == current_level + 1:
+                    color = available_color
+                    is_disabled = False
+                    mousover_text += upgrade_cost
+                else:
+                    color = unavilable_color
+                    mousover_text += upgrade_cost
+                    
+                button = Button((x, y), (button_width, 30), utils.numbers_to_roman(level+1), color, mousover_text, is_disabled, self.button_callback)
+                self.button_map[button] = (key, level)
+                self.rev_button_map[(key, level)] = button
+                
+                level += 1
+                x += button_width+space
+            y += 40
+        
 
-        
-        
         
     def cleanup(self):
         pass
         
     def startup(self, view):  
-        self.old_view = view
+        pass
     
     def process_event(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_f:
-                self.next_view = self.old_view
              
-        for col in self.buttons:
-            for system in self.buttons[col]:                    
-                self.buttons[col][system].process_event(event)
-                    
+        
+        for button in self.button_map.keys():
+            button.process_event(event)
+            
+        
     def update(self):
 
-
-        for col in self.buttons:
-            for system in self.buttons[col]:  
-                if not self.buttons[col][system].is_disabled:
-                    if self.buttons[col][system].is_pressed:
-                        print('update ', self.buttons[col][system])
-                        self.buttons[col][system].is_disabled = True
-                        self.current_ship.fit.upgrade(system)
-
-
-
-        for col in self.buttons:
-            for system in self.buttons[col]:                  
-                self.buttons[col][system].update()
-                
-
-                    
-        for system in self.current_ship.fit.system_names:
-            level = int(self.current_ship.fit.systems[system].level)
-            for backfill in range(0, level+1):
-                self.buttons[backfill][system].is_disabled = True
+        for button in self.button_map.keys():
+            button.update()       
+                 
     
     def draw_background(self, screen):
         GameView.draw(self, screen)
@@ -123,22 +120,31 @@ class FittingView(GameView):
 
         self.draw_background(screen)
         
-        for col in self.buttons:
-            for system in self.buttons[col]:            
-                self.buttons[col][system].draw(screen)
-        
-        for col in self.buttons:
-            for system in self.buttons[col]:  
-                if self.buttons[col][system].is_active:
-                    self.draw_mouseover_text(screen, pygame.mouse.get_pos(), self.buttons[col][system].mouseover_text)
-        
+        for button in self.button_map.keys():
+            button.draw(screen)  
+
+        # mouseover text - need to do this after all the buttons have rendered
+        for button in self.button_map.keys():
+            if button.is_active:
+                self.draw_mouseover_text(screen, button.mouseover_text)
+
         for label in self.labels:             
             label.draw(screen)
 
         
-
-
-
+    def button_callback(self, button):
+        
+        system, level = self.button_map[button]
+        
+        self.current_ship.upgrade_system(system)
+        
+        button.is_disabled = True
+        button.set_color(got_color)
+        
+        if level < 3:
+            next_button = self.rev_button_map[(system,level+1)]
+            next_button.is_disabled = False
+            next_button.set_color(available_color)
 
 
 

@@ -112,11 +112,13 @@ class GameView():
         
         # mouseover text
         if self.selected_item:
-            self.draw_mouseover_text(screen, pygame.mouse.get_pos(), self.get_mouse_text())
+            self.draw_mouseover_text(screen, self.get_mouse_text())
 
 
-    def draw_mouseover_text(self, screen, mousepos, text_arr):
+    def draw_mouseover_text(self, screen, text_arr):
         
+        mousepos = pygame.mouse.get_pos()
+
         textbox_width = 0
         textbox_height = 0
         for text in text_arr:

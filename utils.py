@@ -93,7 +93,7 @@ def csv_loader(filename):
         filereader = csv.reader(csvfile, delimiter=',')
         header = next(filereader)
         for row in filereader:
-            for col in range(1, 4):
+            for col in range(1, len(row)):
                 output[row[0]][header[col]] = float(row[col])
                 
     return output

@@ -17,57 +17,49 @@ game_color = (255, 181, 108)
         
 class Button():
     
-    def __init__(self, xy, size, text, color, mouseover_text):
+    def __init__(self, xy, size, text, color, mouseover_text, is_disabled, callback):
         self.xy = xy
         self.size = size
         self.text = text
-        self.color = pygame.Color(color)
+        self.set_color(pygame.Color(color))
         self.mouseover_text = mouseover_text
-        
-        self.lighter_color = utils.whiten_a_bit(self.color, 0.5)
-        self.darker_color = utils.fade_to_black(self.color, 1, 2)
-        self.border_color = self.lighter_color
-        self.button_color = self.color
+        self.is_disabled = is_disabled
+        self.callback = callback
         
         self.is_active = False
-        self.is_disabled = False
         self.is_pressed = False
+        self.font = utils.fonts[20]
         self.surface =  pygame.Surface(size)
 
-        
+  
     def process_event(self, event):
+    
+    
+        mousepos = pygame.mouse.get_pos()
+        if pygame.Rect(self.xy, self.size).collidepoint(mousepos):
+            self.button_color = self.lighter_color
+            self.is_active = True
+        else:
+            self.button_color = self.color
+            self.is_active = False
         
-        if self.is_active:
+        if not self.is_disabled and self.is_active:
             self.is_pressed = False
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.is_pressed = True
-                    print('Pressed')
-                      
-        
-            if self.is_pressed:
-                self.button_color = self.darker_color
-                self.border_color = 'black'
-            else:
-                self.border_color = self.lighter_color
-                self.button_color = self.color
-            
+                    self.callback(self)
+
     def update(self):
         
-        if not self.is_disabled:
-            self.is_active = False
-            mousepos = pygame.mouse.get_pos()
-            if pygame.Rect(self.xy, self.size).collidepoint(mousepos):
-                self.button_color = self.lighter_color
-                self.is_active = True
-            else:
-                self.button_color = self.color
-        
-        if self.is_disabled:
+        if self.is_pressed:
             self.button_color = self.darker_color
-            self.border_color = self.darker_color
-            
-
+            self.border_color = 'black'
+        else:
+            self.border_color = self.lighter_color
+            self.button_color = self.color
+    
+        
     def draw(self, screen):
         
         self.surface.fill(self.button_color)
@@ -81,9 +73,8 @@ class Button():
         rect[3] -= 1
         pygame.draw.rect(self.surface, self.border_color, rect, 1)
         
-        # text
-        font = utils.fonts[20]
-        text_surface = font.render(self.text, True, 'black')
+        # label
+        text_surface = self.font.render(self.text, True, 'black')
         
         text_width, text_height = text_surface.get_size()
         surface_width, surface_height = self.surface.get_size()
@@ -91,8 +82,16 @@ class Button():
         
         self.surface.blit(text_surface, text_pos)
         
-        
         screen.blit(self.surface, self.xy)
+        
+    
+    def set_color(self, color):
+        self.color = pygame.Color(color)
+        
+        self.lighter_color = utils.whiten_a_bit(self.color, 0.5)
+        self.darker_color = utils.fade_to_black(self.color, 1, 2)
+        self.border_color = self.lighter_color
+        self.button_color = self.color
         
 class Label():
     
@@ -130,7 +129,7 @@ class Label():
         
         screen.blit(self.surface, self.xy)  
         
-        
+
         
 
 

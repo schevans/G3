@@ -44,7 +44,6 @@ class Ship():
         self.destination = None
         self.is_current = False
 
-        print(name, self.liege)
         ship_image_number = str(const.ship_image_number[self.liege])
         self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship' + ship_image_number + '.png'))
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying' + ship_image_number + '.png'))

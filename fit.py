@@ -72,7 +72,10 @@ class Fit():
     
     def level(self, system_name):
         return self.systems[system_name].level
-
+    
+    def function(self, system_name, level):
+        return self.systems[system_name].data[str(level)]
+    
     def __call__(self, system_name):
         return self.systems[system_name].data[str(self.systems[system_name].level)]
 
