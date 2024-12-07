@@ -14,9 +14,9 @@ import constants as const
 from game_view import GameView
 from gui import Label, Button
 
-got_color = 'green'
+got_color = 'green4'
 available_color = 'grey'
-unavilable_color = 'blue'
+unavilable_color = 'gray39'
 
 class FittingView(GameView):
     
