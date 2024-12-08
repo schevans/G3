@@ -166,6 +166,7 @@ class FittingView(GameView):
         
         button.is_disabled = True
         button.set_color(got_color)
+        button.mouseover_text = [button.mouseover_text[0]]
         
         if level < 3:
             next_button = self.rev_button_map[(system,level+1)]

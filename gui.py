@@ -13,7 +13,7 @@ import utils
 
 game_color = (255, 181, 108)
    
-        
+LEFT_MOUSE_CLICK = 1       
         
 class Button():
     
@@ -45,14 +45,13 @@ class Button():
         
         if not self.is_disabled and self.is_active:
             self.is_pressed = False
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    self.is_pressed = True
-                    self.callback(self)
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+                self.is_pressed = True
+                self.callback(self)
 
     def update(self):
         
-        if self.is_pressed:
+        if self.is_pressed or self.is_disabled:
             self.button_color = self.darker_color
             self.border_color = 'black'
         else:
