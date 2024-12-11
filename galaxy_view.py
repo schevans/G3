@@ -17,6 +17,7 @@ import constants as const
 
 
 from game_view import GameView, View
+
   
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 50   
@@ -41,6 +42,9 @@ class GalaxyView(GameView):
         self.is_waiting = False
         
     def process_event(self, event):
+        
+        GameView.process_event(self, event)
+        
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
                 if self.current_ship.system and not self.current_ship.is_moving():
@@ -55,6 +59,7 @@ class GalaxyView(GameView):
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
                 self.current_ship = self.do_ship_swap(self.current_ship, event.key)
                 self.shared_dict['current_ship'] = self.current_ship
+
                     
         keys = pygame.key.get_pressed() 
         self.is_waiting = False
@@ -62,6 +67,8 @@ class GalaxyView(GameView):
             self.is_waiting = True  
                 
     def update(self):
+        
+        GameView.update(self)
         
         for mob in self.mobs:
             if not mob.is_npc or self.current_ship.is_moving() or self.is_waiting:

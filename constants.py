@@ -63,3 +63,9 @@ species_color = {
 
 
 upgrade_cost_mults = [ 0, 1, 5, 10]
+
+game_color = (255, 181, 108)
+
+
+
+

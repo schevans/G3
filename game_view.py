@@ -15,10 +15,12 @@ import ships
 import systems
 import constants as const
 import utils
+from gui import ExpostionBox
 
 TEXT_OFFSET = 15
 MOUSE_RADIUS = 10
 TEXTBOX_HEIGHT = 40
+
 
 class View(Enum):
     MENU = 1
@@ -34,7 +36,7 @@ class View(Enum):
     CREDITS = 11
 
 class GameView():
-    
+      
     hero_name = 'Hero'      # FIXME: Move to Menu
     
     # FIXME: Move all this?
@@ -52,7 +54,7 @@ class GameView():
     shiplist = [ myship ]
 
     for system in systems.syslist:
-        if system.system_type != 'Uninhabited' and system != home_system:
+        if system.system_type != 'Uninhabited' and system.name != const.our_capital:
             planet = system.planets[my_random.my_randint(0, len(system.planets)-1)]
             if system.name in const.species_color.keys():
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '22222'))
@@ -78,10 +80,25 @@ class GameView():
         
         self.selected_item = None
         
+        self.exposition = None
+        
+    def process_event(self, event):
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_x and not self.exposition:
+                self.exposition = ExpostionBox([ 'Hello', 'This is a test'], self.exposition_ok_callback)
+            
+        if self.exposition:
+           self.exposition.process_event(event)
+            
+            
     def update(self):
         
         for mob in self.mobs:
             mob.update()
+            
+        if self.exposition:
+            self.exposition.update()
         
     def draw(self, screen):
         
@@ -113,6 +130,10 @@ class GameView():
         # mouseover text
         if self.selected_item:
             self.draw_mouseover_text(screen, self.get_mouse_text())
+            
+            
+        if self.exposition:
+            self.exposition.draw(screen)
 
 
     def draw_mouseover_text(self, screen, text_arr):
@@ -168,6 +189,10 @@ class GameView():
         current_ship.is_current = True
         
         return current_ship
+    
+    def exposition_ok_callback(self, button):
+        self.exposition = None
+    
 
  
 class ViewManager():
