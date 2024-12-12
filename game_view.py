@@ -15,7 +15,7 @@ import ships
 import systems
 import constants as const
 import utils
-from gui import ExpostionBox
+from exposition import ExpositionBox, ExpositionText
 
 TEXT_OFFSET = 15
 MOUSE_RADIUS = 10
@@ -86,7 +86,7 @@ class GameView():
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_x and not self.exposition:
-                self.exposition = ExpostionBox([ 'Hello', 'This is a test'], self.exposition_ok_callback)
+                self.exposition = ExpositionBox(ExpositionText.OPENING, self.exposition_ok_callback)
             
         if self.exposition:
            self.exposition.process_event(event)
