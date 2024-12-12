@@ -68,7 +68,8 @@ class GalaxyView(GameView):
                 
     def update(self):
         
-        GameView.update(self)
+        if self.exposition:
+            self.exposition.update()
         
         for mob in self.mobs:
             if not mob.is_npc or self.current_ship.is_moving() or self.is_waiting:
