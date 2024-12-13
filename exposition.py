@@ -81,17 +81,7 @@ class ExpositionBox():
         inner_width = max(MIN_BOX_WIDTH, min(text_width, MAX_BOX_WIDTH))
         inner_height = max(MIN_BOX_HEIGHT, min(text_height + 2*button_height, MAX_BOX_HEIGHT))
         
-        
-            
-
-        
-        #MIN_BOX_RECT = pygame.Rect(((const.screen_width - MIN_BOX_WIDTH)/2, (const.screen_height - MIN_BOX_HEIGHT)/2), (MIN_BOX_WIDTH, MIN_BOX_HEIGHT))
-        #MAX_BOX_RECT = pygame.Rect((MAX_BOX_BORDER, MAX_BOX_BORDER), (const.screen_width - 2*MAX_BOX_BORDER, const.screen_height - 2*MAX_BOX_BORDER))
-
-
-        
         self.inner_rect = pygame.Rect(((const.screen_width - inner_width)/2, (const.screen_height - inner_height)/2), (inner_width, inner_height))
-            
 
         button_pos = Vector2(const.screen_width / 2 - button_width / 2, self.inner_rect[1]+self.inner_rect[3] -button_height*2 )
         self.button = Button(button_pos, (100,30), 'OK', const.game_color, None, False, callback)
