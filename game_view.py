@@ -82,15 +82,17 @@ class GameView():
         
         self.exposition = None
         
+        self.tmp_ex = 1      # FIXME: Remove
+        
     def process_event(self, event):
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_x and not self.exposition:
-                self.exposition = ExpositionBox(ExpositionText.OPENING, self.exposition_ok_callback)
-            
+                self.exposition = ExpositionBox(list(ExpositionText)[self.tmp_ex], self.exposition_ok_callback)
+                self.tmp_ex += 1
         if self.exposition:
            self.exposition.process_event(event)
-            
+          
             
     def update(self):
         

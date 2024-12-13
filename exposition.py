@@ -14,40 +14,103 @@ import constants as const
 from gui import Button
 import utils
 
-EXPOSITION_BOX_SIZE = 100
+MAX_BOX_BORDER = 100
+
+
+MAX_BOX_WIDTH = 1000
+MAX_BOX_HEIGHT = 600
+
+
+
+MIN_BOX_WIDTH = 800
+MIN_BOX_HEIGHT = 140
+
+
+
 
 class ExpositionText(Enum):
     OPENING = 1
-    
-       
+    A = 2
+    B = 3
+    C = 4
+    D = 5
+    E = 6  
 
 
 class ExpositionBox():
     
     text_filenames = {
-        ExpositionText.OPENING: 'story/opening.txt'
+        ExpositionText.OPENING: 'story/opening.txt',
+        ExpositionText.A: 'story/l5w.txt',
+        ExpositionText.B: 'story/l15w.txt',
+        ExpositionText.C: 'story/l60w.txt',
+        ExpositionText.D: 'story/l1p.txt',
+        ExpositionText.D: 'story/lall.txt'
         } 
         
 
     def __init__(self, text_enum, callback):
 
         
-        self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
+        self.font = utils.fonts[20]
 
-        # FIXME: Note 30 is is the same as in button above. Abstracify        
-        button_pos = Vector2(const.screen_width / 2 - 100 / 2, const.screen_height - EXPOSITION_BOX_SIZE - 30 - 30)
-        self.button = Button(button_pos, (100,30), 'OK', const.game_color, None, False, callback)
+        self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
+        button_width = 100
+        button_height = 30
         
         filename = ExpositionBox.text_filenames[text_enum]
         self.text = []
         with open(filename) as file:
             for line in file.readlines():
-                #line = line.strip('\n')
-                self.text.append(line.strip('\n'))
+                line = line.strip('\n')
+                if self.font.size(line)[0] > MAX_BOX_WIDTH:
+                    wrapped_lines = self.wrap_text(line, MAX_BOX_WIDTH)
+                    self.text += wrapped_lines
+                else:
+                    self.text.append(line)
 
-        self.font = utils.fonts[20]
+        text_width = 0
+        text_height = 0
+        for line in self.text:
+            text_width = max(text_width, self.font.size(line)[0])    
+            text_height += self.font.size(line)[1]
         
+        self.vertical_wrap = True if text_height > MAX_BOX_HEIGHT else False
+
+        inner_width = max(MIN_BOX_WIDTH, min(text_width, MAX_BOX_WIDTH))
+        inner_height = max(MIN_BOX_HEIGHT, min(text_height + 2*button_height, MAX_BOX_HEIGHT))
+        
+        
+            
+
+        
+        #MIN_BOX_RECT = pygame.Rect(((const.screen_width - MIN_BOX_WIDTH)/2, (const.screen_height - MIN_BOX_HEIGHT)/2), (MIN_BOX_WIDTH, MIN_BOX_HEIGHT))
+        #MAX_BOX_RECT = pygame.Rect((MAX_BOX_BORDER, MAX_BOX_BORDER), (const.screen_width - 2*MAX_BOX_BORDER, const.screen_height - 2*MAX_BOX_BORDER))
+
+
+        
+        self.inner_rect = pygame.Rect(((const.screen_width - inner_width)/2, (const.screen_height - inner_height)/2), (inner_width, inner_height))
+            
+
+        button_pos = Vector2(const.screen_width / 2 - button_width / 2, self.inner_rect[1]+self.inner_rect[3] -button_height*2 )
+        self.button = Button(button_pos, (100,30), 'OK', const.game_color, None, False, callback)
+        
+    def wrap_text(self, text, width):
+        
+        text_arr = []
+        sentence = ''
+        word_arr = text.split(' ')
+        for word in word_arr:
+            if self.font.size(sentence + word + ' ')[0] <= width:
+                sentence = sentence + word + ' '
+            else:
+                text_arr.append(sentence)
+                sentence = word
+        text_arr.append(sentence)
+        
+        return text_arr
+    
         
     def process_event(self, event):
         
@@ -58,23 +121,28 @@ class ExpositionBox():
     
     def draw(self, screen):   
 
+        inner_rect = self.inner_rect.copy()
+        
+
         # inner text box
-        inner_rect = pygame.Rect(EXPOSITION_BOX_SIZE, EXPOSITION_BOX_SIZE, const.screen_width - 2*EXPOSITION_BOX_SIZE, const.screen_height - 2*EXPOSITION_BOX_SIZE)
-        pygame.draw.rect(self.surface, pygame.Color(0,0,0,255), inner_rect) 
+        pygame.draw.rect(self.surface, pygame.Color(0,0,0,255), self.inner_rect) 
     
+        
         # border
         border = 10
+        
         pygame.draw.rect(self.surface, const.game_color, inner_rect, 1)
         inner_rect[0] += border
         inner_rect[1] += border
         inner_rect[2] -= border*2
         inner_rect[3] -= border*2
         pygame.draw.rect(self.surface, const.game_color, inner_rect, 1)
-
+        
+        
         # button
         self.button.draw(self.surface)
 
-
+        
         # text
         # first, correct for the border and button
         inner_rect[0] += border
@@ -82,31 +150,14 @@ class ExpositionBox():
         inner_rect[2] -= border*2
         inner_rect[3] -= border + self.button.size[1]*2 
 
-        #textbox_width, textbox_height = utils.get_required_textbox_size(self.text, self.font)
-        
-        text = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        
-        text_arr = []
-        sentence = ''
-        word_arr = text.split(' ')
-        
-        for word in word_arr:
-            if self.font.size(sentence + word + ' ')[0] <= inner_rect[2] - 10:
-                sentence = sentence + word + ' '
-            else:
-                text_arr.append(sentence)
-                sentence = word
-
-        
-        self.text = text_arr
-        
-        offset = EXPOSITION_BOX_SIZE + border + 10
+        spacer = 10
+        x_offset = inner_rect[0] + border + spacer
+        y_offset = inner_rect[1] + border + spacer
         font_height = self.font.size(self.text[0])[1]
         for i in range(0, len(self.text)):
             text_surface = self.font.render(self.text[i], True, 'white', 'black')
-            self.surface.blit(text_surface,  (offset, offset + font_height * (i)))
+            self.surface.blit(text_surface,  (x_offset, y_offset + font_height * (i)))
         
-
         screen.blit(self.surface,(0,0))
 
         
