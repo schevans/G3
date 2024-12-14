@@ -56,6 +56,7 @@ class ExpositionBox():
 
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
+        borders = 10*4
         button_width = 100
         button_height = 30
         
@@ -64,8 +65,8 @@ class ExpositionBox():
         with open(filename) as file:
             for line in file.readlines():
                 line = line.strip('\n')
-                if self.font.size(line)[0] > MAX_BOX_WIDTH:
-                    wrapped_lines = self.wrap_text(line, MAX_BOX_WIDTH)
+                if self.font.size(line)[0] > MAX_BOX_WIDTH - borders:
+                    wrapped_lines = self.wrap_text(line, MAX_BOX_WIDTH - borders)
                     self.text += wrapped_lines
                 else:
                     self.text.append(line)
@@ -78,7 +79,8 @@ class ExpositionBox():
         
         self.vertical_wrap = True if text_height > MAX_BOX_HEIGHT else False
 
-        inner_width = max(MIN_BOX_WIDTH, min(text_width, MAX_BOX_WIDTH))
+        inner_width = max(MIN_BOX_WIDTH, text_width + borders)
+
         inner_height = max(MIN_BOX_HEIGHT, min(text_height + 2*button_height, MAX_BOX_HEIGHT))
         
         self.inner_rect = pygame.Rect(((const.screen_width - inner_width)/2, (const.screen_height - inner_height)/2), (inner_width, inner_height))
@@ -96,7 +98,7 @@ class ExpositionBox():
                 sentence = sentence + word + ' '
             else:
                 text_arr.append(sentence)
-                sentence = word
+                sentence = word + ' '
         text_arr.append(sentence)
         
         return text_arr
@@ -141,7 +143,7 @@ class ExpositionBox():
         inner_rect[3] -= border + self.button.size[1]*2 
 
         spacer = 10
-        x_offset = inner_rect[0] + border + spacer
+        x_offset = inner_rect[0] # + border + spacer
         y_offset = inner_rect[1] + border + spacer
         font_height = self.font.size(self.text[0])[1]
         for i in range(0, len(self.text)):
