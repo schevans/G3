@@ -60,6 +60,7 @@ class ExpositionBox():
         button_width = 100
         button_height = 30
         
+        # read-and-wrap
         filename = ExpositionBox.text_filenames[text_enum]
         self.text = []
         with open(filename) as file:
@@ -70,24 +71,64 @@ class ExpositionBox():
                     self.text += wrapped_lines
                 else:
                     self.text.append(line)
-
+        
+        # measure
         text_width = 0
         text_height = 0
         for line in self.text:
             text_width = max(text_width, self.font.size(line)[0])    
             text_height += self.font.size(line)[1]
         
-        self.vertical_wrap = True if text_height > MAX_BOX_HEIGHT else False
-
+        # paging
+        self.current_page = 1
+        if text_height > MAX_BOX_HEIGHT - (borders + button_height*2):
+            self.text = self.page_text(self.text, MAX_BOX_HEIGHT - (borders + button_height))     
+        else:
+            self.text = [self.text]
+        self.pages = len(self.text)
+        
+        button_label = 'OK'
+        self.old_callback = callback
+        if self.pages > 1:
+            callback = self.callback_intercept
+            button_label = 'More..'
+            
+        # rect & button
         inner_width = max(MIN_BOX_WIDTH, text_width + borders)
-
         inner_height = max(MIN_BOX_HEIGHT, min(text_height + 2*button_height, MAX_BOX_HEIGHT))
         
         self.inner_rect = pygame.Rect(((const.screen_width - inner_width)/2, (const.screen_height - inner_height)/2), (inner_width, inner_height))
 
         button_pos = Vector2(const.screen_width / 2 - button_width / 2, self.inner_rect[1]+self.inner_rect[3] -button_height*2 )
-        self.button = Button(button_pos, (100,30), 'OK', const.game_color, None, False, callback)
+        self.button = Button(button_pos, (100,30), button_label, const.game_color, None, False, callback)
         
+    def callback_intercept(self, button):
+        
+        if self.current_page >= self.pages:
+            self.old_callback(button)
+        else:
+            self.current_page += 1
+            if self.current_page >= self.pages:
+                self.button.text = 'OK'
+    
+        
+    def page_text(self, sentence_arr, height):
+        
+        result = []
+        page = []
+        for sentence in sentence_arr:
+            if self.font.size(sentence)[1] * (len(page) + 1) <= height:
+                page.append(sentence)
+            else:
+                result.append(page)
+                if sentence != '':
+                    page = [sentence]
+
+        result.append(page)
+    
+        return result
+    
+    
     def wrap_text(self, text, width):
         
         text_arr = []
@@ -142,17 +183,19 @@ class ExpositionBox():
         inner_rect[2] -= border*2
         inner_rect[3] -= border + self.button.size[1]*2 
 
+        display_text = self.text[self.current_page-1]
+
         spacer = 10
-        x_offset = inner_rect[0] # + border + spacer
+        x_offset = inner_rect[0]
         y_offset = inner_rect[1] + border + spacer
-        font_height = self.font.size(self.text[0])[1]
-        for i in range(0, len(self.text)):
-            text_surface = self.font.render(self.text[i], True, 'white', 'black')
+        font_height = self.font.size(display_text[0])[1]
+        for i in range(0, len(display_text)):
+            text_surface = self.font.render(display_text[i], True, 'white', 'black')
             self.surface.blit(text_surface,  (x_offset, y_offset + font_height * (i)))
         
         screen.blit(self.surface,(0,0))
 
-        
+
             
             
         
