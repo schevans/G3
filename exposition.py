@@ -108,7 +108,7 @@ class ExpositionBox():
     def ok_callback_intercept(self, button):
         
         if self.current_page >= self.pages:
-            self.old_callback(button)
+            self.old_ok_callback(button)
         else:
             self.current_page += 1
             if self.current_page >= self.pages:
