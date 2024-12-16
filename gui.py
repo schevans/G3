@@ -131,5 +131,69 @@ class Label():
         screen.blit(self.surface, self.xy)  
         
 
+class CheckBox():
+    
+    def __init__(self, xy, size, text, color, is_checked, callback):
+        self.xy = xy
+        self.size = size
+        self.text = text
+        self.color = pygame.Color(color)
+        self.is_checked = is_checked
+        self.callback = callback
+        
+        self.spacer = 5
+        self.background_color = pygame.Color('black')
+        self.lighter_color = utils.fade_to_black(self.color, 2, 3)
+        self.is_pressed = False
+        
+        self.text_surface = utils.fonts[14].render(text, True, 'white')
+        text_width, text_height = self.text_surface.get_size()
+        
+        self.surface =  pygame.Surface((size[0] + text_width + self.spacer, max(size[1], text_height) ))
+  
+  
+    def process_event(self, event):
+        
+        mousepos = pygame.mouse.get_pos()
+        if pygame.Rect(self.xy, self.size).collidepoint(mousepos):
+            self.background_color = self.lighter_color
+            self.is_active = True
+        else:
+            self.background_color = pygame.Color('black')
+            self.is_active = False
+            
+        if self.is_active:
+            self.is_pressed = False
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+            #if event.type == pygame.KEYDOWN and pygame.K_RETURN:
+                self.is_checked = not self.is_checked
+                self.callback(self.is_checked)
+            
+            
+    def update(self):
+        pass
+
+    def draw(self, screen):
+
+        self.surface.fill('black')
+
+        pygame.draw.rect(self.surface, self.background_color, ((0,0), self.size))
+
+        pygame.draw.rect(self.surface, self.color, ((0,0), self.size), 2)
+
+        if self.is_checked:
+            pygame.draw.line(self.surface, self.color, (0,0), self.size, 1)
+            pygame.draw.line(self.surface, self.color, (self.size[0], 0), (0, self.size[1]), 1)
+            
+        self.surface.blit(self.text_surface, (self.size[0] + self.spacer , 1))
+        
+        screen.blit(self.surface, self.xy)
+        
+    
+
+
+
+
+
 
 

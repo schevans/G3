@@ -11,7 +11,7 @@ from pygame import Vector2
 from enum import Enum
 
 import constants as const
-from gui import Button
+from gui import Button, CheckBox
 import utils
 
 MAX_BOX_BORDER = 100
@@ -49,9 +49,9 @@ class ExpositionBox():
         } 
         
 
-    def __init__(self, text_enum, callback):
+    def __init__(self, text_enum, ok_callback, checkbox_callback):
 
-        
+        self.checkbox_callback = checkbox_callback
         self.font = utils.fonts[20]
 
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
@@ -88,21 +88,24 @@ class ExpositionBox():
         self.pages = len(self.text)
         
         button_label = 'OK'
-        self.old_callback = callback
+        self.old_ok_callback = ok_callback
         if self.pages > 1:
-            callback = self.callback_intercept
+            ok_callback = self.ok_callback_intercept
             button_label = 'More..'
             
-        # rect & button
+        # rect & button & checkbox
         inner_width = max(MIN_BOX_WIDTH, text_width + borders)
         inner_height = max(MIN_BOX_HEIGHT, min(text_height + 2*button_height, MAX_BOX_HEIGHT))
         
         self.inner_rect = pygame.Rect(((const.screen_width - inner_width)/2, (const.screen_height - inner_height)/2), (inner_width, inner_height))
 
         button_pos = Vector2(const.screen_width / 2 - button_width / 2, self.inner_rect[1]+self.inner_rect[3] -button_height*2 )
-        self.button = Button(button_pos, (100,30), button_label, const.game_color, None, False, callback)
+        self.button = Button(button_pos, (100,30), button_label, const.game_color, None, False, ok_callback)
         
-    def callback_intercept(self, button):
+        checkbox_pos = Vector2(self.inner_rect[0] + borders/2, self.inner_rect[1]  + self.inner_rect[3] - borders)
+        self.checkbox = CheckBox(checkbox_pos, (20, 20), 'Show Exposition', const.game_color, True, self.checkbox_callback)
+        
+    def ok_callback_intercept(self, button):
         
         if self.current_page >= self.pages:
             self.old_callback(button)
@@ -149,6 +152,8 @@ class ExpositionBox():
         
         self.button.process_event(event)
         
+        self.checkbox.process_event(event)
+        
     def update(self):
         self.button.update()
     
@@ -192,6 +197,9 @@ class ExpositionBox():
         for i in range(0, len(display_text)):
             text_surface = self.font.render(display_text[i], True, 'white', 'black')
             self.surface.blit(text_surface,  (x_offset, y_offset + font_height * (i)))
+        
+        # checkbox
+        self.checkbox.draw(self.surface)
         
         screen.blit(self.surface,(0,0))
 
