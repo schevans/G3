@@ -26,7 +26,7 @@ MIN_BOX_WIDTH = 800
 MIN_BOX_HEIGHT = 140
 
 
-increment = 12
+increment = 5
 
 class ExpositionText(Enum):
     OPENING = 1

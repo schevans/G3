@@ -8,12 +8,17 @@ Created on Mon Dec  2 18:53:23 2024
 
 import pygame
 from pygame.math import Vector2
+from enum import Enum
 
 import utils
 import constants as const
 from game_view import GameView
 from gui import Label, Button
 
+class Option(Enum):
+    TRADE = 1
+    RECRUIT = 2
+    BOARD = 3
 
 
 class DockingView(GameView):

@@ -8,7 +8,6 @@ Created on Sun Nov  3 17:58:02 2024
 
 import pygame
 from pygame.math import Vector2
-import pandas as pd
 import math
 
 import rotatable_image

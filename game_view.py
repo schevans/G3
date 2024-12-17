@@ -83,7 +83,7 @@ class GameView():
         # FIXME: All this 
         self.show_exposition = True
         self.exposition = None 
-        self.tmp_ex = 1      # FIXME: Remove
+        self.tmp_ex = 0      # FIXME: Remove
         
     def process_event(self, event):
         
