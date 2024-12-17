@@ -121,22 +121,8 @@ class FittingView(GameView):
     
     def draw_background(self, screen):
         GameView.draw(self, screen)
-        
-        ship_image = self.current_ship.image_still.original_image.copy()
-        
-        width, height = ship_image.get_size()
-        for x in range(width):
-            for y in range(height):
                 
-                red, green, blue, alpha = ship_image.get_at((x, y))
-                
-                if red < 10 and green < 10 and blue < 10:
-                    ship_image.set_at((x, y), pygame.Color(0, 0, 0, alpha))
-                else:
-                    ship_image.set_at((x, y), pygame.Color(25, 25, 25, alpha))
-                
-                
-        ship_image = pygame.transform.scale_by(ship_image, const.screen_height/height)
+        ship_image = utils.scale_and_monochrome_ship_image(self.current_ship)
         
         width, height = ship_image.get_size()
         

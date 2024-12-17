@@ -56,6 +56,10 @@ class GalaxyView(GameView):
             if event.key == pygame.K_f:
                 self.shared_dict['prev_view'] = View.GALAXY
                 self.next_view = (View.FITTING, self.shared_dict)
+            if event.key == pygame.K_w:
+                self.shared_dict['prev_view'] = View.GALAXY
+                self.shared_dict['other_ship'] = GameView.shiplist[8]       # FIXME: Temp
+                self.next_view = (View.DOCKING, self.shared_dict)
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
                 self.current_ship = self.do_ship_swap(self.current_ship, event.key)
                 self.shared_dict['current_ship'] = self.current_ship

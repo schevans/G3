@@ -13,6 +13,7 @@ from galaxy_view import GalaxyView
 from solar_view import SolarView
 from planet_view import PlanetView
 from fitting_view import FittingView
+from docking_view import DockingView
 
 
 view = ViewManager()
@@ -21,7 +22,8 @@ view_dict = {
     View.GALAXY: GalaxyView(),
     View.SOLAR: SolarView(),
     View.PLANET: PlanetView(),
-    View.FITTING: FittingView()
+    View.FITTING: FittingView(),
+    View.DOCKING: DockingView()
 }
 
 view.setup_views(view_dict, View.GALAXY)

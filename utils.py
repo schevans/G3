@@ -123,6 +123,25 @@ def numbers_to_roman(i):
         return 'IV'
 
 
+def scale_and_monochrome_ship_image(ship):
+    
+    ship_image = ship.image_still.original_image.copy()
+    
+    width, height = ship_image.get_size()
+    for x in range(width):
+        for y in range(height):
+            
+            red, green, blue, alpha = ship_image.get_at((x, y))
+            
+            if red < 10 and green < 10 and blue < 10:
+                ship_image.set_at((x, y), pygame.Color(0, 0, 0, alpha))
+            else:
+                 ship_image.set_at((x, y), pygame.Color(25, 25, 25, alpha))
+                      
+    return pygame.transform.scale_by(ship_image, const.screen_height/height)
+    
+   
+
 
 
 
