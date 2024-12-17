@@ -28,7 +28,7 @@ class PlanetView(GameView):
 
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
-        self.current_ship = self.shared_dict['crrent_ship']
+        self.current_ship = self.shared_dict['current_ship']
         self.planet = shared_dict['planet']
         self.planet_r = self.planet.size*8
         
