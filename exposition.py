@@ -82,7 +82,7 @@ class ExpositionBox():
         # paging
         self.current_page = 1
         if text_height > MAX_BOX_HEIGHT - (borders + button_height*2):
-            self.text = self.page_text(self.text, MAX_BOX_HEIGHT - (borders + button_height))     
+            self.text = self.page_text(self.text, MAX_BOX_HEIGHT - (borders + button_height*2))     
         else:
             self.text = [self.text]
         self.pages = len(self.text)
@@ -217,9 +217,8 @@ class ExpositionBox():
         display_text = self.text[self.current_page-1]
         colors = self.text_color[self.current_page-1]
 
-        spacer = 10
         x_offset = inner_rect[0]
-        y_offset = inner_rect[1] + border + spacer
+        y_offset = inner_rect[1]
         font_height = self.font.size(display_text[0])[1]
         for i in range(0, len(display_text)):
             text_surface = self.font.render(display_text[i], True, pygame.Color(colors[i]), 'black')
