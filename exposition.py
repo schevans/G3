@@ -26,7 +26,7 @@ MIN_BOX_WIDTH = 800
 MIN_BOX_HEIGHT = 140
 
 
-
+increment = 12
 
 class ExpositionText(Enum):
     OPENING = 1
@@ -86,6 +86,14 @@ class ExpositionBox():
         else:
             self.text = [self.text]
         self.pages = len(self.text)
+        
+        self.text_color = []
+        for page in self.text:
+            temp = []
+            for sentence in page:
+                temp.append(pygame.Color('black'))
+            self.text_color.append(temp)
+                
         
         button_label = 'OK'
         self.old_ok_callback = ok_callback
@@ -155,7 +163,25 @@ class ExpositionBox():
         self.checkbox.process_event(event)
         
     def update(self):
+        
         self.button.update()
+        
+        # text fade-in
+        for i in range(0, len(self.text[self.current_page-1])):            
+            if self.text_color[self.current_page-1][i][0] < 255:
+                self.text_color[self.current_page-1][i] = self.white_fade(self.text_color[self.current_page-1][i])
+                break
+            
+        # enable button once text is rendered
+        if self.text_color[self.current_page-1][-1][0] != 255:
+            self.button.is_disabled = True
+        else:
+            self.button.is_disabled = False
+    
+    def white_fade(self, color):
+
+        return tuple([min(255, rgb + increment) for rgb in list(color)])
+    
     
     def draw(self, screen):   
 
@@ -189,13 +215,14 @@ class ExpositionBox():
         inner_rect[3] -= border + self.button.size[1]*2 
 
         display_text = self.text[self.current_page-1]
+        colors = self.text_color[self.current_page-1]
 
         spacer = 10
         x_offset = inner_rect[0]
         y_offset = inner_rect[1] + border + spacer
         font_height = self.font.size(display_text[0])[1]
         for i in range(0, len(display_text)):
-            text_surface = self.font.render(display_text[i], True, 'white', 'black')
+            text_surface = self.font.render(display_text[i], True, pygame.Color(colors[i]), 'black')
             self.surface.blit(text_surface,  (x_offset, y_offset + font_height * (i)))
         
         # checkbox
