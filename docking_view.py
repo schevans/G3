@@ -15,10 +15,16 @@ import constants as const
 from game_view import GameView
 from gui import Label, Button
 
+
+INNER_BORDER_WIDTH = 250
+INNER_BORDER_HIGHT = 100
+
 class Option(Enum):
     TRADE = 1
     RECRUIT = 2
     BOARD = 3
+
+
 
 
 class DockingView(GameView):
@@ -28,6 +34,62 @@ class DockingView(GameView):
     def __init__(self):
         GameView.__init__(self)   
    
+        self.inner_rect = ((INNER_BORDER_WIDTH,INNER_BORDER_HIGHT), (const.screen_width -INNER_BORDER_WIDTH*2, const.screen_height - INNER_BORDER_HIGHT*2) )
+
+        self.option = None
+
+        button_width = 100
+        button_height = 30
+        self.top_buttons = {}
+ 
+        y = 150
+        x = INNER_BORDER_WIDTH
+
+        self.top_buttons['trade'] = Button((x, y), (button_width, button_height), 'Trade', const.game_color, None, False, self.button_callback)
+        x = ( const.screen_width - button_width ) / 2
+        self.top_buttons['recruit'] = Button((x, y), (button_width, button_height), 'Recruit', const.game_color, None, False, self.button_callback)
+        x = const.screen_width - INNER_BORDER_WIDTH - button_width
+        self.top_buttons['board'] = Button((x, y), (button_width, button_height), 'Board', const.game_color, None, False, self.button_callback)
+        
+        """
+        surface_size = self.inner_rect[1]
+        self.surfaces = {}
+        self.surfaces['trade'] = pygame.Surface(surface_size, pygame.SRCALPHA)
+        self.surfaces['recruit'] = pygame.Surface(surface_size, pygame.SRCALPHA)
+        self.surfaces['board'] = pygame.Surface(surface_size, pygame.SRCALPHA)
+        
+        button_width = 40
+        label_width = 100
+        spacer = 20
+        self.trade_buttons = []
+        self.trade_labels = []
+        
+        buy_x = (surface_size[0] - label_width )/2 - spacer - button_width
+        label_x = (surface_size[0] - label_width )/2
+        sell_x = (surface_size[0] + label_width )/2 + spacer
+        y = 200
+        for resource in const.initial_resources:
+            if resource != 'credits':
+                self.trade_buttons.append(Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.trade_button_callback))
+                self.trade_buttons.append(Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.trade_button_callback))
+            self.trade_labels.append(Label((label_x,y), (label_width, button_height), resource.title(), 'gray'))
+            y += button_height + spacer
+        
+        for button in self.trade_buttons:
+            button.draw(self.surfaces['trade'])  
+            
+        for label in self.trade_labels:             
+            label.draw(self.surfaces['trade'])
+            
+        """
+        self.new = TradePanel(self.inner_rect[1])
+        
+        
+    def button_callback(self, button):
+        self.option = Option[button.text.upper()]
+
+    def trade_button_callback(self, button):
+        pass
 
     def cleanup(self):
         pass
@@ -38,16 +100,23 @@ class DockingView(GameView):
         self.current_ship = self.shared_dict['current_ship']
         self.other_ship = self.shared_dict['other_ship']
         
+
+        self.new.startup(self.current_ship.resources, self.other_ship.resources)
+        
+        
     def process_event(self, event):
              
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_b:
                 self.next_view = (self.shared_dict['prev_view'], self.shared_dict)
             
-        
+        for key in self.top_buttons.keys():
+            self.top_buttons[key].process_event(event)
+                
     def update(self):
         
-        pass
+        for key in self.top_buttons:
+            self.top_buttons[key].update()
                  
     
     def draw_background(self, screen):
@@ -67,13 +136,112 @@ class DockingView(GameView):
 
         self.draw_background(screen)
         
-
+        #pygame.draw.rect(screen, 'white',  self.inner_rect, 1)
+        
+        for key in self.top_buttons:
+            self.top_buttons[key].draw(screen)
+            
+        
+        text = ''
+        if self.option == Option.TRADE:
+            screen.blit(self.new.surface,  self.inner_rect[0])
+        elif self.option == Option.RECRUIT:
+            text = 'Recruit'
+        elif self.option == Option.BOARD:
+            text = 'Board'
+            
+        text_surface = utils.fonts[20].render(text, True, 'white', 'black')
+        screen.blit(text_surface,  (400, 200))
 
     
+        
+class TradePanel():
+    
+    def __init__(self, size):
+        
+        self.surface = pygame.Surface(size, pygame.SRCALPHA)
+        
+        button_height = 30
+        button_width = 40
+        label_width = 100
+        spacer = 20
+        self.buttons = []
+        self.labels = []
+        
+        self.our_resource_amounts = [0, 0, 0, 0]
+        self.their_resource_amounts = [0, 0, 0, 0]     
+        self.transaction = [0, 0, 0, 0]
+   
+        resource_width = 40
+        buy_x = (size[0] - label_width )/2 - spacer - button_width
+        label_x = (size[0] - label_width )/2
+        sell_x = (size[0] + label_width )/2 + spacer
+        
+        our_x = 100
+        their_x = size[0] - 100 - resource_width
+        
+        our_transaction_x = our_x + resource_width + spacer
+        their_transaction_x = their_x - spacer - resource_width
+        
+        y = 200
+        i = 0
+        for resource in const.initial_resources.keys():
+            if resource != 'credits':
+                self.buttons.append(Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.button_callback))
+                self.buttons.append(Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback))
+            self.labels.append(Label((label_x,y), (label_width, button_height), resource.title(), 'gray'))
+            
+            self.labels.append(Label((our_x,y), (resource_width, button_height), str(self.our_resource_amounts[i]), 'gray'))
+            self.labels.append(Label((their_x,y), (resource_width, button_height), str(self.their_resource_amounts[i]), 'gray'))
+            
+            self.labels.append(Label((our_transaction_x,y), (resource_width, button_height), str(self.transaction[i]), 'gray'))
+            self.labels.append(Label((their_transaction_x,y), (resource_width, button_height), str(-self.transaction[i]), 'gray'))
+            
+            
+            y += button_height + spacer   
+            i += 1
+    
+    
+        self.buttons.append(Button(((size[0] - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback))
+    
+        for button in self.buttons:
+            button.draw(self.surface)  
+            
+        for label in self.labels:             
+            label.draw(self.surface)
+         
+    def button_callback(self, button):
+        pass
+    
+    def startup(self, our_resources, their_resources):
+        
+        i = 0
+        for resource in const.initial_resources.keys():
+            self.our_resource_amounts[i] = our_resources[resource]
+            self.their_resource_amounts[i] = their_resources[resource]
+            i += 1
+        
+    def update(self):
+        
+        pass
+    
+    
+class RecruitPanel():
+    
+    def __init__(self):
+        pass
+    
+    def startup(self):
+        pass
+    
 
-
-
-
+class BoardPanel():
+    
+    def __init__(self):
+        pass
+    
+    def startup(self):
+        pass
 
 
 
