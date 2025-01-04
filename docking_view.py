@@ -40,7 +40,8 @@ class DockingView(GameView):
         self.inner_rect = ((INNER_BORDER_WIDTH,INNER_BORDER_HIGHT), (const.screen_width -INNER_BORDER_WIDTH*2, const.screen_height - INNER_BORDER_HIGHT*2) )
 
         self.option = None
-
+        self.panel = None
+        
         button_width = 100
         button_height = 30
         self.top_buttons = {}
@@ -54,43 +55,19 @@ class DockingView(GameView):
         x = const.screen_width - INNER_BORDER_WIDTH - button_width
         self.top_buttons['board'] = Button((x, y), (button_width, button_height), 'Board', const.game_color, None, False, self.button_callback)
         
-        """
-        surface_size = self.inner_rect[1]
-        self.surfaces = {}
-        self.surfaces['trade'] = pygame.Surface(surface_size, pygame.SRCALPHA)
-        self.surfaces['recruit'] = pygame.Surface(surface_size, pygame.SRCALPHA)
-        self.surfaces['board'] = pygame.Surface(surface_size, pygame.SRCALPHA)
         
-        button_width = 40
-        label_width = 100
-        spacer = 20
-        self.trade_buttons = []
-        self.trade_labels = []
-        
-        buy_x = (surface_size[0] - label_width )/2 - spacer - button_width
-        label_x = (surface_size[0] - label_width )/2
-        sell_x = (surface_size[0] + label_width )/2 + spacer
-        y = 200
-        for resource in const.initial_resources:
-            if resource != 'credits':
-                self.trade_buttons.append(Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.trade_button_callback))
-                self.trade_buttons.append(Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.trade_button_callback))
-            self.trade_labels.append(Label((label_x,y), (label_width, button_height), resource.title(), 'gray'))
-            y += button_height + spacer
-        
-        for button in self.trade_buttons:
-            button.draw(self.surfaces['trade'])  
-            
-        for label in self.trade_labels:             
-            label.draw(self.surfaces['trade'])
-            
-        """
-        self.new = TradePanel(self.inner_rect[1])
         
         
     def button_callback(self, button):
         self.option = Option[button.text.upper()]
 
+        if self.option == Option.TRADE:
+            self.panel = TradePanel(self.inner_rect[1])
+        elif self.option == Option.RECRUIT:
+            self.panel = RecruitPanel(self.inner_rect[1])
+        elif self.option == Option.BOARD:
+            self.panel = BoardPanel(self.inner_rect[1])
+            
     def trade_button_callback(self, button):
         pass
 
@@ -104,7 +81,7 @@ class DockingView(GameView):
         self.other_ship = self.shared_dict['other_ship']
         
 
-        self.new.startup(self.current_ship.resources, self.other_ship.resources)
+        #self.new.startup(self.current_ship.resources, self.other_ship.resources)
         
         
     def process_event(self, event):
@@ -139,22 +116,14 @@ class DockingView(GameView):
 
         self.draw_background(screen)
         
-        #pygame.draw.rect(screen, 'white',  self.inner_rect, 1)
-        
         for key in self.top_buttons:
             self.top_buttons[key].draw(screen)
             
-        
-        text = ''
-        if self.option == Option.TRADE:
-            screen.blit(self.new.surface,  self.inner_rect[0])
-        elif self.option == Option.RECRUIT:
-            text = 'Recruit'
-        elif self.option == Option.BOARD:
-            text = 'Board'
-            
-        text_surface = utils.fonts[20].render(text, True, 'white', 'black')
-        screen.blit(text_surface,  (400, 200))
+        if self.panel:
+            self.panel.draw(screen)
+            screen.blit(self.panel.surface,  self.inner_rect[0])
+
+
 
     
         
@@ -213,8 +182,14 @@ class TradePanel():
     
         self.button_map['Accept'] = Button(((size[0] - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
     
+
+            
+
+            
+    def draw(self, screen):
+        
         for key in self.button_map.keys():
-            self.button_map[key].draw(self.surface)  
+            self.button_map[key].draw(self.surface)      
             
         for label in self.labels:             
             label.draw(self.surface)
@@ -237,19 +212,29 @@ class TradePanel():
     
 class RecruitPanel():
     
-    def __init__(self):
-        pass
+    def __init__(self, size):
+        
+        self.surface = pygame.Surface(size, pygame.SRCALPHA)
     
     def startup(self):
+        pass
+    
+    def draw(self, screen):
         pass
     
 
 class BoardPanel():
     
-    def __init__(self):
-        pass
+    def __init__(self, size):
+        
+        self.surface = pygame.Surface(size, pygame.SRCALPHA)
+
     
     def startup(self):
+        pass
+
+
+    def draw(self, screen):
         pass
 
 
