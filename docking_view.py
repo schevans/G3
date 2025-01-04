@@ -25,7 +25,10 @@ class Option(Enum):
     BOARD = 3
 
 
-
+class BuySell(Enum):
+    BUY = 1
+    SELL = 2
+    
 
 class DockingView(GameView):
     
@@ -165,7 +168,8 @@ class TradePanel():
         button_width = 40
         label_width = 100
         spacer = 20
-        self.buttons = []
+
+        self.button_map = {}
         self.labels = []
         
         self.our_resource_amounts = [0, 0, 0, 0]
@@ -187,8 +191,14 @@ class TradePanel():
         i = 0
         for resource in const.initial_resources.keys():
             if resource != 'credits':
-                self.buttons.append(Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.button_callback))
-                self.buttons.append(Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback))
+                key = (resource, BuySell.BUY)
+                button = Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.button_callback)
+                self.button_map[key] = button
+                
+                key = (resource, BuySell.SELL)
+                button = Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback)
+                self.button_map[key] = button
+                
             self.labels.append(Label((label_x,y), (label_width, button_height), resource.title(), 'gray'))
             
             self.labels.append(Label((our_x,y), (resource_width, button_height), str(self.our_resource_amounts[i]), 'gray'))
@@ -201,11 +211,10 @@ class TradePanel():
             y += button_height + spacer   
             i += 1
     
+        self.button_map['Accept'] = Button(((size[0] - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
     
-        self.buttons.append(Button(((size[0] - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback))
-    
-        for button in self.buttons:
-            button.draw(self.surface)  
+        for key in self.button_map.keys():
+            self.button_map[key].draw(self.surface)  
             
         for label in self.labels:             
             label.draw(self.surface)
