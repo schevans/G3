@@ -146,9 +146,9 @@ class TradePanel():
         self.label_map = {}
         
         self.our_resources = our_resources.copy()
-        self.their_resources = their_resources.copy()    
-        self.transaction = [0, 0, 0, 0]
-   
+        self.their_resources = their_resources.copy()         
+        self.transaction = dict.fromkeys(our_resources, 0)
+        
         resource_width = 70
         buy_x = (const.screen_width - label_width )/2 - spacer - button_width
         label_x = (const.screen_width - label_width )/2
@@ -183,9 +183,9 @@ class TradePanel():
             self.label_map[label_key] = Label((their_x,y), (resource_width, button_height), str(self.their_resources[resource]), 'gray')
             
             label_key = (resource.title(), 'OurTxn')
-            self.label_map[label_key] = Label((our_transaction_x,y), (resource_width, button_height), str(self.transaction[i]), 'gray')
+            self.label_map[label_key] = Label((our_transaction_x,y), (resource_width, button_height), str(self.transaction[resource]), 'gray')
             label_key = (resource.title(), 'TheirTxn')
-            self.label_map[label_key] = Label((their_transaction_x,y), (resource_width, button_height), str(-self.transaction[i]), 'gray')
+            self.label_map[label_key] = Label((their_transaction_x,y), (resource_width, button_height), str(-self.transaction[resource]), 'gray')
             
             
             y += button_height + spacer   
@@ -218,15 +218,7 @@ class TradePanel():
          
     def button_callback(self, button):
         pass
-    
-    def startup(self, our_resources, their_resources):
-        
-        i = 0
-        #for resource in const.initial_resources.keys():
-        #    self.our_resource_amounts[i] = our_resources[resource]
-        #    self.their_resource_amounts[i] = their_resources[resource]
-        #    i += 1
-        
+          
     
     
 class RecruitPanel():
@@ -234,9 +226,7 @@ class RecruitPanel():
     def __init__(self):
         
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
-    
-    def startup(self):
-        pass
+        
     
     def process_event(self, event):
         pass
@@ -254,9 +244,6 @@ class BoardPanel():
         
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
 
-    
-    def startup(self):
-        pass
 
     def process_event(self, event):
         pass
