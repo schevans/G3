@@ -174,17 +174,17 @@ class TradePanel():
                 self.button_map[key] = button
                 
             
-            label_key = (resource.title(), 'Label')
+            label_key = (resource, 'Label')
             self.label_map[label_key] = Label((label_x,y), (label_width, button_height), resource.title(), 'gray')
             
-            label_key = (resource.title(), 'OurAmount')
+            label_key = (resource, 'OurAmount')
             self.label_map[label_key] = Label((our_x,y), (resource_width, button_height), str(self.our_resources[resource]), 'gray')
-            label_key = (resource.title(), 'TheirAmount')
+            label_key = (resource, 'TheirAmount')
             self.label_map[label_key] = Label((their_x,y), (resource_width, button_height), str(self.their_resources[resource]), 'gray')
             
-            label_key = (resource.title(), 'OurTxn')
+            label_key = (resource, 'OurTxn')
             self.label_map[label_key] = Label((our_transaction_x,y), (resource_width, button_height), str(self.transaction[resource]), 'gray')
-            label_key = (resource.title(), 'TheirTxn')
+            label_key = (resource, 'TheirTxn')
             self.label_map[label_key] = Label((their_transaction_x,y), (resource_width, button_height), str(-self.transaction[resource]), 'gray')
             
             
@@ -193,6 +193,8 @@ class TradePanel():
     
         self.button_map['Accept'] = Button(((const.screen_width - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
     
+        self.rev_button_map = dict((v, k) for k, v in self.button_map.items())
+        self.rev_label_map = dict((v, k) for k, v in self.label_map.items())
 
     def process_event(self, event):
              
@@ -205,9 +207,16 @@ class TradePanel():
             self.button_map[key].update()
             
         for key in self.label_map.keys():
-            self.label_map[key].update()
-
             
+            if key != 'Accept':
+                (resource, label_type) =  key
+                   
+                self.label_map[(resource, 'OurTxn')].text = str(self.transaction[resource])
+                self.label_map[(resource, 'TheirTxn')].text = str(-self.transaction[resource])
+                self.label_map[(resource, 'OurAmount')].text = str(self.our_resources[resource])
+                self.label_map[(resource, 'TheirAmount')].text = str(self.their_resources[resource])
+                
+                
     def draw(self, screen):
         
         for key in self.button_map.keys():
@@ -217,7 +226,18 @@ class TradePanel():
             self.label_map[key].draw(self.surface)
          
     def button_callback(self, button):
-        pass
+        (resource, buysell) = self.rev_button_map[button]
+        
+        if buysell == BuySell.BUY:
+            self.transaction[resource] += 1
+            self.our_resources[resource] += 1
+            self.their_resources[resource] -= 1
+        else:
+            self.transaction[resource] -= 1
+            self.our_resources[resource] -= 1
+            self.their_resources[resource] += 1
+            
+
           
     
     
