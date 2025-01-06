@@ -37,8 +37,6 @@ class DockingView(GameView):
     def __init__(self):
         GameView.__init__(self)   
    
-        self.inner_rect = ((INNER_BORDER_WIDTH,INNER_BORDER_HIGHT), (const.screen_width -INNER_BORDER_WIDTH*2, const.screen_height - INNER_BORDER_HIGHT*2) )
-
         self.option = None
         self.panel = None
         
@@ -62,11 +60,11 @@ class DockingView(GameView):
         self.option = Option[button.text.upper()]
 
         if self.option == Option.TRADE:
-            self.panel = TradePanel(self.inner_rect[1])
+            self.panel = TradePanel()
         elif self.option == Option.RECRUIT:
-            self.panel = RecruitPanel(self.inner_rect[1])
+            self.panel = RecruitPanel()
         elif self.option == Option.BOARD:
-            self.panel = BoardPanel(self.inner_rect[1])
+            self.panel = BoardPanel()
             
     def trade_button_callback(self, button):
         pass
@@ -92,13 +90,19 @@ class DockingView(GameView):
             
         for key in self.top_buttons.keys():
             self.top_buttons[key].process_event(event)
+            
+        if self.panel:
+            self.panel.process_event(event)
                 
     def update(self):
         
         for key in self.top_buttons:
             self.top_buttons[key].update()
-                 
-    
+           
+        if self.panel:
+            self.panel.update()
+        
+        
     def draw_background(self, screen):
         GameView.draw(self, screen)
         
@@ -121,7 +125,7 @@ class DockingView(GameView):
             
         if self.panel:
             self.panel.draw(screen)
-            screen.blit(self.panel.surface,  self.inner_rect[0])
+            screen.blit(self.panel.surface,  (0,0))
 
 
 
@@ -129,9 +133,9 @@ class DockingView(GameView):
         
 class TradePanel():
     
-    def __init__(self, size):
+    def __init__(self):
         
-        self.surface = pygame.Surface(size, pygame.SRCALPHA)
+        self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
         button_height = 30
         button_width = 40
@@ -146,17 +150,17 @@ class TradePanel():
         self.transaction = [0, 0, 0, 0]
    
         resource_width = 40
-        buy_x = (size[0] - label_width )/2 - spacer - button_width
-        label_x = (size[0] - label_width )/2
-        sell_x = (size[0] + label_width )/2 + spacer
+        buy_x = (const.screen_width - label_width )/2 - spacer - button_width
+        label_x = (const.screen_width - label_width )/2
+        sell_x = (const.screen_width + label_width )/2 + spacer
         
-        our_x = 100
-        their_x = size[0] - 100 - resource_width
+        our_x = 100 + INNER_BORDER_WIDTH
+        their_x = const.screen_width - 100 - resource_width - INNER_BORDER_WIDTH
         
         our_transaction_x = our_x + resource_width + spacer
         their_transaction_x = their_x - spacer - resource_width
         
-        y = 200
+        y = 200 + INNER_BORDER_HIGHT
         i = 0
         for resource in const.initial_resources.keys():
             if resource != 'credits':
@@ -180,10 +184,21 @@ class TradePanel():
             y += button_height + spacer   
             i += 1
     
-        self.button_map['Accept'] = Button(((size[0] - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
+        self.button_map['Accept'] = Button(((const.screen_width - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
     
 
+    def process_event(self, event):
+             
+        for key in self.button_map.keys():
+            self.button_map[key].process_event(event)
+
+    def update(self):
+
+        for key in self.button_map.keys():
+            self.button_map[key].update()
             
+        for label in self.labels:
+            label.update()
 
             
     def draw(self, screen):
