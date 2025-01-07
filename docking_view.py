@@ -25,9 +25,7 @@ class Option(Enum):
     BOARD = 3
 
 
-class BuySell(Enum):
-    BUY = 1
-    SELL = 2
+
     
 
 class DockingView(GameView):
@@ -59,7 +57,7 @@ class DockingView(GameView):
         option = Option[button.text.upper()]
 
         if option == Option.TRADE:
-            self.panel = TradePanel(self.current_ship.resources, self.other_ship.resources)
+            self.panel = TradePanel(self.current_ship, self.other_ship)
         elif option == Option.RECRUIT:
             self.panel = RecruitPanel()
         elif option == Option.BOARD:
@@ -127,13 +125,26 @@ class DockingView(GameView):
             self.panel.draw(screen)
             screen.blit(self.panel.surface,  (0,0))
 
-
-
+class ButtonType(Enum):
+    BUY = 1
+    SELL = 2
+    ACCEPT = 3
+    
+class LabelType(Enum):
+    LABEL = 1
+    OUR_AMOUNT = 2
+    THEIR_AMOUNT = 3
+    OUR_TRANSACTION = 4
+    THEIR_TRANSACTION = 5
+    
     
         
 class TradePanel():
     
-    def __init__(self, our_resources, their_resources):
+    def __init__(self, our_ship, their_ship):
+        
+        self.our_ship = our_ship
+        self.their_ship = their_ship
         
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
@@ -145,9 +156,9 @@ class TradePanel():
         self.button_map = {}
         self.label_map = {}
         
-        self.our_resources = our_resources.copy()
-        self.their_resources = their_resources.copy()         
-        self.transaction = dict.fromkeys(our_resources, 0)
+        self.our_resources = our_ship.resources.copy()
+        self.their_resources = their_ship.resources.copy()         
+        self.transaction = dict.fromkeys(self.our_resources, 0)
         
         resource_width = 70
         buy_x = (const.screen_width - label_width )/2 - spacer - button_width
@@ -165,11 +176,11 @@ class TradePanel():
         i = 0
         for resource in const.initial_resources.keys():
             if resource != 'credits':
-                key = (resource, BuySell.BUY)
+                key = (resource, ButtonType.BUY)
                 button = Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.button_callback)
                 self.button_map[key] = button
                 
-                key = (resource, BuySell.SELL)
+                key = (resource, ButtonType.SELL)
                 button = Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback)
                 self.button_map[key] = button
                 
@@ -191,7 +202,7 @@ class TradePanel():
             y += button_height + spacer   
             i += 1
     
-        self.button_map['Accept'] = Button(((const.screen_width - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
+        self.button_map[('Accept', ButtonType.ACCEPT)] = Button(((const.screen_width - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
     
         self.rev_button_map = dict((v, k) for k, v in self.button_map.items())
         self.rev_label_map = dict((v, k) for k, v in self.label_map.items())
@@ -226,19 +237,21 @@ class TradePanel():
             self.label_map[key].draw(self.surface)
          
     def button_callback(self, button):
-        (resource, buysell) = self.rev_button_map[button]
+        (resource, button_type) = self.rev_button_map[button]
         
-        if buysell == BuySell.BUY:
+        if button_type == ButtonType.BUY:
             self.transaction[resource] += 1
             self.our_resources[resource] += 1
             self.their_resources[resource] -= 1
-        else:
+        elif button_type == ButtonType.SELL: 
             self.transaction[resource] -= 1
             self.our_resources[resource] -= 1
             self.their_resources[resource] += 1
-            
+        elif button_type == ButtonType.ACCEPT:
+            self.our_ship.resources = self.our_resources
+            self.their_ship.resources = self.their_resources
+            self.transaction = dict.fromkeys(self.transaction, 0)
 
-          
     
     
 class RecruitPanel():
