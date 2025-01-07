@@ -7,7 +7,6 @@ Created on Mon Dec  2 18:53:23 2024
 """
 
 import pygame
-from pygame.math import Vector2
 from enum import Enum
 
 import utils
@@ -57,7 +56,7 @@ class DockingView(GameView):
         if panel == Panel.TRADE:
             self.panel = TradePanel(self.current_ship, self.other_ship)
         elif panel == Panel.APPROACH:
-            self.panel = RecruitPanel()
+            self.panel = ApproachPanel()
         elif panel == Panel.BOARD:
             self.panel = BoardPanel()
 
@@ -273,20 +272,19 @@ class TradePanel():
             self.their_resources = self.their_ship.resources.copy()
             self.transaction = dict.fromkeys(self.transaction, 0)
         else:
-            
-            amount = const.fx_rates[self.their_ship.liege][resource]
             buysell = 1 if button_type == ButtonType.BUY else -1
+            amount = const.fx_rates[self.their_ship.liege][resource] * buysell
             
             self.transaction[resource] += buysell
             self.our_resources[resource] += buysell
             self.their_resources[resource] -= buysell
             
-            self.transaction['credits'] -= amount * buysell
-            self.our_resources['credits'] -= amount * buysell
-            self.their_resources['credits'] += amount * buysell
+            self.transaction['credits'] -= amount
+            self.our_resources['credits'] -= amount
+            self.their_resources['credits'] += amount
     
     
-class RecruitPanel():
+class ApproachPanel():
     
     def __init__(self):
         
