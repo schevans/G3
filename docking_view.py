@@ -159,7 +159,7 @@ class TradePanel():
         self.our_resources = our_ship.resources.copy()
         self.their_resources = their_ship.resources.copy()         
         self.transaction = dict.fromkeys(self.our_resources, 0)
-        
+
         resource_width = 70
         buy_x = (const.screen_width - label_width )/2 - spacer - button_width
         label_x = (const.screen_width - label_width )/2
@@ -185,17 +185,17 @@ class TradePanel():
                 self.button_map[key] = button
                 
             
-            label_key = (resource, 'Label')
+            label_key = (resource, LabelType.LABEL)
             self.label_map[label_key] = Label((label_x,y), (label_width, button_height), resource.title(), 'gray')
             
-            label_key = (resource, 'OurAmount')
+            label_key = (resource, LabelType.OUR_AMOUNT)
             self.label_map[label_key] = Label((our_x,y), (resource_width, button_height), str(self.our_resources[resource]), 'gray')
-            label_key = (resource, 'TheirAmount')
+            label_key = (resource, LabelType.THEIR_AMOUNT)
             self.label_map[label_key] = Label((their_x,y), (resource_width, button_height), str(self.their_resources[resource]), 'gray')
             
-            label_key = (resource, 'OurTxn')
+            label_key = (resource, LabelType.OUR_TRANSACTION)
             self.label_map[label_key] = Label((our_transaction_x,y), (resource_width, button_height), str(self.transaction[resource]), 'gray')
-            label_key = (resource, 'TheirTxn')
+            label_key = (resource, LabelType.THEIR_TRANSACTION)
             self.label_map[label_key] = Label((their_transaction_x,y), (resource_width, button_height), str(-self.transaction[resource]), 'gray')
             
             
@@ -212,20 +212,44 @@ class TradePanel():
         for key in self.button_map.keys():
             self.button_map[key].process_event(event)
 
-    def update(self):
+
+    def update(self):  
 
         for key in self.button_map.keys():
-            self.button_map[key].update()
+              
+            (resource, button_type) = key 
+            button = self.button_map[key]
+            button.is_disabled = False
+            
+            if button_type != ButtonType.ACCEPT:
+                            
+                if self.our_resources['credits'] < 1:
+                    if button_type == ButtonType.BUY:
+                        button.is_disabled = True
+                        
+                if self.their_resources['credits'] < 1:
+                    if button_type == ButtonType.SELL:
+                        button.is_disabled = True                    
+                
+                if self.our_resources[resource] < 1 and button_type == ButtonType.SELL:
+                    button.is_disabled = True 
+                    
+                if self.their_resources[resource] < 1 and button_type == ButtonType.BUY:
+                    button.is_disabled = True 
+                    
+            button.update()
+            
             
         for key in self.label_map.keys():
             
+            # FIXME: Something wrong here..
             if key != 'Accept':
                 (resource, label_type) =  key
                    
-                self.label_map[(resource, 'OurTxn')].text = str(self.transaction[resource])
-                self.label_map[(resource, 'TheirTxn')].text = str(-self.transaction[resource])
-                self.label_map[(resource, 'OurAmount')].text = str(self.our_resources[resource])
-                self.label_map[(resource, 'TheirAmount')].text = str(self.their_resources[resource])
+                self.label_map[(resource, LabelType.OUR_TRANSACTION)].text = str(self.transaction[resource])
+                self.label_map[(resource, LabelType.THEIR_TRANSACTION)].text = str(-self.transaction[resource])
+                self.label_map[(resource, LabelType.OUR_AMOUNT)].text = str(self.our_resources[resource])
+                self.label_map[(resource, LabelType.THEIR_AMOUNT)].text = str(self.their_resources[resource])
                 
                 
     def draw(self, screen):

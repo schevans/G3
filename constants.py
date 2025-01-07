@@ -27,7 +27,7 @@ planet_size_freq = [4,4,4,4,4,4,5,5,5,5,5,6,6,6,7,7,8,9,10]
 ship_width = 18
 
 initial_resources = {
-    'credits': 10,
+    'credits': 30,
     'fuel': 300,
     'metal': 10,
     'tech': 10
