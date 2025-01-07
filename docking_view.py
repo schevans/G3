@@ -238,20 +238,23 @@ class TradePanel():
          
     def button_callback(self, button):
         (resource, button_type) = self.rev_button_map[button]
-        
-        if button_type == ButtonType.BUY:
-            self.transaction[resource] += 1
-            self.our_resources[resource] += 1
-            self.their_resources[resource] -= 1
-        elif button_type == ButtonType.SELL: 
-            self.transaction[resource] -= 1
-            self.our_resources[resource] -= 1
-            self.their_resources[resource] += 1
-        elif button_type == ButtonType.ACCEPT:
+                    
+        if button_type == ButtonType.ACCEPT:
             self.our_ship.resources = self.our_resources
             self.their_ship.resources = self.their_resources
             self.transaction = dict.fromkeys(self.transaction, 0)
-
+        else:
+            
+            amount = const.fx_rates[self.their_ship.liege][resource]
+            buysell = 1 if button_type == ButtonType.BUY else -1
+            
+            self.transaction[resource] += buysell
+            self.our_resources[resource] += buysell
+            self.their_resources[resource] -= buysell
+            
+            self.transaction['credits'] -= amount * buysell
+            self.our_resources['credits'] -= amount * buysell
+            self.their_resources['credits'] += amount * buysell
     
     
 class RecruitPanel():

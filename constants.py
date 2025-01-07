@@ -66,6 +66,23 @@ upgrade_cost_mults = [ 0, 1, 5, 10]
 
 game_color = (255, 181, 108)
 
+fx_rates = {}
+fx_rates[neutral_capital] = {
+    'fuel': 1,
+    'metal': 2,
+    'tech': 1
+    }
+fx_rates[hostile_capital] = {
+    'fuel': 1,
+    'metal': 1,
+    'tech': 2
+    }
+fx_rates[friendly_capital] = {
+    'fuel': 1,
+    'metal': 1,
+    'tech': 1
+    }
+
 
 
 
