@@ -19,14 +19,10 @@ from gui import Label, Button
 INNER_BORDER_WIDTH = 250
 INNER_BORDER_HIGHT = 100
 
-class Option(Enum):
+class Panel(Enum):
     TRADE = 1
-    RECRUIT = 2
+    APPROACH = 2
     BOARD = 3
-
-
-
-    
 
 class DockingView(GameView):
     
@@ -37,30 +33,32 @@ class DockingView(GameView):
    
         self.panel = None
         
-        button_width = 100
+        button_width = 120
         button_height = 30
+        
+        # FIXME: Not needed I think - array. Button text used in button_callback instead of rev_top_buttons
         self.top_buttons = {}
  
         y = 150
         x = INNER_BORDER_WIDTH
 
-        self.top_buttons['trade'] = Button((x, y), (button_width, button_height), 'Trade', const.game_color, None, False, self.button_callback)
+        self.top_buttons[Panel.TRADE] = Button((x, y), (button_width, button_height), 'Trade', const.game_color, None, False, self.button_callback)
         x = ( const.screen_width - button_width ) / 2
-        self.top_buttons['recruit'] = Button((x, y), (button_width, button_height), 'Recruit', const.game_color, None, False, self.button_callback)
+        self.top_buttons[Panel.APPROACH] = Button((x, y), (button_width, button_height), 'Approach', const.game_color, None, False, self.button_callback)
         x = const.screen_width - INNER_BORDER_WIDTH - button_width
-        self.top_buttons['board'] = Button((x, y), (button_width, button_height), 'Board', const.game_color, None, False, self.button_callback)
+        self.top_buttons[Panel.BOARD] = Button((x, y), (button_width, button_height), 'Board', const.game_color, None, False, self.button_callback)
         
         
         
         
     def button_callback(self, button):
-        option = Option[button.text.upper()]
+        panel = Panel[button.text.upper()]
 
-        if option == Option.TRADE:
+        if panel == Panel.TRADE:
             self.panel = TradePanel(self.current_ship, self.other_ship)
-        elif option == Option.RECRUIT:
+        elif panel == Panel.APPROACH:
             self.panel = RecruitPanel()
-        elif option == Option.BOARD:
+        elif panel == Panel.BOARD:
             self.panel = BoardPanel()
 
         
