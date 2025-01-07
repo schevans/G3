@@ -127,6 +127,7 @@ class ButtonType(Enum):
     BUY = 1
     SELL = 2
     ACCEPT = 3
+    CANCEL = 4
     
 class LabelType(Enum):
     LABEL = 1
@@ -200,7 +201,9 @@ class TradePanel():
             y += button_height + spacer   
             i += 1
     
-        self.button_map[('Accept', ButtonType.ACCEPT)] = Button(((const.screen_width - label_width )/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
+        self.button_map[('Accept', ButtonType.ACCEPT)] = Button((const.screen_width/2 - label_width - spacer/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
+        
+        self.button_map[('Cancel', ButtonType.CANCEL)] = Button((const.screen_width/2 + spacer/2, y), (label_width, button_height), 'Cancel', const.game_color, None, False, self.button_callback)
     
         self.rev_button_map = dict((v, k) for k, v in self.button_map.items())
         self.rev_label_map = dict((v, k) for k, v in self.label_map.items())
@@ -219,7 +222,7 @@ class TradePanel():
             button = self.button_map[key]
             button.is_disabled = False
             
-            if button_type != ButtonType.ACCEPT:
+            if button_type != ButtonType.ACCEPT and button_type != ButtonType.CANCEL:
                             
                 if self.our_resources['credits'] < 1:
                     if button_type == ButtonType.BUY:
@@ -264,6 +267,10 @@ class TradePanel():
         if button_type == ButtonType.ACCEPT:
             self.our_ship.resources = self.our_resources
             self.their_ship.resources = self.their_resources
+            self.transaction = dict.fromkeys(self.transaction, 0)
+        elif button_type == ButtonType.CANCEL:
+            self.our_resources = self.our_ship.resources.copy()
+            self.their_resources = self.their_ship.resources.copy()
             self.transaction = dict.fromkeys(self.transaction, 0)
         else:
             
