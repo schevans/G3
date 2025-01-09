@@ -6,7 +6,6 @@ Created on Mon Nov  4 19:10:48 2024
 @author: steve
 """
 import my_random
-import pygame
 from pygame.math import Vector2
 import math
 import pandas as pd

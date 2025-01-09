@@ -57,7 +57,7 @@ ship_image_number = {
 species_color = {
       neutral_capital: pygame.Color('cyan'),
       friendly_capital: pygame.Color('mediumspringgreen'),
-      hostile_capital: pygame.Color('red'),
+      hostile_capital: pygame.Color('red3'),
       our_capital: pygame.Color('turquoise2')
     }
 

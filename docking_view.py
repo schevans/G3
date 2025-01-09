@@ -13,7 +13,7 @@ import utils
 import constants as const
 from game_view import GameView
 from gui import Label, Button
-
+from exposition import ExpositionBox, ExpositionText
 
 INNER_BORDER_WIDTH = 250
 INNER_BORDER_HIGHT = 100
@@ -56,13 +56,11 @@ class DockingView(GameView):
         if panel == Panel.TRADE:
             self.panel = TradePanel(self.current_ship, self.other_ship)
         elif panel == Panel.APPROACH:
-            self.panel = ApproachPanel()
+            self.panel = ApproachPanel(self.other_ship)
         elif panel == Panel.BOARD:
             self.panel = BoardPanel()
+            
 
-        
-    def trade_button_callback(self, button):
-        pass
 
     def cleanup(self):
         pass
@@ -163,7 +161,7 @@ class TradePanel():
         label_x = (const.screen_width - label_width )/2
         sell_x = (const.screen_width + label_width )/2 + spacer
         
-        offset = 100 - 40
+        offset = 60
         our_x = offset + INNER_BORDER_WIDTH
         their_x = const.screen_width - offset - resource_width - INNER_BORDER_WIDTH
         
@@ -196,9 +194,7 @@ class TradePanel():
             label_key = (resource, LabelType.THEIR_TRANSACTION)
             self.label_map[label_key] = Label((their_transaction_x,y), (resource_width, button_height), str(-self.transaction[resource]), 'gray')
             
-            
             y += button_height + spacer   
-            i += 1
     
         self.button_map[('Accept', ButtonType.ACCEPT)] = Button((const.screen_width/2 - label_width - spacer/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
         
@@ -286,19 +282,31 @@ class TradePanel():
     
 class ApproachPanel():
     
-    def __init__(self):
+    def __init__(self, their_ship):
+        self.their_ship = their_ship
         
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
-    
+        button_width = 400
+        button_height = 50
+        button_x = (const.screen_width - button_width) / 2
+        button_y = 200 + INNER_BORDER_HIGHT
+        
+        text = 'Approach Lord ' + self.their_ship.name
+        self.button = Button((button_x, button_y), (button_width, button_height), text, const.game_color, None, False, self.callback)
+
+    def callback(self, button):
+        self.their_ship.approach()
+        self.button.is_disabled = True
+        
     def process_event(self, event):
-        pass
+        self.button.process_event(event)
 
     def update(self):
-        pass
+        self.button.update()
     
     def draw(self, screen):
-        pass
+        self.button.draw(self.surface)
     
 
 class BoardPanel():

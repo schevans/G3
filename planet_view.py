@@ -59,10 +59,8 @@ class PlanetView(GameView):
             if event.key == pygame.K_w:
                 for mob in self.mobs:
                     if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
-                        mob.is_npc = False
-                        mob.liege = 'Hero'
-                        mob.tmpship.is_npc = False  # FIXME: Better solution
-                        mob.tmpship.liege = 'Hero'
+                        mob.recruit()
+                        mob.tmpship.recruit()  # FIXME: Better solution (tmpship - conjoined with orbital_ship)
                         
         keys = pygame.key.get_pressed() 
         self.mobs[0].acceleration = 0
