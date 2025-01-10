@@ -80,19 +80,18 @@ class GameView():
         
         self.selected_item = None
         
-        # FIXME: All this 
-        self.show_exposition = True
+        self.show_help = True
         self.exposition = None 
         self.tmp_ex = 0      # FIXME: Remove
         
     def process_event(self, event):
         
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_x and self.show_exposition:
+            if event.key == pygame.K_x and self.show_help:  # FIXME: Remove
                 self.exposition = ExpositionBox(list(ExpositionText)[self.tmp_ex], self.exposition_ok_callback, self.exposition_checkbox_callback)
                 self.tmp_ex += 1
                 
-        if self.show_exposition and self.exposition:
+        if self.show_help and self.exposition:
            self.exposition.process_event(event)
           
             
@@ -101,7 +100,7 @@ class GameView():
         for mob in self.mobs:
             mob.update()
             
-        if self.show_exposition and self.exposition:
+        if self.show_help and self.exposition:
             self.exposition.update()
         
     def draw(self, screen):
@@ -136,7 +135,7 @@ class GameView():
             self.draw_mouseover_text(screen, self.get_mouse_text())
             
             
-        if self.show_exposition and self.exposition:
+        if self.show_help and self.exposition:
             self.exposition.draw(screen)
 
 
@@ -198,7 +197,7 @@ class GameView():
         self.exposition = None
     
     def exposition_checkbox_callback(self, is_checked):
-        self.show_exposition = is_checked
+        self.show_help = is_checked
  
 class ViewManager():
     

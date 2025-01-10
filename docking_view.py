@@ -13,10 +13,9 @@ import utils
 import constants as const
 from game_view import GameView
 from gui import Button
-from docking_panels import TradePanel, ApproachPanel, BoardPanel
+from docking_panels import TradePanel, ApproachPanel, BoardPanel, INNER_BORDER_WIDTH
+from exposition import ExpositionBox, ExpositionText
 
-INNER_BORDER_WIDTH = 250
-INNER_BORDER_HIGHT = 100
 
 class Panel(Enum):
     TRADE = 1
@@ -60,6 +59,7 @@ class DockingView(GameView):
         elif panel == Panel.BOARD:
             self.panel = BoardPanel()
             
+        self.exposition = ExpositionBox(ExpositionText.NO, self.exposition_ok_callback, self.exposition_ok_callback)
 
 
     def cleanup(self):
@@ -77,6 +77,8 @@ class DockingView(GameView):
         
     def process_event(self, event):
              
+        GameView.process_event(self, event)
+        
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_b:
                 self.next_view = (self.shared_dict['prev_view'], self.shared_dict)
@@ -88,6 +90,8 @@ class DockingView(GameView):
             self.panel.process_event(event)
                 
     def update(self):
+        
+        GameView.update(self)
         
         for key in self.top_buttons:
             self.top_buttons[key].update()
@@ -119,6 +123,8 @@ class DockingView(GameView):
         if self.panel:
             self.panel.draw(screen)
             screen.blit(self.panel.surface,  (0,0))
+
+        GameView.draw_objects(self, screen) 
 
 
 

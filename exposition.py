@@ -35,7 +35,9 @@ class ExpositionText(Enum):
     C = 4
     D = 5
     E = 6  
-
+    NO = 7
+    YES = 8
+    NO_THANKS = 9
 
 class ExpositionBox():
     
@@ -45,7 +47,10 @@ class ExpositionBox():
         ExpositionText.B: 'story/l15w.txt',
         ExpositionText.C: 'story/l60w.txt',
         ExpositionText.D: 'story/l1p.txt',
-        ExpositionText.D: 'story/lall.txt'
+        ExpositionText.D: 'story/lall.txt',
+        ExpositionText.NO: 'story/no_test.txt',
+        ExpositionText.YES: 'story/yes_test.txt',
+        ExpositionText.NO_THANKS: 'story/no_thanks_test.txt'
         } 
         
 
@@ -111,7 +116,7 @@ class ExpositionBox():
         self.button = Button(button_pos, (100,30), button_label, const.game_color, None, False, ok_callback)
         
         checkbox_pos = Vector2(self.inner_rect[0] + borders/2, self.inner_rect[1]  + self.inner_rect[3] - borders)
-        self.checkbox = CheckBox(checkbox_pos, (20, 20), 'Show Exposition', const.game_color, True, self.checkbox_callback)
+        self.checkbox = CheckBox(checkbox_pos, (20, 20), 'Show Help', const.game_color, True, self.checkbox_callback)
         
     def ok_callback_intercept(self, button):
         

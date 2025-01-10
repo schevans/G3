@@ -13,7 +13,7 @@ import utils
 import constants as const
 from gui import Label, Button
 
-# FIXME: Dups
+
 INNER_BORDER_WIDTH = 250
 INNER_BORDER_HIGHT = 100
 
