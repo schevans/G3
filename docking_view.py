@@ -120,11 +120,16 @@ class DockingView(GameView):
         other_ship_image = utils.scale_and_monochrome_ship_image(self.other_ship)
         
         width, height = current_ship_image.get_size()
-        screen.blit(current_ship_image, (0, const.screen_height/2 - height/2 + 60))            
+        screen.blit(current_ship_image, (30, const.screen_height/2 - height/2 + 60))            
         
         width, height = other_ship_image.get_size()
         screen.blit(other_ship_image, (const.screen_width - width, const.screen_height/2 - height/2 + 60))    
         
+        faded_gray = (25, 25, 25)   # FIXME: DUP in utils.scale_and_monochrome_ship_image
+        rect = ((30+width, (3*const.screen_height/5) - 60), (const.screen_width - width*2 + 60, 60))
+             
+        pygame.draw.rect(screen, faded_gray, rect)
+
         
     def draw(self, screen):
 
