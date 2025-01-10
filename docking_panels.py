@@ -178,24 +178,19 @@ class TradePanel():
     
 class ApproachPanel():
     
-    def __init__(self, their_ship):
-        self.their_ship = their_ship
+    def __init__(self, other_ship, callback):
         
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
-        text = 'Approach ' + self.their_ship.description()       
+        text = 'Approach ' + other_ship.description()       
         text_width = utils.fonts[20].size(text)[0]
         button_width = text_width + 60
         button_height = 50
         button_x = (const.screen_width - button_width) / 2
-        button_y = 200 + INNER_BORDER_HIGHT
+        button_y = 130 + INNER_BORDER_HIGHT
         
-        self.button = Button((button_x, button_y), (button_width, button_height), text, const.game_color, None, False, self.callback)
+        self.button = Button((button_x, button_y), (button_width, button_height), text, const.game_color, None, False, callback)
 
-
-    def callback(self, button):
-        self.their_ship.approach()
-        self.button.is_disabled = True
         
     def process_event(self, event):
         self.button.process_event(event)

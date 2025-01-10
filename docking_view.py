@@ -47,6 +47,11 @@ class DockingView(GameView):
         self.top_buttons[Panel.BOARD] = Button((x, y), (button_width, button_height), 'Board', const.game_color, None, False, self.button_callback)
         
         
+    def approach_callback(self, button):
+        
+        self.other_ship.approach()
+        button.is_disabled = True
+        self.exposition = ExpositionBox(ExpositionText.NO, self.exposition_ok_callback, self.exposition_ok_callback)
         
         
     def button_callback(self, button):
@@ -55,11 +60,11 @@ class DockingView(GameView):
         if panel == Panel.TRADE:
             self.panel = TradePanel(self.current_ship, self.other_ship)
         elif panel == Panel.APPROACH:
-            self.panel = ApproachPanel(self.other_ship)
+            self.panel = ApproachPanel(self.other_ship, self.approach_callback)
         elif panel == Panel.BOARD:
             self.panel = BoardPanel()
             
-        self.exposition = ExpositionBox(ExpositionText.NO, self.exposition_ok_callback, self.exposition_ok_callback)
+       
 
 
     def cleanup(self):
