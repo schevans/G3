@@ -49,9 +49,17 @@ class DockingView(GameView):
         
     def approach_callback(self, button):
         
-        self.other_ship.approach()
+        expo_enum = ExpositionText.NO
+        if self.other_ship.liege == const.friendly_capital:
+            expo_enum = ExpositionText.YES
+            self.other_ship.recruit() 
+        elif self.other_ship.liege == const.neutral_capital:
+            expo_enum = ExpositionText.NO_THANKS
+            
+        self.other_ship.recruit()   # FIXME: TEMP - REMOVE (working correctly above)
+        
         button.is_disabled = True
-        self.exposition = ExpositionBox(ExpositionText.NO, self.exposition_ok_callback, self.exposition_ok_callback)
+        self.exposition = ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_ok_callback)
         
         
     def button_callback(self, button):
@@ -68,7 +76,7 @@ class DockingView(GameView):
 
 
     def cleanup(self):
-        pass
+        self.panel = None
         
     
     def startup(self, shared_dict):

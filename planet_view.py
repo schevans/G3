@@ -59,8 +59,11 @@ class PlanetView(GameView):
             if event.key == pygame.K_w:
                 for mob in self.mobs:
                     if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
-                        mob.recruit()
                         mob.tmpship.recruit()  # FIXME: Better solution (tmpship - conjoined with orbital_ship)
+                        self.shared_dict['prev_view'] = View.PLANET
+                        self.shared_dict['other_ship'] = mob
+                        self.next_view = (View.DOCKING, self.shared_dict)
+                        
                         
         keys = pygame.key.get_pressed() 
         self.mobs[0].acceleration = 0

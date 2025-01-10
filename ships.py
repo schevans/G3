@@ -135,14 +135,7 @@ class Ship():
         for resource in self.fit.systems[system].upgrade:
             self.resources[resource] -= self.fit.systems[system].get_upgrade_cost(self.fit.level(system)+1, resource)
              
-    def approach(self):
-        # FIXME: TEMP
-        #if self.their_ship.liege == const.friendly_capital:
-        self.recruit()
-        
-        return True # FIXME: TEMP
-        
-            
+  
     def recruit(self):
         self.is_npc = False
         self.liege = 'Hero'
