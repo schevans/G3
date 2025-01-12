@@ -76,12 +76,12 @@ class GalaxyView(GameView):
             self.exposition.update()
         
         for mob in self.mobs:
-            if not mob.is_npc or self.current_ship.is_moving() or self.is_waiting:
+            if self.my_ship.is_moving() or self.is_waiting:
                 mob.update()
         
         self.get_selected_item(systems.syslist + self.mobs)
         
-        if self.current_ship == self.myship and ( self.current_ship.is_moving() or self.is_waiting):
+        if self.current_ship == self.my_ship and ( self.current_ship.is_moving() or self.is_waiting):
             self.master_timer += 1
             
         
@@ -90,10 +90,10 @@ class GalaxyView(GameView):
             
             suitable = []
             for ship in self.ships:
-                if ship.is_npc and ship.liege == const.hostile_capital and ship.xy != const.home:
+                if ship.is_npc and ship.liege == const.hostile_capital and ship.xy != const.home_xy:
                     suitable.append(ship)
             
-            suitable.sort(key=lambda x: x.xy.distance_to(const.home))
+            suitable.sort(key=lambda x: x.xy.distance_to(const.home_xy))
             
             fresh_mob = suitable[0]
 
@@ -104,7 +104,7 @@ class GalaxyView(GameView):
         for mob in self.mobs:
             if mob.is_npc and not mob.is_moving():
                 self.mobs.remove(mob)
-                if mob.xy == const.home:
+                if mob.xy == const.home_xy:
                     self.threat_level += 1
     
     def draw(self, screen):

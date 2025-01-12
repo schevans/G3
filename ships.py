@@ -28,8 +28,10 @@ class Ship():
 
         if system:
             self.liege = const.species[system.system_type]
+            self.color = const.species_color[self.liege]
         else:
             self.liege = const.our_capital
+            self.color = pygame.Color('white')
         
         if not fit_string:
             fit_string = '00000'
@@ -48,8 +50,8 @@ class Ship():
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying' + ship_image_number + '.png'))
         
         if self.is_npc:
-            self.image_still.change_color(pygame.Color('white'), const.species_color[self.liege])
-            self.image_flying.change_color(pygame.Color('white'), const.species_color[self.liege])
+            self.image_still.change_color(pygame.Color('white'), self.color)
+            self.image_flying.change_color(pygame.Color('white'), self.color)
 
         self.image = self.image_still
         
@@ -93,6 +95,9 @@ class Ship():
         self.image.update(self.xy, self.heading)
     
     def draw(self, screen):
+
+        if self.destination:    
+            pygame.draw.line(screen, self.color, self.xy, self.destination.xy, 1)
 
         self.image.draw(screen)
 

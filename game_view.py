@@ -46,12 +46,12 @@ class GameView():
     
     home_system = systems.syslist[0]
 
-    myship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-const.free_space_in_corners), None, None, False)
-    myship.is_current = True
+    my_ship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-const.free_space_in_corners), None, None, False)
+    my_ship.is_current = True
 
 
 
-    shiplist = [ myship ]
+    shiplist = [ my_ship ]
 
     for system in systems.syslist:
         if system.system_type != 'Uninhabited' and system.name != const.our_capital:
@@ -72,7 +72,7 @@ class GameView():
         self.next_view = None     
         self.font = utils.fonts[20]
         self.ships = GameView.shiplist
-        self.current_ship = GameView.myship
+        self.current_ship = GameView.my_ship
         
         self.mobs = []
         self.master_timer = 1
@@ -212,7 +212,7 @@ class ViewManager():
         self.view = self.view_dict[start_view]
         
         shared_dict = {
-            'current_ship': GameView.myship,
+            'current_ship': GameView.my_ship,
             'system': None,
             'planet': None,
             'prev_view': None
