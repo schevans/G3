@@ -33,7 +33,7 @@ star_names = star_names.Name.tolist()
 def init_systems(num_systems):
         
     # home system
-    syslist.append(System(const.our_capital, const.home, HOME_STAR_SIZE, const.species_color[const.our_capital], 'Home'))
+    syslist.append(System(const.our_capital, const.home_xy, HOME_STAR_SIZE, const.species_color[const.our_capital], 'Home'))
     
     # capitals
     syslist.append(System(const.neutral_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX), const.species_color[const.neutral_capital], 'Neutral')) # FIXME: Much redundancy

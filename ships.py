@@ -29,7 +29,7 @@ class Ship():
         if system:
             self.liege = const.species[system.system_type]
         else:
-            self.liege = 'Home'
+            self.liege = const.our_capital
         
         if not fit_string:
             fit_string = '00000'

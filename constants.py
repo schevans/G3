@@ -17,7 +17,7 @@ random_seed = 43
 
 free_space_in_corners = 20
 
-home = Vector2(screen_width - free_space_in_corners, free_space_in_corners)
+home_xy = Vector2(screen_width - free_space_in_corners, free_space_in_corners)
 
 num_stars = 600
 num_systems = 96
@@ -51,14 +51,14 @@ ship_image_number = {
       neutral_capital: 3,
       friendly_capital: 2,
       hostile_capital: 5,
-      'Home': 1  
+      our_capital: 1  
 }
 
 species_color = {
       neutral_capital: pygame.Color('cyan'),
       friendly_capital: pygame.Color('mediumspringgreen'),
       hostile_capital: pygame.Color('red3'),
-      our_capital: pygame.Color('turquoise2')
+      our_capital: pygame.Color('white')
     }
 
 
