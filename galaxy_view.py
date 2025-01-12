@@ -76,7 +76,7 @@ class GalaxyView(GameView):
             self.exposition.update()
         
         for mob in self.mobs:
-            if self.my_ship.is_moving() or self.is_waiting:
+            if not mob.is_npc or self.current_ship.is_moving() or self.is_waiting:
                 mob.update()
         
         self.get_selected_item(systems.syslist + self.mobs)
