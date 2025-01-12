@@ -130,6 +130,16 @@ class DockingView(GameView):
              
         pygame.draw.rect(screen, faded_gray, rect)
 
+        text_y = const.screen_height - 50
+        text_surface = self.font.render(self.current_ship.description(), True, 'white')    
+        text_width = self.font.size(self.current_ship.description())[0]
+        text_x = 30 + width/2 - text_width/2
+        screen.blit(text_surface, (text_x, text_y))
+        
+        text_surface = self.font.render(self.other_ship.description(), True, 'white')    
+        text_width = self.font.size(self.other_ship.description())[0]
+        text_x = const.screen_width - width/2 - text_width/2
+        screen.blit(text_surface, (text_x, text_y))
         
     def draw(self, screen):
 
