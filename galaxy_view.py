@@ -32,11 +32,11 @@ class GalaxyView(GameView):
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
         self.current_ship = self.shared_dict['current_ship']
-              
+          
         for ship in self.ships:
             if ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
-                if ship.system:
+                if self.current_ship.system and ship.system == self.current_ship.system:
                     ship.reset_xy(ship.system.xy)
 
         self.is_waiting = False
@@ -76,7 +76,7 @@ class GalaxyView(GameView):
             self.exposition.update()
         
         for mob in self.mobs:
-            if not mob.is_npc or self.current_ship.is_moving() or self.is_waiting:
+            if self.my_ship.is_moving() or self.is_waiting:
                 mob.update()
         
         self.get_selected_item(systems.syslist + self.mobs)

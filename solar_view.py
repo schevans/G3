@@ -49,6 +49,7 @@ class SolarView(GameView):
                 self.next_view = (View.GALAXY, self.shared_dict)
             if event.key == pygame.K_p:
                 if self.current_ship.planet and not self.current_ship.is_moving():
+                    self.current_ship.destination = None
                     self.shared_dict['planet'] = self.current_ship.planet
                     self.next_view = (View.PLANET, self.shared_dict)
             if  event.key == pygame.K_j:   

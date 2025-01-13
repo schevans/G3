@@ -114,6 +114,7 @@ class Ship():
     def reset_xy(self, xy):
         self.xy = Vector2(xy)
         self.destination = None
+        self.image.update(self.xy, self.heading)
       
 
     def description(self):
