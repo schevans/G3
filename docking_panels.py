@@ -156,8 +156,8 @@ class TradePanel():
         (resource, button_type) = self.rev_button_map[button]
                     
         if button_type == ButtonType.ACCEPT:
-            self.our_ship.resources = self.our_resources
-            self.their_ship.resources = self.their_resources
+            self.our_ship.resources = self.our_resources.copy()
+            self.their_ship.resources = self.their_resources.copy()
             self.transaction = dict.fromkeys(self.transaction, 0)
         elif button_type == ButtonType.CANCEL:
             self.our_resources = self.our_ship.resources.copy()
