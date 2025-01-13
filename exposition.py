@@ -26,7 +26,7 @@ MIN_BOX_WIDTH = 800
 MIN_BOX_HEIGHT = 140
 
 
-increment = 5
+increment = 5.5
 
 class ExpositionText(Enum):
     OPENING = 1
@@ -54,7 +54,7 @@ class ExpositionBox():
         } 
         
 
-    def __init__(self, text_enum, ok_callback, checkbox_callback):
+    def __init__(self, text_enum, ok_callback, checkbox_callback, show_help_checkbox=True):
 
         self.checkbox_callback = checkbox_callback
         self.font = utils.fonts[20]
@@ -115,8 +115,11 @@ class ExpositionBox():
         button_pos = Vector2(const.screen_width / 2 - button_width / 2, self.inner_rect[1]+self.inner_rect[3] -button_height*2 )
         self.button = Button(button_pos, (100,30), button_label, const.game_color, None, False, ok_callback)
         
-        checkbox_pos = Vector2(self.inner_rect[0] + borders/2, self.inner_rect[1]  + self.inner_rect[3] - borders)
-        self.checkbox = CheckBox(checkbox_pos, (20, 20), 'Show Help', const.game_color, True, self.checkbox_callback)
+        self.checkbox = None
+        if show_help_checkbox:
+            checkbox_pos = Vector2(self.inner_rect[0] + borders/2, self.inner_rect[1]  + self.inner_rect[3] - borders)
+            self.checkbox = CheckBox(checkbox_pos, (20, 20), 'Show Help', const.game_color, True, self.checkbox_callback)
+        
         
     def ok_callback_intercept(self, button):
         
@@ -165,7 +168,8 @@ class ExpositionBox():
         
         self.button.process_event(event)
         
-        self.checkbox.process_event(event)
+        if self.checkbox:
+            self.checkbox.process_event(event)
         
     def update(self):
         
@@ -178,7 +182,7 @@ class ExpositionBox():
                 break
             
         # enable button once text is rendered
-        if self.text_color[self.current_page-1][-1][0] != 255:
+        if self.text_color[self.current_page-1][-1][0] < 220:
             self.button.is_disabled = True
         else:
             self.button.is_disabled = False
@@ -222,15 +226,20 @@ class ExpositionBox():
         display_text = self.text[self.current_page-1]
         colors = self.text_color[self.current_page-1]
 
-        x_offset = inner_rect[0]
+        (text_width, text_height) = self.font.size(display_text[0])
+        
         y_offset = inner_rect[1]
-        font_height = self.font.size(display_text[0])[1]
+        x_offset = inner_rect[0]
+        if len(display_text) == 1:
+            x_offset = const.screen_width/2 - text_width/2
+
         for i in range(0, len(display_text)):
             text_surface = self.font.render(display_text[i], True, pygame.Color(colors[i]), 'black')
-            self.surface.blit(text_surface,  (x_offset, y_offset + font_height * (i)))
+            self.surface.blit(text_surface,  (x_offset, y_offset + text_height * (i)))
         
         # checkbox
-        self.checkbox.draw(self.surface)
+        if self.checkbox:
+            self.checkbox.draw(self.surface)
         
         screen.blit(self.surface,(0,0))
 
