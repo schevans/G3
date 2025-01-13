@@ -59,7 +59,7 @@ class DockingView(GameView):
         self.other_ship.recruit()   # FIXME: TEMP - REMOVE (working correctly above)
         
         button.is_disabled = True
-        self.exposition = ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_ok_callback)
+        self.exposition = ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_ok_callback, False)
         
         
     def button_callback(self, button):
