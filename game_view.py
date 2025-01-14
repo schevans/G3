@@ -91,6 +91,11 @@ class GameView():
                 self.exposition = ExpositionBox(list(ExpositionText)[self.tmp_ex], self.exposition_ok_callback, self.exposition_checkbox_callback)
                 self.tmp_ex += 1
                 
+            if event.key == pygame.K_b:
+                if self.shared_dict['history']:
+                    self.shared_dict['history'].pop()   # clear the one we're leaving
+                    self.next_view = (self.shared_dict['history'].pop(), self.shared_dict)
+                
         if self.show_help and self.exposition:
            self.exposition.process_event(event)
           
@@ -215,7 +220,7 @@ class ViewManager():
             'current_ship': GameView.my_ship,
             'system': None,
             'planet': None,
-            'prev_view': None
+            'history': []
             }
         
         self.view.startup(shared_dict)

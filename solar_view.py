@@ -28,6 +28,7 @@ class SolarView(GameView):
         
     def startup(self, shared_dict):  
         self.shared_dict = shared_dict
+        self.shared_dict['history'].append(View.SOLAR)
         self.current_ship = self.shared_dict['current_ship']
         self.system = shared_dict['system']
 
@@ -43,6 +44,9 @@ class SolarView(GameView):
                 self.mobs.append(ship)
         
     def process_event(self, event):
+        
+        GameView.process_event(self, event)
+        
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_g:
                 self.shared_dict['system'] = self.system

@@ -28,6 +28,7 @@ class PlanetView(GameView):
 
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
+        self.shared_dict['history'].append(View.PLANET)
         self.current_ship = self.shared_dict['current_ship']
         self.planet = shared_dict['planet']
         self.planet_r = self.planet.size*8
@@ -50,6 +51,9 @@ class PlanetView(GameView):
         self.is_paused = False 
 
     def process_event(self, event):
+        
+        GameView.process_event(self, event)
+        
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
                 self.shared_dict['system'] = self.planet.system
@@ -60,7 +64,6 @@ class PlanetView(GameView):
                 for mob in self.mobs:
                     if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
                         mob.tmpship.recruit()  # FIXME: Better solution (tmpship - conjoined with orbital_ship)
-                        self.shared_dict['prev_view'] = View.PLANET
                         self.shared_dict['other_ship'] = mob
                         self.next_view = (View.DOCKING, self.shared_dict)
                         

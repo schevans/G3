@@ -31,6 +31,7 @@ class GalaxyView(GameView):
         
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
+        self.shared_dict['history'].append(View.GALAXY)
         self.current_ship = self.shared_dict['current_ship']
           
         for ship in self.ships:
@@ -54,10 +55,8 @@ class GalaxyView(GameView):
                 if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
                     self.current_ship.destination = self.selected_item
             if event.key == pygame.K_f:
-                self.shared_dict['prev_view'] = View.GALAXY
                 self.next_view = (View.FITTING, self.shared_dict)
             if event.key == pygame.K_w:
-                self.shared_dict['prev_view'] = View.GALAXY
                 self.shared_dict['other_ship'] = GameView.shiplist[8]       # FIXME: Temp
                 self.next_view = (View.DOCKING, self.shared_dict)
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  

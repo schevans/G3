@@ -11,7 +11,7 @@ from enum import Enum
 
 import utils
 import constants as const
-from game_view import GameView
+from game_view import GameView, View
 from gui import Button
 from docking_panels import TradePanel, ApproachPanel, BoardPanel, INNER_BORDER_WIDTH
 from exposition import ExpositionBox, ExpositionText
@@ -81,6 +81,7 @@ class DockingView(GameView):
     
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
+        self.shared_dict['history'].append(View.DOCKING)
         self.current_ship = self.shared_dict['current_ship']
         self.other_ship = self.shared_dict['other_ship']
         
@@ -91,10 +92,6 @@ class DockingView(GameView):
     def process_event(self, event):
              
         GameView.process_event(self, event)
-        
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_b:
-                self.next_view = (self.shared_dict['prev_view'], self.shared_dict)
             
         for key in self.top_buttons.keys():
             self.top_buttons[key].process_event(event)

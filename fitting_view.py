@@ -6,12 +6,11 @@ Created on Mon Dec  2 18:53:23 2024
 @author: steve
 """
 
-import pygame
 from pygame.math import Vector2
 
 import utils
 import constants as const
-from game_view import GameView
+from game_view import GameView, View
 from gui import Label, Button
 
 got_color = 'green4'
@@ -78,13 +77,13 @@ class FittingView(GameView):
         
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
+        self.shared_dict['history'].append(View.FITTING)
         self.current_ship = self.shared_dict['current_ship']
         
     def process_event(self, event):
-             
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_b:
-                self.next_view = (self.shared_dict['prev_view'], self.shared_dict)
+
+        GameView.process_event(self, event)   
+
         for button in self.button_map.keys():
             button.process_event(event)
             
