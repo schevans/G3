@@ -133,14 +133,15 @@ class TradePanel():
             
             
         for key in self.label_map.keys():
+            (resource, label_type) =  key
             
-            # FIXME: Something wrong here..
-            if key != 'Accept':
-                (resource, label_type) =  key
-                   
+            if label_type == LabelType.OUR_TRANSACTION:
                 self.label_map[(resource, LabelType.OUR_TRANSACTION)].text = str(self.transaction[resource])
+            elif label_type == LabelType.THEIR_TRANSACTION:
                 self.label_map[(resource, LabelType.THEIR_TRANSACTION)].text = str(-self.transaction[resource])
+            elif label_type == LabelType.OUR_AMOUNT:
                 self.label_map[(resource, LabelType.OUR_AMOUNT)].text = str(self.our_resources[resource])
+            elif label_type == LabelType.THEIR_AMOUNT:
                 self.label_map[(resource, LabelType.THEIR_AMOUNT)].text = str(self.their_resources[resource])
                 
                 
