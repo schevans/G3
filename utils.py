@@ -113,13 +113,13 @@ fonts = {
         
 
 def numbers_to_roman(i):
-    if i == 1:
+    if i == 0:
         return 'I'
-    elif i == 2:
+    elif i == 1:
         return 'II'
-    elif i == 3:
+    elif i == 2:
         return 'III'
-    elif i == 4:
+    elif i == 3:
         return 'IV'
 
 

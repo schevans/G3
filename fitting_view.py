@@ -63,7 +63,7 @@ class FittingView(GameView):
                     color = unavilable_color
                     mousover_text += upgrade_cost
                     
-                button = Button((x, y), (button_width, 30), utils.numbers_to_roman(level+1), color, mousover_text, is_disabled, self.button_callback)
+                button = Button((x, y), (button_width, 30), utils.numbers_to_roman(level), color, mousover_text, is_disabled, self.button_callback)
                 self.button_map[button] = (key, level)
                 self.rev_button_map[(key, level)] = button
                 
