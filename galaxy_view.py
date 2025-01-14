@@ -54,8 +54,6 @@ class GalaxyView(GameView):
             if event.key == pygame.K_j:   
                 if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
                     self.current_ship.destination = self.selected_item
-            if event.key == pygame.K_f:
-                self.next_view = (View.FITTING, self.shared_dict)
             if event.key == pygame.K_w:
                 self.shared_dict['other_ship'] = GameView.shiplist[8]       # FIXME: Temp
                 self.next_view = (View.DOCKING, self.shared_dict)

@@ -95,7 +95,9 @@ class GameView():
                 if self.shared_dict['history']:
                     self.shared_dict['history'].pop()   # clear the one we're leaving
                     self.next_view = (self.shared_dict['history'].pop(), self.shared_dict)
-                
+            if event.key == pygame.K_f:
+                self.next_view = (View.FITTING, self.shared_dict)
+                        
         if self.show_help and self.exposition:
            self.exposition.process_event(event)
           
