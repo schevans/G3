@@ -60,6 +60,11 @@ class GalaxyView(GameView):
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
                 self.current_ship = self.do_ship_swap(self.current_ship, event.key)
                 self.shared_dict['current_ship'] = self.current_ship
+            if event.key == pygame.K_q: # TEMP
+                self.current_ship.planet = GameView.TEMP_PLANET
+                self.current_ship.system = GameView.TEMP_SYSTEM
+                self.shared_dict['planet'] = GameView.TEMP_PLANET
+                self.next_view = (View.PLANET, self.shared_dict)
 
                     
         keys = pygame.key.get_pressed() 

@@ -61,12 +61,17 @@ class GameView():
             else:
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
     
-    
+    ### TEMP TEMP ###
+    TEMP_PLANET = None
+    TEMP_SYSTEM = None
     for ship in shiplist:
         if ship.name == 'Fulu':
             ship.is_npc = False
             ship.liege = hero_name
-    
+        if ship.name == 'Muphrid':
+            TEMP_PLANET = ship.planet
+            TEMP_SYSTEM = ship.system
+    ### TEMP TEMP ###
 
     def __init__(self):
         self.next_view = None     

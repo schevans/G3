@@ -16,6 +16,10 @@ import my_random
 from game_view import GameView, View
 
 DOCK_RADIUS = 15
+LOCK_RADIUS = 10
+
+LEFT_MOUSE_CLICK = 1
+RIGHT_MOUSE_CLICK = 3
 
 class PlanetView(GameView):
 
@@ -66,7 +70,10 @@ class PlanetView(GameView):
                         mob.tmpship.recruit()  # FIXME: Better solution (tmpship - conjoined with orbital_ship)
                         self.shared_dict['other_ship'] = mob
                         self.next_view = (View.DOCKING, self.shared_dict)
-                        
+        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
+        if event.type == pygame.KEYDOWN and pygame.K_TAB:
+            self.lock_target()
+                
                         
         keys = pygame.key.get_pressed() 
         self.mobs[0].acceleration = 0
@@ -114,11 +121,21 @@ class PlanetView(GameView):
 
 
 
+    def lock_target(self):
+        
+        mousepos = pygame.mouse.get_pos()
+        
+        for mob in self.mobs:
+            if mob.xy.distance_to(mousepos) <= LOCK_RADIUS:
+                if not utils.line_intersects_circle(self.current_ship.xy, mob.xy, const.screen_center, self.planet_r):
+                    self.mobs[0].target = mob
+        
 
         
-        
-        
-        
+
+
+
+
         
         
         

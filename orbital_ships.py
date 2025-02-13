@@ -6,6 +6,7 @@ Created on Thu Nov 14 18:58:26 2024
 @author: steve
 """
 import math 
+import pygame
 from pygame.math import Vector2
 
 import ships        
@@ -25,8 +26,8 @@ class OrbitalShip(ships.Ship):
         self.r = r
         self.p = p
         self.acceleration = 0
-        
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
+        self.target = None    
         
         self.mass = 7000 / planet.size # FIXME
         
@@ -56,7 +57,12 @@ class OrbitalShip(ships.Ship):
             
         self.image.update(self.xy, self.heading+reverse)
     
-
+    def draw(self, screen):
+        
+        self.tmpship.draw(screen)       # FIXME: Hmmm. Might be useful? Linked to mobs[0] in planet_view
+        
+        if self.target:
+            pygame.draw.circle(screen, 'green', self.target.xy, 20, 2)
 
 
 
