@@ -21,6 +21,29 @@ LOCK_RADIUS = 10
 LEFT_MOUSE_CLICK = 1
 RIGHT_MOUSE_CLICK = 3
 
+
+def unobstructed_view(xy1, xy2, cpt, r):
+    
+    if xy1.distance_to(cpt) > xy1.distance_to(xy2):
+        return True
+    else:
+        return not line_intersects_circle(xy1, xy2, cpt, r)
+            
+def line_intersects_circle(xy1, xy2, cpt, r):
+    
+    x1 = xy1[0] - cpt[0]
+    y1 = xy1[1] - cpt[1]
+    x2 = xy2[0] - cpt[0]
+    y2 = xy2[1] - cpt[1]
+    
+    dx = x2 - x1
+    dy = y2 - y1
+    dr = math.sqrt(dx*dx + dy*dy)
+    D = x1 * y2 - x2 * y1
+    discriminant = r*r*dr*dr - D*D
+    
+    return discriminant >= 0
+
 class PlanetView(GameView):
 
     def __init__(self):
@@ -87,6 +110,11 @@ class PlanetView(GameView):
             GameView.update(self)
  
         self.get_selected_item(self.mobs)
+        
+        for mob in self.mobs:
+            if mob.target:
+                if not unobstructed_view(mob.xy, mob.target.xy, const.screen_center, self.planet_r):
+                    mob.target = None
 
     def draw(self, screen):
         
@@ -119,6 +147,7 @@ class PlanetView(GameView):
                 return self.get_random_r()
         return r
 
+   
 
 
     def lock_target(self):
@@ -127,7 +156,7 @@ class PlanetView(GameView):
         
         for mob in self.mobs:
             if mob.xy.distance_to(mousepos) <= LOCK_RADIUS:
-                if not utils.line_intersects_circle(self.current_ship.xy, mob.xy, const.screen_center, self.planet_r):
+                if unobstructed_view(self.current_ship.xy, mob.xy, const.screen_center, self.planet_r):
                     self.mobs[0].target = mob
         
 

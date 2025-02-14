@@ -140,21 +140,8 @@ def scale_and_monochrome_ship_image(ship):
                       
     return pygame.transform.scale_by(ship_image, const.screen_height/height)
     
-   
-def line_intersects_circle(l1, l2, cpt, r):
-    
-    x1 = l1[0] - cpt[0]
-    y1 = l1[1] - cpt[1]
-    x2 = l2[0] - cpt[0]
-    y2 = l2[1] - cpt[1]
-    
-    dx = x2 - x1
-    dy = y2 - y1
-    dr = math.sqrt(dx*dx + dy*dy)
-    D = x1 * y2 - x2 * y1
-    discriminant = r*r*dr*dr - D*D
-    
-    return discriminant >= 0
+
+
 
 
 

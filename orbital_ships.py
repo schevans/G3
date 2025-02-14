@@ -14,6 +14,8 @@ import constants as const
 
 G = 1
 
+red_fade = pygame.Color(207, 1, 0, 64)
+
 class OrbitalShip(ships.Ship):
     
     def __init__(self, ship, planet, r, p ):
@@ -62,7 +64,9 @@ class OrbitalShip(ships.Ship):
         self.tmpship.draw(screen)       # FIXME: Hmmm. Might be useful? Linked to mobs[0] in planet_view
         
         if self.target:
-            pygame.draw.circle(screen, 'green', self.target.xy, 20, 2)
+            pygame.draw.circle(screen, red_fade, self.target.xy, 20, 1)
+            pygame.draw.line(screen, red_fade, self.xy, self.target.xy)
+
 
 
 
