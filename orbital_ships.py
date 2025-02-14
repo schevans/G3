@@ -9,14 +9,14 @@ import math
 import pygame
 from pygame.math import Vector2
 
-import ships        
+from ships import Ship        
 import constants as const
 
 G = 1
 
 red_fade = pygame.Color(207, 1, 0, 64)
 
-class OrbitalShip(ships.Ship):
+class OrbitalShip(Ship):
     
     def __init__(self, ship, planet, r, p ):
         

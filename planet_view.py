@@ -10,7 +10,7 @@ from pygame.math import Vector2
 import math
 
 import constants as const 
-import orbital_ships
+from orbital_ships import OrbitalShip
 import utils
 import my_random
 from game_view import GameView, View
@@ -73,7 +73,7 @@ class PlanetView(GameView):
             
             for mob in applicable_mobs:                                 
                 angle_radians += angle_increment
-                self.mobs.append(orbital_ships.OrbitalShip(mob, self.planet, self.get_random_r(), angle_radians))
+                self.mobs.append(OrbitalShip(mob, self.planet, self.get_random_r(), angle_radians))
 
         self.is_paused = False 
 
@@ -93,8 +93,7 @@ class PlanetView(GameView):
                         mob.tmpship.recruit()  # FIXME: Better solution (tmpship - conjoined with orbital_ship)
                         self.shared_dict['other_ship'] = mob
                         self.next_view = (View.DOCKING, self.shared_dict)
-        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
-        if event.type == pygame.KEYDOWN and pygame.K_TAB:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
             self.lock_target()
                 
                         
