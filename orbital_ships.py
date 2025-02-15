@@ -43,25 +43,51 @@ class OrbitalShip(Ship):
             self.image = self.image_flying
         else:
             self.image = self.image_still 
-        
-        if self.acceleration < 0:
-            self.image.update(self.xy, 180)
             
         self.p += self.w
         self.w = math.sqrt(G*self.mass/math.pow(self.r, 3)) 
         
-        self.heading = math.degrees(-self.p)
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
-  
-        reverse = 0
-        if self.acceleration < 0:
-            reverse = 180
-            
-        self.image.update(self.xy, self.heading+reverse)
+        
     
     def draw(self, screen):
         
-        self.tmpship.draw(screen)       # FIXME: Hmmm. Might be useful? Linked to mobs[0] in planet_view
+        self.width, self.height = self.image.original_image.get_size()
+        
+
+        surface = pygame.Surface((self.width+10, self.height), pygame.SRCALPHA)
+
+        surface.blit(self.image.original_image, (5, 0))
+        
+        pygame.draw.rect(surface,
+                 'blue',
+                 [0,
+                  self.height-self.shield-5,
+                  2,
+                  self.shield])
+        
+        pygame.draw.rect(surface,
+                 'red',
+                 [3,
+                  self.height-self.armour-5,
+                  2,
+                  self.armour])
+    
+        pygame.draw.rect(surface,
+                 'yellow',
+                 [self.width+8,
+                  self.height-self.energy-5,
+                  2,
+                  self.energy])
+        
+        reverse = 0
+        if self.acceleration < 0:
+            reverse = 180
+        
+        rotated_image = pygame.transform.rotate(surface, math.degrees(-self.p)+reverse)
+        new_rect = rotated_image.get_rect(center = surface.get_rect(topleft = self.xy).center)
+        
+        screen.blit(rotated_image, (new_rect[0]-new_rect[2]/2, new_rect[1]-new_rect[3]/2))
         
         if self.target:
             pygame.draw.circle(screen, red_fade, self.target.xy, 20, 1)

@@ -56,6 +56,10 @@ class Ship():
         self.image = self.image_still
         
         self.resources = const.initial_resources
+        
+        self.shield = 20
+        self.armour = 20
+        self.energy = 20
 
         # dev mode
         if self.name == 'Hero':
