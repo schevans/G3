@@ -14,6 +14,8 @@ import constants as const
 
 G = 1
 
+BAR_SCALE = 25
+
 red_fade = pygame.Color(207, 1, 0, 64)
 
 class OrbitalShip(Ship):
@@ -54,31 +56,33 @@ class OrbitalShip(Ship):
         
         self.width, self.height = self.image.original_image.get_size()
         
-
         surface = pygame.Surface((self.width+10, self.height), pygame.SRCALPHA)
 
         surface.blit(self.image.original_image, (7, 0))
         
+        scaled_val = self.fit('shield') / self.fit.maximum('shield') * BAR_SCALE
         pygame.draw.rect(surface,
                  'cyan',
                  [0,
-                  self.height-self.shield-5,
+                  self.height-scaled_val-5,
                   2,
-                  self.shield])
+                  scaled_val])
         
+        scaled_val = self.fit('armour') / self.fit.maximum('armour') * BAR_SCALE
         pygame.draw.rect(surface,
                  'red',
                  [4,
-                  self.height-self.armour-5,
+                  self.height-scaled_val-5,
                   2,
-                  self.armour])
+                  scaled_val])
     
+        scaled_val = self.fit('capacitor') / self.fit.maximum('capacitor') * BAR_SCALE
         pygame.draw.rect(surface,
                  'yellow',
                  [self.width+8,
-                  self.height-self.capacitor-5,
+                  self.height-scaled_val-5,
                   2,
-                  self.capacitor])
+                  scaled_val])
         
         reverse = 0
         if self.acceleration < 0:

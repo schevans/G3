@@ -25,6 +25,10 @@ class ShipSystem():
             
         self.upgrade = ship_systems_upgrade_data[name]
 
+        self.maximum = self.data[str(self.level)]
+        self.value = self.maximum
+        
+
     def get_upgrade_cost(self, level, resource):
         if level > 3:  # FIXME: Hack
             return 0.0
@@ -41,6 +45,8 @@ class ShipSystem():
 
     def upgrade_system(self):
         self.level += 1
+        self.maximum = self.data[str(self.level)]
+        self.value = self.maximum
         
         
         
@@ -73,16 +79,16 @@ class Fit():
             
 
     def speed(self):
-        return self.systems['engine'].data[str(self.systems['engine'].level)]
+        return self.systems['engine'].value
+    
+    def maximum(self, system_name):
+        return self.systems[system_name].maximum
     
     def level(self, system_name):
         return self.systems[system_name].level
     
-    def function(self, system_name, level):
-        return self.systems[system_name].data[str(level)]
-    
     def __call__(self, system_name):
-        return self.systems[system_name].data[str(self.systems[system_name].level)]
+        return self.systems[system_name].value
 
 
 
