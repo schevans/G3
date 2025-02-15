@@ -57,10 +57,10 @@ class OrbitalShip(Ship):
 
         surface = pygame.Surface((self.width+10, self.height), pygame.SRCALPHA)
 
-        surface.blit(self.image.original_image, (5, 0))
+        surface.blit(self.image.original_image, (7, 0))
         
         pygame.draw.rect(surface,
-                 'blue',
+                 'cyan',
                  [0,
                   self.height-self.shield-5,
                   2,
@@ -68,7 +68,7 @@ class OrbitalShip(Ship):
         
         pygame.draw.rect(surface,
                  'red',
-                 [3,
+                 [4,
                   self.height-self.armour-5,
                   2,
                   self.armour])
@@ -76,9 +76,9 @@ class OrbitalShip(Ship):
         pygame.draw.rect(surface,
                  'yellow',
                  [self.width+8,
-                  self.height-self.energy-5,
+                  self.height-self.capacitor-5,
                   2,
-                  self.energy])
+                  self.capacitor])
         
         reverse = 0
         if self.acceleration < 0:

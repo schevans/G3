@@ -57,9 +57,9 @@ class Ship():
         
         self.resources = const.initial_resources
         
-        self.shield = 20
-        self.armour = 20
-        self.energy = 20
+        self.shield = 25
+        self.armour = 25
+        self.capacitor = 25
 
         # dev mode
         if self.name == 'Hero':
