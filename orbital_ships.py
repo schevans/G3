@@ -98,9 +98,11 @@ class OrbitalShip(Ship):
             pygame.draw.line(screen, red_fade, self.xy, self.target.xy)
 
 
+    def shoot(self):
+        
+        return self.weapons.fire(self.selected_weapon)
 
 
 
 
-            
-            
+

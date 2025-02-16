@@ -95,7 +95,9 @@ class PlanetView(GameView):
                         self.next_view = (View.DOCKING, self.shared_dict)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
             self.lock_target()
-                
+        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+        if event.type == pygame.KEYDOWN and pygame.K_TAB:
+            self.mobs.append(self.mobs[0].shoot())
                         
         keys = pygame.key.get_pressed() 
         self.mobs[0].acceleration = 0
@@ -111,7 +113,7 @@ class PlanetView(GameView):
         self.get_selected_item(self.mobs)
         
         for mob in self.mobs:
-            if mob.target:
+            if mob.item_type() == 'Ship' and mob.target:
                 if not unobstructed_view(mob.xy, mob.target.xy, const.screen_center, self.planet_r):
                     mob.target = None
 

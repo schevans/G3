@@ -14,7 +14,7 @@ import rotatable_image
 import utils
 import constants as const 
 import fit
-
+from weapons import Weapons
 
 class Ship():
         
@@ -53,6 +53,12 @@ class Ship():
         self.image = self.image_still
         
         self.resources = const.initial_resources
+
+
+        self.weapons = Weapons()
+        self.selected_weapon = 'lasers'
+
+
 
         # dev mode
         if self.name == 'Hero':
