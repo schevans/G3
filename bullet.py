@@ -55,7 +55,7 @@ class Bullet():
             if self.homing:
                 if self.xy.distance_to(self.target.xy) < HIT_RADIUS:
                     self.is_alive = False
-                    self.target.hit(self)
+                    self.target.hit()
                 else:
                     self.angle = get_angle_to_target(self.xy, self.target.xy)
             

@@ -105,7 +105,8 @@ class OrbitalShip(Ship):
         return self.weapons.fire(self, self.target)
 
     def hit(self):
-        pass
+        print('hit')
+        
 
 
 
