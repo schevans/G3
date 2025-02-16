@@ -51,7 +51,9 @@ class OrbitalShip(Ship):
         
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
         
-    
+        if self.timer.get_next_second():
+            self.fit.systems['capacitor'].value += self.fit('reactor')
+            
     def draw(self, screen):
         
         self.width, self.height = self.image.original_image.get_size()
