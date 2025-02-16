@@ -13,9 +13,9 @@ import constants as const
 from game_view import GameView, View
 from gui import Label, Button
 
-got_color = 'green4'
+got_color = 'mediumseagreen'
 available_color = 'grey'
-unavilable_color = 'gray39'
+unavilable_color = 'gray56'
 
 class FittingView(GameView):
     
@@ -28,7 +28,7 @@ class FittingView(GameView):
         self.rev_button_map = {}
         self.labels = []
         
-        label_width = 120
+        label_width = 130
         button_width = 80
         space = 20
         

@@ -32,9 +32,6 @@ class Ship():
         else:
             self.liege = const.our_capital
             self.color = pygame.Color('white')
-        
-        if not fit_string:
-            fit_string = '00000'
 
         self.fit = fit.Fit(fit_string)
 

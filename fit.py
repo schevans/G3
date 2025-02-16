@@ -58,6 +58,10 @@ class Fit():
         
         self.system_names = ship_systems_data.keys()
         
+        if not fit:
+            fit = ''
+            fit = fit.rjust(len(self.system_names), '0')
+
         if len(fit) != len(self.system_names):
             raise Exception('Fit string ' + fit + ' different length to ship_systems_data.keys()' )
         
