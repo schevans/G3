@@ -30,10 +30,23 @@ class Weapons():
     def select(self, selection):
         self.selected_weapon = list(self.data.keys())[int(selection)-1]
     
-    def fire(self):
+    def fire(self, shooter, target):
+
+        if self.data[self.selected_weapon]['homing'] and not target:
+            return None
         
-        # if have_ammo:
-        return Bullet(self.data[self.selected_weapon])
+        if self.ammo[self.selected_weapon] <= 0:
+            return None
+        
+        if shooter.fit('capacitor') < self.data[self.selected_weapon]['activation']:
+            return None
+        
+        self.ammo[self.selected_weapon] -= 1
+        shooter.fit.systems['capacitor'].value -= self.data[self.selected_weapon]['activation']
+            
+        return Bullet(shooter, target, pygame.mouse.get_pos(), self.images[self.selected_weapon], self.data[self.selected_weapon])
+        
+
     
     def draw_icons(self, screen):
         

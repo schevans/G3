@@ -1,6 +1,6 @@
-,speed,shield_damage,armour_damage,homing,range,activation,cost,ammo
-laser,15,1,2,0,200,1,1,0
-cannon,5,4,6,0,100,2,2,1
-rocket,7,1,2,1,250,2,2,1
-torpedo,4,3,4,1,150,4,3,1
-mine,0,5,10,0,0,5,5,1
+,speed,shield_damage,armour_damage,homing,range,activation,ammo_cost
+laser,15,1,2,0,200,1,0
+cannon,5,4,6,0,100,2,2
+rocket,7,1,2,1,250,2,2
+torpedo,4,3,4,1,150,4,3
+mine,0,5,10,0,0,5,5

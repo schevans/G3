@@ -4,5 +4,5 @@ armour,20,40,70,100
 capacitor,20,40,70,100
 reactor,0.2,0.5,1,1.5
 engine,3,4,5,6
-wep dmg,1.1,1.2,1.3,1.5
-wep range,1.1,1.2,1.3,1.5
+wep dmg,1,1.2,1.5,2
+wep range,1,1.2,1.5,2

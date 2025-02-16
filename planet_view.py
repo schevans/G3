@@ -100,7 +100,9 @@ class PlanetView(GameView):
             self.lock_target()
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
-            self.mobs.append(self.mobs[0].shoot())
+            bullet = self.mobs[0].shoot()
+            if bullet:
+                self.mobs.append(bullet)
                         
         keys = pygame.key.get_pressed() 
         self.mobs[0].acceleration = 0

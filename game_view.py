@@ -186,8 +186,9 @@ class GameView():
         mousepos = Vector2(pygame.mouse.get_pos())
         for item in items:
             if item.xy.distance_to(mousepos) < MOUSE_RADIUS:
-                self.selected_item = item
-                break
+                if not item.item_type() == 'Bullet': 
+                    self.selected_item = item
+                    break
         
     def do_ship_swap(self, current_ship, event_key):
         

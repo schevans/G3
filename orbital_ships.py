@@ -99,10 +99,11 @@ class OrbitalShip(Ship):
 
 
     def shoot(self):
-        
-        return self.weapons.fire()
 
+        return self.weapons.fire(self, self.target)
 
+    def hit(self):
+        pass
 
 
 
