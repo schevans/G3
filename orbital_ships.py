@@ -100,7 +100,7 @@ class OrbitalShip(Ship):
 
     def shoot(self):
         
-        return self.weapons.fire(self.selected_weapon)
+        return self.weapons.fire()
 
 
 

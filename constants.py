@@ -7,6 +7,7 @@ Created on Mon Nov  4 19:14:08 2024
 """
 import pygame
 from pygame.math import Vector2
+import math
 
 screen_width = 1200
 screen_height = 800
@@ -84,5 +85,19 @@ fx_rates[friendly_capital] = {
     }
 
 
+npc_starter_ammo = {
+    'laser': math.inf,
+    'cannon': 5,
+    'rocket': 10,
+    'torpedo': 4,
+    'mine': 2
+    }
 
+our_starter_ammo = {
+    'laser': math.inf,
+    'cannon': 100,
+    'rocket': 1000,
+    'torpedo': 10,
+    'mine': 5
+    }
 

@@ -26,13 +26,16 @@ class Ship():
         self.planet = planet
         self.is_npc = is_npc
 
+        ammo = const.npc_starter_ammo
+
         if system:
             self.liege = const.species[system.system_type]
             self.color = const.species_color[self.liege]
         else:
             self.liege = const.our_capital
             self.color = pygame.Color('white')
-
+            ammo = const.our_starter_ammo
+            
         self.fit = fit.Fit(fit_string)
 
         self.resources = const.initial_resources
@@ -54,10 +57,7 @@ class Ship():
         
         self.resources = const.initial_resources
 
-
-        self.weapons = Weapons()
-        self.selected_weapon = 'lasers'
-
+        self.weapons = Weapons(ammo)
 
 
         # dev mode

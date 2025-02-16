@@ -93,10 +93,13 @@ class PlanetView(GameView):
                         mob.tmpship.recruit()  # FIXME: Better solution (tmpship - conjoined with orbital_ship)
                         self.shared_dict['other_ship'] = mob
                         self.next_view = (View.DOCKING, self.shared_dict)
+            if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
+                self.mobs[0].weapons.select(pygame.key.name(event.key))
+                
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
             self.lock_target()
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
-        if event.type == pygame.KEYDOWN and pygame.K_TAB:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
             self.mobs.append(self.mobs[0].shoot())
                         
         keys = pygame.key.get_pressed() 
@@ -122,6 +125,8 @@ class PlanetView(GameView):
         GameView.draw(self, screen)
         pygame.draw.circle(screen, self.planet.color, const.screen_center, self.planet_r)
         GameView.draw_objects(self, screen)
+        
+        self.mobs[0].weapons.draw_icons(screen)
         
         if self.is_paused:
             text = '[ Paused ]'
