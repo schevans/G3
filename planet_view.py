@@ -95,7 +95,7 @@ class PlanetView(GameView):
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
                 self.mobs[0].weapons.select(pygame.key.name(event.key))
                 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:     #
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
         #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:        
             self.lock_target()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
@@ -118,7 +118,7 @@ class PlanetView(GameView):
         self.get_selected_item(self.mobs)
         
         for mob in self.mobs:
-            if mob.item_type() == 'Ship':
+            if mob.object_type() == 'Ship':
                 
                 if mob.target:
                     # break lock?
@@ -126,7 +126,7 @@ class PlanetView(GameView):
                         mob.target = None
                     
                 # has been hit by bullet?
-                for bullet in (x for x in self.mobs  if x.item_type() == 'Bullet' and not x.homing):
+                for bullet in (x for x in self.mobs  if x.object_type() == 'Bullet' and not x.homing):
                     if bullet.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
                         bullet.hit(mob)
                         

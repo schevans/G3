@@ -75,7 +75,7 @@ class Ship():
                 self.xy = Vector2(self.destination.xy)
                 self.heading = 0
                 self.image = self.image_still
-                if self.destination.item_type() == 'Planet':
+                if self.destination.object_type() == 'Planet':
                     self.planet = self.destination
                 else:
                     self.system = self.destination
@@ -131,7 +131,7 @@ class Ship():
             return title + self.name + ', ' + self.liege + ' [' + self.fit.to_string() + ']'
         
 
-    def item_type(self):
+    def object_type(self):
         return "Ship"
 
 

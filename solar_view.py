@@ -72,7 +72,7 @@ class SolarView(GameView):
     def draw(self, screen):
         GameView.draw(self, screen)
         
-        if self.selected_item and self.selected_item.item_type() != 'Ship':
+        if self.selected_item and self.selected_item.object_type() != 'Ship':
             pygame.draw.line(screen, 'white', self.current_ship.xy, self.selected_item.xy)
             pygame.draw.circle(screen, 'white', self.selected_item.xy, self.selected_item.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 

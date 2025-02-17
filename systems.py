@@ -123,7 +123,7 @@ class System():
         return self.name + ': ' + self.system_type
 
                 
-    def item_type(self):
+    def object_type(self):
         return "System"
 
 

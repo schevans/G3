@@ -69,7 +69,7 @@ class Bullet():
             self.rot_image.draw(screen)
             
     
-    def item_type(self):
+    def object_type(self):
         return 'Bullet'
     
     
@@ -82,8 +82,3 @@ class Bullet():
 
 
 
-
-
-
-
-    

@@ -39,5 +39,5 @@ class Planet():
     def description(self):
         return self.name + ', ' + self.planet_type
     
-    def item_type(self):
+    def object_type(self):
         return "Planet"

@@ -186,7 +186,7 @@ class GameView():
         mousepos = Vector2(pygame.mouse.get_pos())
         for item in items:
             if item.xy.distance_to(mousepos) < MOUSE_RADIUS:
-                if not item.item_type() == 'Bullet': 
+                if not item.object_type() == 'Bullet': 
                     self.selected_item = item
                     break
         

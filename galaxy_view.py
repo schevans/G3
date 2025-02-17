@@ -135,7 +135,7 @@ class GalaxyView(GameView):
             screen.blit(text_surface, text_pos )
 
 
-        if self.selected_item and self.selected_item.item_type() != 'Ship':
+        if self.selected_item and self.selected_item.object_type() != 'Ship':
             
 
             if self.current_ship.can_jump(self.selected_item.xy):
