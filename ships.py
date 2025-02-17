@@ -15,7 +15,7 @@ import utils
 import constants as const 
 import fit
 from weapons import Weapons
-from timer import Timer
+
 
 class Ship():
         
@@ -57,7 +57,6 @@ class Ship():
         self.image = self.image_still
         self.resources = const.initial_resources
         self.weapons = Weapons(ammo)
-        self.timer = Timer()
 
 
         # dev mode

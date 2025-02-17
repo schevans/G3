@@ -11,12 +11,16 @@ from pygame.math import Vector2
 
 from ships import Ship        
 import constants as const
+from timer import Timer
 
 G = 1
 
 BAR_SCALE = 25
 
 red_fade = pygame.Color(207, 1, 0, 64)
+
+hit_color = pygame.Color('orangered')
+HIT_FLASH_INTERVAL = 100 # ms
 
 class OrbitalShip(Ship):
     
@@ -32,6 +36,9 @@ class OrbitalShip(Ship):
         self.acceleration = 0
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
         self.target = None    
+        self.cap_timer = Timer()
+        self.dmg_timer = Timer()
+        self.orig_color = self.color
         
         self.mass = 7000 / planet.size # FIXME
         
@@ -51,11 +58,16 @@ class OrbitalShip(Ship):
         
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
         
-        if self.timer.get_next_second():
+        if self.cap_timer.get_next_second():
             self.fit.systems['capacitor'].value += self.fit('reactor')
             
         if self.target and not self.target.is_alive:
             self.target = None
+            
+        if self.color != self.orig_color and self.dmg_timer.get_next_ms_interval(HIT_FLASH_INTERVAL):
+            self.image_still.change_color(self.color, self.orig_color)
+            self.color = self.orig_color
+            
             
     def draw(self, screen):
         
@@ -122,6 +134,9 @@ class OrbitalShip(Ship):
 
 
         
+        self.image_still.change_color(self.color, hit_color)
+        self.color = hit_color
+        self.dmg_timer.get_next_ms_interval(HIT_FLASH_INTERVAL)
 
 
 
