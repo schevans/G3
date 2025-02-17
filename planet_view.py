@@ -129,6 +129,7 @@ class PlanetView(GameView):
                 for bullet in (x for x in self.mobs  if x.item_type() == 'Bullet' and not x.homing):
                     if bullet.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
                         mob.hit(bullet)
+                        bullet.is_alive = False
                         
             if not mob.is_alive:
                 self.mobs.remove(mob)
