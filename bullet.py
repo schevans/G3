@@ -10,7 +10,6 @@ import math
 from rotatable_image import RotatableImage
 import constants as const
 
-HIT_RADIUS = 10
 
 def get_angle_to_target(xy1, xy2):
     distance =  xy1 - xy2
@@ -40,7 +39,6 @@ class Bullet():
         
         self.rot_image = RotatableImage(self.xy, image)
 
-        print()
     
 
         
@@ -53,9 +51,9 @@ class Bullet():
             self.range_timer += self.speed
             
             if self.homing:
-                if self.xy.distance_to(self.target.xy) < HIT_RADIUS:
+                if self.xy.distance_to(self.target.xy) < const.weapon_hit_radius:
                     self.is_alive = False
-                    self.target.hit()
+                    self.target.hit(self)
                 else:
                     self.angle = get_angle_to_target(self.xy, self.target.xy)
             

@@ -101,3 +101,4 @@ our_starter_ammo = {
     'mine': 5
     }
 
+weapon_hit_radius = 10

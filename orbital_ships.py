@@ -54,6 +54,9 @@ class OrbitalShip(Ship):
         if self.timer.get_next_second():
             self.fit.systems['capacitor'].value += self.fit('reactor')
             
+        if self.target and not self.target.is_alive:
+            self.target = None
+            
     def draw(self, screen):
         
         self.width, self.height = self.image.original_image.get_size()
@@ -101,11 +104,23 @@ class OrbitalShip(Ship):
 
 
     def shoot(self):
-
         return self.weapons.fire(self, self.target)
 
-    def hit(self):
-        print('hit')
+
+    def hit(self, bullet):
+        
+        if self.fit('shield') >= bullet.shield_damage:
+            self.fit.systems['shield'].value -= bullet.shield_damage
+        elif self.fit('shield') > 0:
+            ratio = (bullet.shield_damage - self.fit('shield')) / bullet.shield_damage
+            self.fit.systems['shield'].value = 0
+            self.fit.systems['armour'].value = bullet.armour_damage * ratio
+        elif self.fit('armour') > bullet.armour_damage:
+            self.fit.systems['armour'].value -= bullet.armour_damage
+        else:
+            self.is_alive = False
+
+
         
 
 

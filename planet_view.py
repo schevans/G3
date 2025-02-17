@@ -21,7 +21,6 @@ LOCK_RADIUS = 10
 LEFT_MOUSE_CLICK = 1
 RIGHT_MOUSE_CLICK = 3
 
-
 def unobstructed_view(xy1, xy2, cpt, r):
     
     if xy1.distance_to(cpt) > xy1.distance_to(xy2):
@@ -96,10 +95,11 @@ class PlanetView(GameView):
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
                 self.mobs[0].weapons.select(pygame.key.name(event.key))
                 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:     #
+        #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:        
             self.lock_target()
-        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+        #if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
             bullet = self.mobs[0].shoot()
             if bullet:
                 self.mobs.append(bullet)
@@ -118,9 +118,22 @@ class PlanetView(GameView):
         self.get_selected_item(self.mobs)
         
         for mob in self.mobs:
-            if mob.item_type() == 'Ship' and mob.target:
-                if not unobstructed_view(mob.xy, mob.target.xy, const.screen_center, self.planet_r):
-                    mob.target = None
+            if mob.item_type() == 'Ship':
+                
+                if mob.target:
+                    # break lock?
+                    if not unobstructed_view(mob.xy, mob.target.xy, const.screen_center, self.planet_r):
+                        mob.target = None
+                    
+                # has been hit by bullet?
+                for bullet in (x for x in self.mobs  if x.item_type() == 'Bullet' and not x.homing):
+                    if bullet.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
+                        mob.hit(bullet)
+                        
+            if not mob.is_alive:
+                self.mobs.remove(mob)
+                
+                
 
     def draw(self, screen):
         
