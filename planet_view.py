@@ -99,7 +99,7 @@ class PlanetView(GameView):
         #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:        
             self.lock_target()
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
-        #if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+        #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
             bullet = self.mobs[0].shoot()
             if bullet:
                 self.mobs.append(bullet)
@@ -128,8 +128,7 @@ class PlanetView(GameView):
                 # has been hit by bullet?
                 for bullet in (x for x in self.mobs  if x.item_type() == 'Bullet' and not x.homing):
                     if bullet.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
-                        mob.hit(bullet)
-                        bullet.is_alive = False
+                        bullet.hit(mob)
                         
             if not mob.is_alive:
                 self.mobs.remove(mob)
