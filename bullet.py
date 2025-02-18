@@ -11,7 +11,6 @@ from rotatable_image import RotatableImage
 import constants as const
 from timer import Timer
 
-WEAPON_ARMING_TIME = 100 # ms
 
 def get_angle_to_target(xy1, xy2):
     distance =  xy1 - xy2
@@ -39,7 +38,8 @@ class Bullet():
         self.range_timer = 0
         self.arming_timer = Timer()
         self.arming_timer.start()
-        
+        self.arming_time = const.weapon_hit_radius / shooter.w
+
         self.rot_image = RotatableImage(self.xy, image)
 
     
@@ -74,7 +74,7 @@ class Bullet():
     
     def hit(self, mob):
 
-        if self.arming_timer.start_delta() > WEAPON_ARMING_TIME:
+        if self.arming_timer.start_delta() > self.arming_time:
             mob.hit(self)
             self.is_alive = False
             
