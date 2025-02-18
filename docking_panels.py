@@ -65,7 +65,7 @@ class TradePanel():
         our_transaction_x = our_x + resource_width + spacer
         their_transaction_x = their_x - spacer - resource_width
         
-        y = 200 + INNER_BORDER_HIGHT
+        y = 150 + INNER_BORDER_HIGHT
         for resource in const.initial_resources.keys():
             if resource != 'laser':
                 if resource != 'credits':
