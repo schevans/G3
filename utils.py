@@ -22,7 +22,7 @@ def angle_between_points(v1,v2):
 
 def fade_to_black(color, i, num_steps):
     
-    # FIXME: Really?    
+    # FIXME: Really? See Explosion tuple(int(x/brightness) for x in (255, 255, 255))
     color0 = color[0] / (num_steps + 1) * (num_steps + 1 - i )
     color1 = color[1] / (num_steps + 1) * (num_steps + 1 - i )
     color2 = color[2] / (num_steps + 1) * (num_steps + 1 - i )
@@ -30,7 +30,7 @@ def fade_to_black(color, i, num_steps):
 
 
 def whiten_a_bit(color, a_bit):
-    # FIXME: Again, really???
+    # FIXME: Again, really??? ^^
     color0 = color[0]  + (( 255 - color[0] ) * a_bit)
     color1 = color[1]  + (( 255 - color[1] ) * a_bit)
     color2 = color[2]  + (( 255 - color[2] ) * a_bit)
@@ -51,7 +51,7 @@ def draw_stars(screen):
 
 
 
-
+# Needed?
 class MaxableAmount():
     
     def __init__(self, max_amount, amount=None):
@@ -76,6 +76,7 @@ class MaxableAmount():
     def __call__(self):
         return self.amount
 
+# Remove or useful for non-homing bullets?
 class Location():
 
     def __init__(self, galaxy_xy, system, planet):      
