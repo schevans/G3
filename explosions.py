@@ -11,10 +11,11 @@ import pygame
 class Explosion():
     
     
-    def __init__(self, xy, size, speed):
+    def __init__(self, xy, size, speed, resources):
         self.xy = xy
         self.speed = speed
         self.size = size
+        self.resources = resources 
         
         self.timer = 0
         self.is_alive = True
@@ -40,5 +41,31 @@ class Explosion():
     def object_type(self):
         return 'Explosion'
 
+crate_image = pygame.image.load('./graphics/crate2.png')
 
+class LootBox():
+    
+    def __init__(self, xy, resources):
+        self.xy = xy
+        self.resources = resources
+        self.image = crate_image
+        self.is_alive = True
+        
+    def update(self):
+        pass
 
+            
+    
+    def draw(self, screen): 
+        
+        if self.is_alive:
+            image_rect = self.image.get_rect()
+            image_rect.center = self.xy
+            screen.blit(self.image, image_rect )
+
+    def description(self):
+        return 'Loot Box'
+        
+        
+    def object_type(self):
+        return 'LootBox'   

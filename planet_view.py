@@ -14,7 +14,7 @@ from orbital_ships import OrbitalShip
 import utils
 import my_random
 from game_view import GameView, View
-from explosions import Explosion
+from explosions import Explosion, LootBox
 
 DOCK_RADIUS = 15
 LOCK_RADIUS = 10
@@ -127,15 +127,22 @@ class PlanetView(GameView):
                         mob.target = None
                     
                 # has been hit by bullet?
-                for bullet in (x for x in self.mobs  if x.object_type() == 'Bullet' and not x.homing):
+                for bullet in (x for x in self.mobs if x.object_type() == 'Bullet' and not x.homing):
                     if bullet.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
                         bullet.hit(mob)
+                        
+                # has picked up lootbox?
+                for lootbox in (x for x in self.mobs if x.object_type() == 'LootBox'):
+                    if lootbox.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
+                        mob.loot(lootbox)
                         
             if not mob.is_alive:
                 self.mobs.remove(mob)
                 
                 if mob.object_type() == 'Ship':
-                    self.mobs.append(Explosion(mob.xy, 30, 1))
+                    self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
+                elif mob.object_type() == 'Explosion':
+                    self.mobs.append(LootBox(mob.xy, mob.resources))
                 
                 
 

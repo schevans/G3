@@ -12,6 +12,7 @@ from pygame.math import Vector2
 from ships import Ship        
 import constants as const
 from timer import Timer
+import my_random
 
 G = 1
 
@@ -137,6 +138,18 @@ class OrbitalShip(Ship):
         self.image_still.change_color(self.color, hit_color)
         self.color = hit_color
         self.dmg_timer.get_next_ms_interval(HIT_FLASH_INTERVAL)
+
+
+    def loot(self, lootbox):
+        
+        loot_fairy = my_random.my_rand()
+        
+        for resource in lootbox.resources:
+            if resource != 'laser':
+                self.resources[resource] += int(lootbox.resources[resource] * loot_fairy)
+
+        lootbox.is_alive = False
+        
 
 
 
