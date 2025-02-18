@@ -75,7 +75,7 @@ game_color = (255, 181, 108)
 weapon_cost = {
     'cannon': 2,
     'rocket': 2,
-    'torpedo': 3,
+    'torpedo': 4,
     'mine': 5    
     }
 
