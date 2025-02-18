@@ -98,8 +98,8 @@ class PlanetView(GameView):
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
         #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:        
             self.lock_target()
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
-        #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
+        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
             bullet = self.mobs[0].shoot()
             if bullet:
                 self.mobs.append(bullet)
@@ -141,7 +141,7 @@ class PlanetView(GameView):
         pygame.draw.circle(screen, self.planet.color, const.screen_center, self.planet_r)
         GameView.draw_objects(self, screen)
         
-        self.mobs[0].weapons.draw_icons(screen)
+        self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources )
         
         if self.is_paused:
             text = '[ Paused ]'

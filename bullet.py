@@ -31,7 +31,6 @@ class Bullet():
         self.homing = data['homing']
         self.range = data['range'] * shooter.fit('wep range')
         self.activation = data['activation']
-        self.ammo_cost = data['ammo_cost']
         
         target_xy = target.xy if target else mousepos
         self.angle = get_angle_to_target(self.xy, target_xy)

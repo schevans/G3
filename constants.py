@@ -31,7 +31,12 @@ initial_resources = {
     'credits': 30,
     'fuel': 300,
     'metal': 10,
-    'tech': 10
+    'tech': 10,
+    'laser': math.inf,
+    'cannon': 10,
+    'rocket': 100,
+    'torpedo': 50,
+    'mine': 10
     }
 
 system_types = ['Uninhabited', 'Neutral', 'Friendly', 'Hostile']
@@ -67,38 +72,40 @@ upgrade_cost_mults = [ 0, 1, 5, 10]
 
 game_color = (255, 181, 108)
 
+weapon_cost = {
+    'cannon': 2,
+    'rocket': 2,
+    'torpedo': 3,
+    'mine': 5    
+    }
+
 fx_rates = {}
 fx_rates[neutral_capital] = {
     'fuel': 1,
     'metal': 2,
-    'tech': 1
+    'tech': 1,
+    'cannon': weapon_cost['cannon'],
+    'rocket': weapon_cost['rocket'],
+    'torpedo': weapon_cost['torpedo'],
+    'mine': weapon_cost['mine']
     }
 fx_rates[hostile_capital] = {
     'fuel': 1,
     'metal': 1,
-    'tech': 2
+    'tech': 2,
+    'cannon': weapon_cost['cannon']*4,
+    'rocket': weapon_cost['rocket']*4,
+    'torpedo': weapon_cost['torpedo']*4,
+    'mine': weapon_cost['mine']*4
     }
 fx_rates[friendly_capital] = {
     'fuel': 1,
     'metal': 1,
-    'tech': 1
-    }
-
-
-npc_starter_ammo = {
-    'laser': math.inf,
-    'cannon': 5,
-    'rocket': 10,
-    'torpedo': 4,
-    'mine': 2
-    }
-
-our_starter_ammo = {
-    'laser': math.inf,
-    'cannon': 100,
-    'rocket': 1000,
-    'torpedo': 10,
-    'mine': 5
+    'tech': 1,
+    'cannon': weapon_cost['cannon'],
+    'rocket': weapon_cost['rocket'],
+    'torpedo': weapon_cost['torpedo'],
+    'mine': weapon_cost['mine']
     }
 
 weapon_hit_radius = 10

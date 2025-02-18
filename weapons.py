@@ -16,8 +16,7 @@ weapons_data = utils.csv_loader('./data/weapons.csv')
 
 class Weapons():
 
-    def __init__(self, ammo):
-        self.ammo = ammo
+    def __init__(self):
         
         self.data = weapons_data
         
@@ -35,20 +34,20 @@ class Weapons():
         if self.data[self.selected_weapon]['homing'] and not target:
             return None
         
-        if self.ammo[self.selected_weapon] <= 0:
+        if shooter.resources[self.selected_weapon] <= 0:
             return None
         
         if shooter.fit('capacitor') < self.data[self.selected_weapon]['activation']:
             return None
         
-        self.ammo[self.selected_weapon] -= 1
+        shooter.resources[self.selected_weapon] -= 1
         shooter.fit.systems['capacitor'].value -= self.data[self.selected_weapon]['activation']
             
         return Bullet(shooter, target, pygame.mouse.get_pos(), self.images[self.selected_weapon], self.data[self.selected_weapon])
         
 
     
-    def draw_icons(self, screen):
+    def draw_icons(self, screen, resources):
         
         x_offset = 5
         size = (44, 52)
@@ -65,7 +64,7 @@ class Weapons():
             image_rect.center = surface.get_rect().center
             surface.blit(self.images[weapon], image_rect)
             
-            text = str(self.ammo[weapon])
+            text = str(resources[weapon])
             text_surface = utils.fonts[12].render(text, True, 'white')
             surface.blit(text_surface, (3,size[1]-text_surface.get_size()[1]-3))
             

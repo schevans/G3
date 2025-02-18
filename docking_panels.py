@@ -67,30 +67,31 @@ class TradePanel():
         
         y = 200 + INNER_BORDER_HIGHT
         for resource in const.initial_resources.keys():
-            if resource != 'credits':
-                key = (resource, ButtonType.BUY)
-                button = Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.button_callback)
-                self.button_map[key] = button
+            if resource != 'laser':
+                if resource != 'credits':
+                    key = (resource, ButtonType.BUY)
+                    button = Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.button_callback)
+                    self.button_map[key] = button
+                    
+                    key = (resource, ButtonType.SELL)
+                    button = Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback)
+                    self.button_map[key] = button
+                    
                 
-                key = (resource, ButtonType.SELL)
-                button = Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback)
-                self.button_map[key] = button
+                label_key = (resource, LabelType.LABEL)
+                self.label_map[label_key] = Label((label_x,y), (label_width, button_height), resource.title(), 'gray')
                 
-            
-            label_key = (resource, LabelType.LABEL)
-            self.label_map[label_key] = Label((label_x,y), (label_width, button_height), resource.title(), 'gray')
-            
-            label_key = (resource, LabelType.OUR_AMOUNT)
-            self.label_map[label_key] = Label((our_x,y), (resource_width, button_height), str(self.our_resources[resource]), 'gray')
-            label_key = (resource, LabelType.THEIR_AMOUNT)
-            self.label_map[label_key] = Label((their_x,y), (resource_width, button_height), str(self.their_resources[resource]), 'gray')
-            
-            label_key = (resource, LabelType.OUR_TRANSACTION)
-            self.label_map[label_key] = Label((our_transaction_x,y), (resource_width, button_height), str(self.transaction[resource]), 'gray')
-            label_key = (resource, LabelType.THEIR_TRANSACTION)
-            self.label_map[label_key] = Label((their_transaction_x,y), (resource_width, button_height), str(-self.transaction[resource]), 'gray')
-            
-            y += button_height + spacer   
+                label_key = (resource, LabelType.OUR_AMOUNT)
+                self.label_map[label_key] = Label((our_x,y), (resource_width, button_height), str(self.our_resources[resource]), 'gray')
+                label_key = (resource, LabelType.THEIR_AMOUNT)
+                self.label_map[label_key] = Label((their_x,y), (resource_width, button_height), str(self.their_resources[resource]), 'gray')
+                
+                label_key = (resource, LabelType.OUR_TRANSACTION)
+                self.label_map[label_key] = Label((our_transaction_x,y), (resource_width, button_height), str(self.transaction[resource]), 'gray')
+                label_key = (resource, LabelType.THEIR_TRANSACTION)
+                self.label_map[label_key] = Label((their_transaction_x,y), (resource_width, button_height), str(-self.transaction[resource]), 'gray')
+                
+                y += button_height + spacer   
     
         self.button_map[('Accept', ButtonType.ACCEPT)] = Button((const.screen_width/2 - label_width - spacer/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
         

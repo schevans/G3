@@ -129,8 +129,9 @@ class GameView():
         
         resource_str = ''
         for key in self.current_ship.resources.keys():
-            resource_str = resource_str + (key.capitalize() + ': {:4.1f}    '.format(self.current_ship.resources[key]))
-
+            if key != 'laser':
+                resource_str = resource_str + (key.capitalize() + ': {:3d}    '.format(self.current_ship.resources[key]))
+            
         text_surface = self.font.render(resource_str, True, 'white')      
         font_height = self.font.size(resource_str)[1]       
         text_offset = (TEXTBOX_HEIGHT - font_height) /2        
