@@ -14,6 +14,7 @@ from orbital_ships import OrbitalShip
 import utils
 import my_random
 from game_view import GameView, View
+from explosions import Explosion
 
 DOCK_RADIUS = 15
 LOCK_RADIUS = 10
@@ -132,6 +133,9 @@ class PlanetView(GameView):
                         
             if not mob.is_alive:
                 self.mobs.remove(mob)
+                
+                if mob.object_type() == 'Ship':
+                    self.mobs.append(Explosion(mob.xy, 30, 1))
                 
                 
 

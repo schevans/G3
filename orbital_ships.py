@@ -56,8 +56,6 @@ class OrbitalShip(Ship):
         self.p += self.w
         self.w = math.sqrt(G*self.mass/math.pow(self.r, 3)) 
         
-        print(self.w)
-        
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
         
         if self.cap_timer.get_next_second():

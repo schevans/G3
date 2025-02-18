@@ -130,7 +130,7 @@ class GameView():
         resource_str = ''
         for key in self.current_ship.resources.keys():
             if key != 'laser':
-                resource_str = resource_str + (key.capitalize() + ': {:3d}    '.format(self.current_ship.resources[key]))
+                resource_str = resource_str + (key.capitalize() + ': {:3d}    '.format(int(self.current_ship.resources[key])))
             
         text_surface = self.font.render(resource_str, True, 'white')      
         font_height = self.font.size(resource_str)[1]       
@@ -187,7 +187,7 @@ class GameView():
         mousepos = Vector2(pygame.mouse.get_pos())
         for item in items:
             if item.xy.distance_to(mousepos) < MOUSE_RADIUS:
-                if not item.object_type() == 'Bullet': 
+                if not item.object_type() in ['Bullet', 'Explosion']: 
                     self.selected_item = item
                     break
         
