@@ -39,6 +39,17 @@ initial_resources = {
     'mine': 10
     }
 
+initial_planetary_resources = {
+    'credits': 5,
+    'fuel': 10,
+    'metal': 4,
+    'tech': 4,
+    'cannon': 1,
+    'rocket': 1,
+    'torpedo': 1,
+    'mine': 1
+    }
+
 system_types = ['Uninhabited', 'Neutral', 'Friendly', 'Hostile']
 
 our_capital = 'Polaris'

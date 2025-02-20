@@ -136,6 +136,18 @@ class PlanetView(GameView):
                     if lootbox.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
                         mob.loot(lootbox)
                         
+            # has bullet hit planet => mining
+            elif mob.object_type() == 'Bullet' and mob.is_alive:
+                if mob.xy.distance_to(const.screen_center) <= self.planet_r:
+                    resources = self.planet.mine(mob)
+                    mob.is_alive = False
+                    if resources:
+                        r = self.planet_r * 4
+                        p = my_random.my_random() * ( math.pi * 2 ) 
+                        xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
+                        self.mobs.append(LootBox(xy, resources))
+              
+            # remove the dead things
             if not mob.is_alive:
                 self.mobs.remove(mob)
                 
@@ -149,7 +161,7 @@ class PlanetView(GameView):
     def draw(self, screen):
         
         GameView.draw(self, screen)
-        pygame.draw.circle(screen, self.planet.color, const.screen_center, self.planet_r)
+        self.planet.draw(screen, self.planet_r)
         GameView.draw_objects(self, screen)
         
         self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources )
@@ -160,7 +172,8 @@ class PlanetView(GameView):
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, text_height + 10)
             screen.blit(text_surface, text_pos )
-        
+            
+
     def get_mouse_text(self):
         return [self.selected_item.description()]
 

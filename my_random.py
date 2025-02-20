@@ -18,7 +18,7 @@ def my_random():
     return random.random()
 
 
-def my_rand():
+def my_rand():      # FIXME: Dup with above
     return random.random()
 
 
