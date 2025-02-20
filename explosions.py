@@ -53,7 +53,7 @@ class LootBox():
         
     def update(self):
         pass
-
+        # FIXME: Make lights blinky
             
     
     def draw(self, screen): 
@@ -64,7 +64,13 @@ class LootBox():
             screen.blit(self.image, image_rect )
 
     def description(self):
-        return 'Loot Box'
+        retval = ['Loot Box:']
+        
+        for resource in self.resources:
+            if resource != 'laser':
+                retval.append(resource.capitalize() + ': ' + str(self.resources[resource]))
+        
+        return retval
         
         
     def object_type(self):

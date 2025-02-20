@@ -132,8 +132,6 @@ class OrbitalShip(Ship):
             self.fit.systems['armour'].value -= bullet.armour_damage
         else:
             self.is_alive = False
-
-
         
         self.image_still.change_color(self.color, hit_color)
         self.color = hit_color
@@ -142,11 +140,8 @@ class OrbitalShip(Ship):
 
     def loot(self, lootbox):
         
-        loot_fairy = my_random.my_random()
-        
         for resource in lootbox.resources:
-            if resource != 'laser':
-                self.resources[resource] += int(lootbox.resources[resource] * loot_fairy)
+            self.resources[resource] += lootbox.resources[resource]
 
         lootbox.is_alive = False
         

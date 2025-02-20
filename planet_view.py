@@ -152,6 +152,9 @@ class PlanetView(GameView):
                 self.mobs.remove(mob)
                 
                 if mob.object_type() == 'Ship':
+                    loot_fairy = my_random.my_random()
+                    for resource in mob.resources:
+                        mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
                     self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
                 elif mob.object_type() == 'Explosion':
                     self.mobs.append(LootBox(mob.xy, mob.resources))
@@ -175,7 +178,13 @@ class PlanetView(GameView):
             
 
     def get_mouse_text(self):
-        return [self.selected_item.description()]
+        
+        text = self.selected_item.description()
+        if isinstance(text, list):
+            return text
+        else:
+            return [self.selected_item.description()]
+
 
     def get_local_allies(self):
         allies = []
