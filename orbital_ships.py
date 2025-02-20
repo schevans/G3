@@ -142,7 +142,7 @@ class OrbitalShip(Ship):
 
     def loot(self, lootbox):
         
-        loot_fairy = my_random.my_rand()
+        loot_fairy = my_random.my_random()
         
         for resource in lootbox.resources:
             if resource != 'laser':

@@ -18,10 +18,6 @@ def my_random():
     return random.random()
 
 
-def my_rand():      # FIXME: Dup with above
-    return random.random()
-
-
 def my_randint(low, high):
     return random.randint(low,high)
 
