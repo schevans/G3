@@ -23,6 +23,9 @@ red_fade = pygame.Color(207, 1, 0, 64)
 hit_color = pygame.Color('orangered')
 HIT_FLASH_INTERVAL = 100 # ms
 
+AI_DITHER = 1000  #ms
+AI_MIN = 250 # ms
+
 class OrbitalShip(Ship):
     
     def __init__(self, ship, planet, r, p ):
@@ -36,7 +39,9 @@ class OrbitalShip(Ship):
         self.p = p
         self.acceleration = 0
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
-        self.target = None    
+        self.locked_target = None    
+        self.ai_target = None
+        self.ai_timer = Timer()
         self.cap_timer = Timer()
         self.dmg_timer = Timer()
         self.orig_color = self.color
@@ -62,8 +67,8 @@ class OrbitalShip(Ship):
         if self.cap_timer.get_next_second():
             self.fit.systems['capacitor'].value += self.fit('reactor')
             
-        if self.target and not self.target.is_alive:
-            self.target = None
+        if self.locked_target and not self.locked_target.is_alive:
+            self.locked_target = None
             
         if self.color != self.orig_color and self.dmg_timer.get_next_ms_interval(HIT_FLASH_INTERVAL):
             self.image_still.change_color(self.color, self.orig_color)
@@ -111,13 +116,13 @@ class OrbitalShip(Ship):
         
         screen.blit(rotated_image, (new_rect[0]-new_rect[2]/2, new_rect[1]-new_rect[3]/2))
         
-        if self.target:
-            pygame.draw.circle(screen, red_fade, self.target.xy, 20, 1)
-            pygame.draw.line(screen, red_fade, self.xy, self.target.xy)
+        if self.locked_target:
+            pygame.draw.circle(screen, red_fade, self.locked_target.xy, 20, 1)
+            pygame.draw.line(screen, red_fade, self.xy, self.locked_target.xy)
 
 
     def shoot(self):
-        return self.weapons.fire(self, self.target)
+        return self.weapons.fire(self, self.locked_target)
 
 
     def hit(self, bullet):
@@ -146,5 +151,26 @@ class OrbitalShip(Ship):
         lootbox.is_alive = False
         
 
+    def do_ai(self):
+        
+        if self.locked_target.is_alive:
+        
+            if self.ai_timer.get_next_ms_interval(AI_MIN + (AI_DITHER * my_random.my_random())):
+    
+                if self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['torpedo']['range'] * self.fit('wep range'):
+                    self.weapons.select('4') # torp. FIXME
+                elif self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['rocket']['range'] * self.fit('wep range'):
+                    self.weapons.select('3') # rockets. FIXME
+                else:
+                    return None
+                
+                if self.locked_target:
+                    bullet = self.shoot()
+                    return bullet
+        else:
+            self.locked_target = None
+            self.ai_target = None
+
+            
 
 

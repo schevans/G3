@@ -41,7 +41,7 @@ def line_intersects_circle(xy1, xy2, cpt, r):
     dr = math.sqrt(dx*dx + dy*dy)
     D = x1 * y2 - x2 * y1
     discriminant = r*r*dr*dr - D*D
-    
+
     return discriminant >= 0
 
 class PlanetView(GameView):
@@ -96,9 +96,9 @@ class PlanetView(GameView):
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
                 self.mobs[0].weapons.select(pygame.key.name(event.key))
                 
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
-        #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:        
-            self.lock_target()
+        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSLASH:        
+            self.lock_target(self.mobs[0], pygame.mouse.get_pos())
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
             bullet = self.mobs[0].shoot()
@@ -116,15 +116,17 @@ class PlanetView(GameView):
         if not self.is_paused:
             GameView.update(self)
  
+        self.do_ai()   
+ 
         self.get_selected_item(self.mobs)
         
         for mob in self.mobs:
             if mob.object_type() == 'Ship':
                 
-                if mob.target:
+                if mob.locked_target:
                     # break lock?
-                    if not unobstructed_view(mob.xy, mob.target.xy, const.screen_center, self.planet_r):
-                        mob.target = None
+                    if not unobstructed_view(mob.xy, mob.locked_target.xy, const.screen_center, self.planet_r):
+                        mob.locked_target = None
                     
                 # has been hit by bullet?
                 for bullet in (x for x in self.mobs if x.object_type() == 'Bullet' and not x.homing):
@@ -154,12 +156,14 @@ class PlanetView(GameView):
                 if mob.object_type() == 'Ship':
                     loot_fairy = my_random.my_random()
                     for resource in mob.resources:
-                        mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
+                        if resource != 'laser':
+                            mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
                     self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
                 elif mob.object_type() == 'Explosion':
                     self.mobs.append(LootBox(mob.xy, mob.resources))
                 
-                
+        
+        
 
     def draw(self, screen):
         
@@ -204,19 +208,37 @@ class PlanetView(GameView):
    
 
 
-    def lock_target(self):
-        
-        mousepos = pygame.mouse.get_pos()
-        
+    def lock_target(self, ship, xy):
+
         for mob in self.mobs:
-            if mob.xy.distance_to(mousepos) <= LOCK_RADIUS:
-                if unobstructed_view(self.current_ship.xy, mob.xy, const.screen_center, self.planet_r):
-                    self.mobs[0].target = mob
+            if mob.xy.distance_to(xy) <= LOCK_RADIUS:
+                if unobstructed_view(self.ship.xy, mob.xy, const.screen_center, self.planet_r):
+                    ship.locked_target = mob
         
 
-        
+    def do_ai(self):
 
 
+        for mob in self.mobs:
+            if mob.object_type() == 'Ship' and mob.is_alive and mob.is_npc:
+                
+                if mob.locked_target:
+                   bullet = mob.do_ai()
+                   if bullet:
+                       self.mobs.append(bullet)
+                       
+                elif mob.ai_target:
+                    self.lock_target(mob, mob.ai_target.xy)
+                
+                else:
+                    enemies = []
+                    for enemy in self.mobs:
+                        if enemy.object_type() == 'Ship' and enemy.is_alive and not enemy.is_npc:
+                            enemies.append(enemy)
+                    enemies.sort(key=lambda x: x.xy.distance_to(enemy.xy))
+                    if enemies:
+                        mob.ai_target = enemies[0]
+            
 
 
         
