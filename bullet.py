@@ -38,7 +38,7 @@ class Bullet():
         self.range_timer = 0
         self.arming_timer = Timer()
         self.arming_timer.start()
-        self.arming_time = const.weapon_hit_radius / shooter.w
+        self.arming_time = (const.weapon_hit_radius * shooter.w ) / (self.speed + 0.001) + 200 # FIXME: Please
 
         self.rot_image = RotatableImage(self.xy, image)
 

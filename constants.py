@@ -119,4 +119,4 @@ fx_rates[friendly_capital] = {
     'mine': weapon_cost['mine']
     }
 
-weapon_hit_radius = 10
+weapon_hit_radius = 15
