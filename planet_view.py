@@ -139,7 +139,7 @@ class PlanetView(GameView):
                         mob.loot(lootbox)
                         
                 # has ship hit planet?      
-                if mob.r <= self.planet_r:
+                if mob.r <= self.planet_r + mob.image.width:
                     mob.hit(3,3)
                     mob.r += 5  # and bounce
                         
@@ -173,8 +173,9 @@ class PlanetView(GameView):
     def draw(self, screen):
         
         GameView.draw(self, screen)
-        self.planet.draw(screen, self.planet_r)
         GameView.draw_objects(self, screen)
+        
+        self.planet.draw(screen, self.planet_r)
         
         self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources )
         

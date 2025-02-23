@@ -160,11 +160,11 @@ class OrbitalShip(Ship):
     
                 if abs(self.r - self.locked_target.r) < const.weapon_hit_radius * 2:
                     if self.p - self.locked_target.p > 0.3:
-                        self.weapons.select('5') # mine. FIXME
+                        self.weapons.selected_weapon = ('mine')
                 elif self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['torpedo']['range'] * self.fit('wep range'):
-                    self.weapons.select('4') # torp. FIXME
+                    self.weapons.selected_weapon = ('torpedo')
                 elif self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['rocket']['range'] * self.fit('wep range'):
-                    self.weapons.select('3') # rockets. FIXME
+                    self.weapons.selected_weapon = ('rocket')
                 else:
                     return None
                 

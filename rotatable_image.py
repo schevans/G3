@@ -16,6 +16,7 @@ class RotatableImage():
         self.center = Vector2(center)
         self.original_image = image        
         self.angle_deg = angle_deg
+        self.width, self.height = image.get_size()
         
     def update(self, center, angle_deg):
         self.center = Vector2(center)
