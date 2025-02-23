@@ -216,9 +216,10 @@ class PlanetView(GameView):
     def lock_target(self, ship, xy):
 
         for mob in self.mobs:
-            if mob.xy.distance_to(xy) <= LOCK_RADIUS:
-                if unobstructed_view(self.ship.xy, mob.xy, const.screen_center, self.planet_r):
-                    ship.locked_target = mob
+            if mob.object_type() == 'Ship':
+                if mob.xy.distance_to(xy) <= LOCK_RADIUS:
+                    if unobstructed_view(self.ship.xy, mob.xy, const.screen_center, self.planet_r):
+                        ship.locked_target = mob
         
 
     def do_ai(self):

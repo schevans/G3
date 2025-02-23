@@ -153,13 +153,13 @@ class OrbitalShip(Ship):
         
 
     def do_ai(self):
-        
-        if self.locked_target.is_alive and self.locked_target.object_type() == 'Ship':  # FIXME: Explosions being mistaken for dead ships. Remove 2nd clause and check 
+
+        if self.locked_target.is_alive:
         
             if self.ai_timer.get_next_ms_interval(AI_MIN + (AI_DITHER * my_random.my_random())):
     
                 if abs(self.r - self.locked_target.r) < const.weapon_hit_radius * 2:
-                    if self.p - self.locked_target.p < 0.3:
+                    if self.p - self.locked_target.p > 0.3:
                         self.weapons.select('5') # mine. FIXME
                 elif self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['torpedo']['range'] * self.fit('wep range'):
                     self.weapons.select('4') # torp. FIXME
