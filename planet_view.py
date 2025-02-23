@@ -138,6 +138,11 @@ class PlanetView(GameView):
                     if lootbox.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
                         mob.loot(lootbox)
                         
+                # has ship hit planet?      
+                if mob.r <= self.planet_r:
+                    mob.hit(3,3)
+                    mob.r += 5  # and bounce
+                        
             # has bullet hit planet => mining
             elif mob.object_type() == 'Bullet' and mob.is_alive:
                 if mob.xy.distance_to(const.screen_center) <= self.planet_r:
@@ -148,7 +153,7 @@ class PlanetView(GameView):
                         p = my_random.my_random() * ( math.pi * 2 ) 
                         xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
                         self.mobs.append(LootBox(xy, resources))
-              
+
             # remove the dead things
             if not mob.is_alive:
                 self.mobs.remove(mob)

@@ -75,7 +75,7 @@ class Bullet():
     def hit(self, mob):
 
         if self.arming_timer.start_delta() > self.arming_time:
-            mob.hit(self)
+            mob.hit(self.shield_damage, self.armour_damage)
             self.is_alive = False
             
 

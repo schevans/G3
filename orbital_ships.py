@@ -25,6 +25,7 @@ HIT_FLASH_INTERVAL = 100 # ms
 
 AI_DITHER = 1000  #ms
 AI_MIN = 250 # ms
+AI_ACCELERATION = 0.3
 
 class OrbitalShip(Ship):
     
@@ -125,20 +126,20 @@ class OrbitalShip(Ship):
         return self.weapons.fire(self, self.locked_target)
 
 
-    def hit(self, bullet):
+    def hit(self, shield_damage, armour_damage):
         
-        if self.fit('shield') >= bullet.shield_damage:
-            self.fit.systems['shield'].value -= bullet.shield_damage
+        if self.fit('shield') >= shield_damage:
+            self.fit.systems['shield'].value -= shield_damage
         elif self.fit('shield') > 0:
-            ratio = (bullet.shield_damage - self.fit('shield')) / bullet.shield_damage
+            ratio = (shield_damage - self.fit('shield')) / shield_damage
             self.fit.systems['shield'].value = 0
-            self.fit.systems['armour'].value = bullet.armour_damage * ratio
-        elif self.fit('armour') > bullet.armour_damage:
-            self.fit.systems['armour'].value -= bullet.armour_damage
+            self.fit.systems['armour'].value = armour_damage * ratio
+        elif self.fit('armour') > armour_damage:
+            self.fit.systems['armour'].value -= armour_damage
         else:
             self.is_alive = False
         
-        self.image_still.change_color(self.color, hit_color)
+        self.image.change_color(self.color, hit_color)
         self.color = hit_color
         self.dmg_timer.get_next_ms_interval(HIT_FLASH_INTERVAL)
 
@@ -153,7 +154,7 @@ class OrbitalShip(Ship):
 
     def do_ai(self):
         
-        if self.locked_target.is_alive:
+        if self.locked_target.is_alive and self.locked_target.object_type() == 'Ship':  # FIXME: Explosions being mistaken for dead ships. Remove 2nd clause and check 
         
             if self.ai_timer.get_next_ms_interval(AI_MIN + (AI_DITHER * my_random.my_random())):
     
@@ -170,10 +171,28 @@ class OrbitalShip(Ship):
                 if self.locked_target:
                     bullet = self.shoot()
                     return bullet
+                
+
+            # close with enemy
+            if abs(self.r - self.locked_target.r) > const.weapon_hit_radius:
+                self.acceleration = AI_ACCELERATION if self.r < self.locked_target.r else -AI_ACCELERATION
+            
+                if abs(self.p > self.locked_target.p) > const.weapon_hit_radius:
+                    self.acceleration *= -1  
+            else:
+                self.acceleration = 0 
+                
         else:
             self.locked_target = None
             self.ai_target = None
 
-            
+
+
+
+
+        
+
+
+
 
 
