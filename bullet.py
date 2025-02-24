@@ -9,7 +9,6 @@ import math
 
 from rotatable_image import RotatableImage
 import constants as const
-from timer import Timer
 
 
 def get_angle_to_target(xy1, xy2):
@@ -21,9 +20,10 @@ class Bullet():
     
     def __init__(self, shooter, target, mousepos, image, data):
         
-        self.xy = shooter.xy
+        self.xy = shooter.xy.copy()
+        self.shooter_xy = shooter.xy
         self.target = target
-
+        
         self.speed = data['speed']
         self.shield_damage = data['shield_damage'] * shooter.fit('wep dmg')
         self.armour_damage = data['armour_damage'] * shooter.fit('wep dmg')
@@ -36,14 +36,16 @@ class Bullet():
 
         self.is_alive = True
         self.range_timer = 0
-        self.arming_timer = Timer()
-        self.arming_timer.start()
-        self.arming_time = (const.weapon_hit_radius * shooter.w ) / (self.speed + 0.001) + 200 # FIXME: Please
+        self.is_armed = False
 
         self.rot_image = RotatableImage(self.xy, image)
 
     
     def update(self):
+
+
+        if not self.is_armed and self.xy.distance_to(self.shooter_xy) > const.weapon_hit_radius:
+            self.is_armed = True
         
         if self.range_timer >= self.range:
             self.is_alive = False
@@ -74,7 +76,7 @@ class Bullet():
     
     def hit(self, mob):
 
-        if self.arming_timer.start_delta() > self.arming_time:
+        if self.is_armed:
             mob.hit(self.shield_damage, self.armour_damage)
             self.is_alive = False
             

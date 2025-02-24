@@ -63,7 +63,8 @@ class OrbitalShip(Ship):
         self.p += self.w
         self.w = math.sqrt(G*self.mass/math.pow(self.r, 3)) 
         
-        self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
+        self.xy[0] = const.screen_center.x - math.cos(self.p)*self.r
+        self.xy[1] = const.screen_center.y - math.sin(self.p)*self.r
         
         if self.cap_timer.get_next_second():
             self.fit.systems['capacitor'].value += self.fit('reactor')
@@ -152,7 +153,7 @@ class OrbitalShip(Ship):
         lootbox.is_alive = False
         
 
-    def do_ai(self):
+    def do_ai(self):     
 
         if self.locked_target.is_alive:
         
