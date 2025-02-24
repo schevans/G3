@@ -17,32 +17,11 @@ from game_view import GameView, View
 from explosions import Explosion, LootBox
 
 DOCK_RADIUS = 15
-LOCK_RADIUS = 10
 
 LEFT_MOUSE_CLICK = 1
 RIGHT_MOUSE_CLICK = 3
 
-def unobstructed_view(xy1, xy2, cpt, r):
-    
-    if xy1.distance_to(cpt) > xy1.distance_to(xy2):
-        return True
-    else:
-        return not line_intersects_circle(xy1, xy2, cpt, r)
-            
-def line_intersects_circle(xy1, xy2, cpt, r):
-    
-    x1 = xy1[0] - cpt[0]
-    y1 = xy1[1] - cpt[1]
-    x2 = xy2[0] - cpt[0]
-    y2 = xy2[1] - cpt[1]
-    
-    dx = x2 - x1
-    dy = y2 - y1
-    dr = math.sqrt(dx*dx + dy*dy)
-    D = x1 * y2 - x2 * y1
-    discriminant = r*r*dr*dr - D*D
 
-    return discriminant >= 0
 
 class PlanetView(GameView):
 
@@ -114,19 +93,18 @@ class PlanetView(GameView):
                         
     def update(self):
         if not self.is_paused:
-            GameView.update(self)
- 
-        self.do_ai()   
+            GameView.update(self) 
  
         self.get_selected_item(self.mobs)
         
         for mob in self.mobs:
             if mob.object_type() == 'Ship':
                 
-                if mob.locked_target:
-                    # break lock?
-                    if not unobstructed_view(mob.xy, mob.locked_target.xy, const.screen_center, self.planet_r):
-                        mob.locked_target = None
+                bullet = mob.do_ai(self.mobs, self.planet_r)
+                if bullet:
+                   self.mobs.append(bullet)
+                   
+                mob.check_lock(self.planet_r)
                     
                 # has been hit by bullet?
                 for bullet in (x for x in self.mobs if x.object_type() == 'Bullet' and not x.homing):
@@ -214,37 +192,8 @@ class PlanetView(GameView):
    
 
 
-    def lock_target(self, ship, xy):
-
-        for mob in self.mobs:
-            if mob.object_type() == 'Ship':
-                if mob.xy.distance_to(xy) <= LOCK_RADIUS:
-                    if unobstructed_view(self.ship.xy, mob.xy, const.screen_center, self.planet_r):
-                        ship.locked_target = mob
-        
-
-    def do_ai(self):
 
 
-        for mob in self.mobs:
-            if mob.object_type() == 'Ship' and mob.is_alive and mob.is_npc:
-                
-                if mob.locked_target:
-                   bullet = mob.do_ai()
-                   if bullet:
-                       self.mobs.append(bullet)
-                       
-                elif mob.ai_target:
-                    self.lock_target(mob, mob.ai_target.xy)
-                
-                else:
-                    enemies = []
-                    for enemy in self.mobs:
-                        if enemy.object_type() == 'Ship' and enemy.is_alive and not enemy.is_npc:
-                            enemies.append(enemy)
-                    enemies.sort(key=lambda x: x.xy.distance_to(enemy.xy))
-                    if enemies:
-                        mob.ai_target = enemies[0]
             
 
 
