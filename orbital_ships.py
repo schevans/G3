@@ -70,7 +70,8 @@ class OrbitalShip(Ship):
         self.dmg_timer = Timer()
         self.orig_color = self.color
         
-        self.mass = 7000 / planet.size # FIXME
+        self.mass = 7000 / planet.size # FIXME. Also check planet.planet_view_r
+        self.planet_view_r = planet.planet_view_r
         
         self.w = math.sqrt(G*self.mass/math.pow(r, 3)) 
 
@@ -175,15 +176,15 @@ class OrbitalShip(Ship):
 
         lootbox.is_alive = False
         
-    def lock_target(self, xy, planet_r, mobs):
+    def lock_target(self, xy, mobs):
         
         for mob in mobs:
             if mob.object_type() == 'Ship':
                 if mob.xy.distance_to(xy) <= LOCK_RADIUS:
-                    if unobstructed_view(self.xy, mob.xy, const.screen_center, planet_r):
+                    if unobstructed_view(self.xy, mob.xy, const.screen_center, self.planet_view_r):
                         self.locked_target = mob
 
-    def do_ai(self, mobs, planet_r):     
+    def do_ai(self, mobs):     
 
         bullet = None        
 
@@ -193,14 +194,14 @@ class OrbitalShip(Ship):
                 enemies = []
                 for enemy in mobs:
                     if enemy.object_type() == 'Ship' and enemy.is_alive and not enemy.is_npc:
-                        if unobstructed_view(self.xy, enemy.xy, const.screen_center, planet_r):
+                        if unobstructed_view(self.xy, enemy.xy, const.screen_center, self.planet_view_r):
                             enemies.append(enemy)
                 enemies.sort(key=lambda x: x.xy.distance_to(enemy.xy))
                 if enemies:
                     self.ai_target = enemies[0]  
     
             if self.ai_target and not self.locked_target:
-                if unobstructed_view(self.xy, self.ai_target.xy, const.screen_center, planet_r):
+                if unobstructed_view(self.xy, self.ai_target.xy, const.screen_center, self.planet_view_r):
                     self.locked_target = self.ai_target        
          
             if self.locked_target:
@@ -218,11 +219,8 @@ class OrbitalShip(Ship):
                         else:
                             return None
                         
-
                         bullet = self.shoot()
 
-                        
-        
                     # close with enemy
                     if abs(self.r - self.locked_target.r) > const.weapon_hit_radius:
                         self.acceleration = AI_ACCELERATION if self.r < self.locked_target.r else -AI_ACCELERATION
@@ -240,9 +238,9 @@ class OrbitalShip(Ship):
         return bullet
 
 
-    def check_lock(self, planet_r):
+    def check_lock(self):
         if self.locked_target:
-            if not unobstructed_view(self.xy, self.locked_target.xy, const.screen_center, planet_r):
+            if not unobstructed_view(self.xy, self.locked_target.xy, const.screen_center, self.planet_view_r):
                 self.locked_target = None
         
 

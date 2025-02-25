@@ -37,7 +37,6 @@ class PlanetView(GameView):
         self.shared_dict['history'].append(View.PLANET)
         self.current_ship = self.shared_dict['current_ship']
         self.planet = shared_dict['planet']
-        self.planet_r = self.planet.size*8
         
         angle_radians = 0
         
@@ -100,11 +99,11 @@ class PlanetView(GameView):
         for mob in self.mobs:
             if mob.object_type() == 'Ship':
                 
-                bullet = mob.do_ai(self.mobs, self.planet_r)
+                bullet = mob.do_ai(self.mobs)
                 if bullet:
                    self.mobs.append(bullet)
                    
-                mob.check_lock(self.planet_r)
+                mob.check_lock()
                     
                 # has been hit by bullet?
                 for bullet in (x for x in self.mobs if x.object_type() == 'Bullet' and not x.homing):
@@ -117,17 +116,17 @@ class PlanetView(GameView):
                         mob.loot(lootbox)
                         
                 # has ship hit planet?      
-                if mob.r <= self.planet_r + mob.image.width:
+                if mob.r <= self.planet.planet_view_r + mob.image.width:
                     mob.hit(3,3)
                     mob.r += 5  # and bounce
                         
             # has bullet hit planet => mining
             elif mob.object_type() == 'Bullet' and mob.is_alive:
-                if mob.xy.distance_to(const.screen_center) <= self.planet_r:
+                if mob.xy.distance_to(const.screen_center) <= self.planet.planet_view_r:
                     resources = self.planet.mine(mob)
                     mob.is_alive = False
                     if resources:
-                        r = self.planet_r * 4
+                        r = self.planet.planet_view_r * 4
                         p = my_random.my_random() * ( math.pi * 2 ) 
                         xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
                         self.mobs.append(LootBox(xy, resources))
@@ -153,7 +152,7 @@ class PlanetView(GameView):
         GameView.draw(self, screen)
         GameView.draw_objects(self, screen)
         
-        self.planet.draw(screen, self.planet_r)
+        self.planet.draw(screen)
         
         self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources )
         
@@ -182,7 +181,7 @@ class PlanetView(GameView):
         return allies   
     
     def get_random_r(self):
-        r = int(my_random.my_gauss() * ( const.screen_height/2 - self.planet_r + const.ship_width ) + 40)
+        r = int(my_random.my_gauss() * ( const.screen_height/2 - self.planet.planet_view_r + const.ship_width ) + 40)
         
         for mob in self.mobs:
             if math.isclose(r, mob.r, abs_tol=const.ship_width):

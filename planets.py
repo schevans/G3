@@ -15,12 +15,13 @@ temp_rng = np.random.RandomState()      # FIXME TEMP
   
 import constants as const
 import my_random
-import utils
 
 planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0) 
 
 MINING_HIT_COUNTER = 10
 RESOURCE_BAR_SIZE = 20
+PLANET_VIEW_RADIUS_MULT = 8
+
 
 class Planet():
     
@@ -33,6 +34,8 @@ class Planet():
         self.color = planet_type_data[planet_type].color
         self.system = system
         self.xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
+        
+        self.planet_view_r = self.size * PLANET_VIEW_RADIUS_MULT
         
         # FIXME: Temp - use my_random
         self.resources = {}
@@ -79,8 +82,8 @@ class Planet():
             
         return retval
                 
-    def draw(self, screen, planet_r):
-        pygame.draw.circle(screen, self.color, const.screen_center, planet_r)
+    def draw(self, screen):
+        pygame.draw.circle(screen, self.color, const.screen_center, self.planet_view_r)
         
         self.draw_resource_bar(screen)
         
