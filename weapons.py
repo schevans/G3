@@ -47,10 +47,9 @@ class Weapons():
         
 
     
-    def draw_icons(self, screen, resources):
+    def draw_icons(self, screen, resources, size, x_offset):
         
-        x_offset = 5
-        size = (44, 52)
+
         for weapon in self.data.keys():
             
             surface = pygame.Surface(size, pygame.SRCALPHA)

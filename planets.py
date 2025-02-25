@@ -19,7 +19,7 @@ import my_random
 planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0) 
 
 MINING_HIT_COUNTER = 10
-RESOURCE_BAR_SIZE = 20
+
 PLANET_VIEW_RADIUS_MULT = 8
 
 
@@ -85,17 +85,10 @@ class Planet():
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, const.screen_center, self.planet_view_r)
         
-        self.draw_resource_bar(screen)
+        
         
 
-    def draw_resource_bar(self, screen):
-        xy = (5, 62) # FIXME: Taken from weapons.draw_icons()
-        
-        rect = (xy, (self.resources_max * RESOURCE_BAR_SIZE, RESOURCE_BAR_SIZE ))
-        pygame.draw.rect(screen, 'white', rect, 1)    
-        
-        rect = (xy, (sum(self.resources.values()) * RESOURCE_BAR_SIZE, RESOURCE_BAR_SIZE ))
-        pygame.draw.rect(screen, 'white', rect) 
+
 
 
 

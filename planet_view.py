@@ -21,7 +21,9 @@ DOCK_RADIUS = 15
 LEFT_MOUSE_CLICK = 1
 RIGHT_MOUSE_CLICK = 3
 
-
+OFFSET = 5
+WEAPON_ICON_SIZE = (44, 52)
+RESOURCE_BAR_LENGTH = 20
 
 class PlanetView(GameView):
 
@@ -153,8 +155,9 @@ class PlanetView(GameView):
         GameView.draw_objects(self, screen)
         
         self.planet.draw(screen)
+        self.draw_resource_bar(screen)
         
-        self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources )
+        self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources, WEAPON_ICON_SIZE, OFFSET)
         
         if self.is_paused:
             text = '[ Paused ]'
@@ -163,6 +166,17 @@ class PlanetView(GameView):
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, text_height + 10)
             screen.blit(text_surface, text_pos )
             
+            
+    def draw_resource_bar(self, screen):
+        
+        xy = (OFFSET, WEAPON_ICON_SIZE[1] + OFFSET*2)
+        
+        rect = (xy, (self.planet.resources_max * RESOURCE_BAR_LENGTH, RESOURCE_BAR_LENGTH ))
+        pygame.draw.rect(screen, 'white', rect, 1)    
+        
+        rect = (xy, (sum(self.planet.resources.values()) * RESOURCE_BAR_LENGTH, RESOURCE_BAR_LENGTH ))
+        pygame.draw.rect(screen, 'white', rect)    
+        
 
     def get_mouse_text(self):
         
