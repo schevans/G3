@@ -23,7 +23,7 @@ RIGHT_MOUSE_CLICK = 3
 
 OFFSET = 5
 WEAPON_ICON_SIZE = (44, 52)
-RESOURCE_BAR_LENGTH = 20
+RESOURCE_BAR = 20
 
 class PlanetView(GameView):
 
@@ -39,6 +39,8 @@ class PlanetView(GameView):
         self.shared_dict['history'].append(View.PLANET)
         self.current_ship = self.shared_dict['current_ship']
         self.planet = shared_dict['planet']
+        
+        self.max_resource_rect = pygame.Rect((OFFSET, WEAPON_ICON_SIZE[1] + OFFSET*2), (sum(self.planet.resources.values()) * RESOURCE_BAR, RESOURCE_BAR ))
         
         angle_radians = 0
         
@@ -158,6 +160,9 @@ class PlanetView(GameView):
         self.draw_resource_bar(screen)
         
         self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources, WEAPON_ICON_SIZE, OFFSET)
+        self.draw_tooltips(screen)
+        
+        
         
         if self.is_paused:
             text = '[ Paused ]'
@@ -165,18 +170,52 @@ class PlanetView(GameView):
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, text_height + 10)
             screen.blit(text_surface, text_pos )
+          
+    def draw_tooltips(self, screen):
+        
+        tooltip = []
+        mousepos = pygame.mouse.get_pos()
+
+        greater_icon_rect = pygame.Rect(((OFFSET,OFFSET), (WEAPON_ICON_SIZE[0]*5+OFFSET*4, WEAPON_ICON_SIZE[1]+OFFSET)))
+        
+        if greater_icon_rect.collidepoint(mousepos):
             
+            start_x = 5
+            end_x = 5 + WEAPON_ICON_SIZE[0]
+            found = False
+            n = 0
+            while not found:    # FIXME: Will never terminate. Also: check spacing - there should be gaps.
+                n += 1
+                if start_x + end_x * (n-1) >= mousepos[0] <= start_x + end_x * n: 
+            
+                    found = True
+                    
+                    
+            weapon = self.mobs[0].weapons.get_weapon_from_key(str(n-1))
+            data = self.mobs[0].weapons.data[weapon]
+            
+            tooltip.append(weapon.capitalize())
+            tooltip.append('speed: ' + str(data['speed']))
+            tooltip.append('damage: ' + str(data['shield_damage'] * self.mobs[0].fit('wep dmg')) + '/' + str(data['armour_damage'] * self.mobs[0].fit('wep dmg')))
+            tooltip.append('speed: ' + str(data['speed']))
+            tooltip.append('range: ' + str(data['range'] * self.mobs[0].fit('wep range')))
+            tooltip.append('activation: ' + str(data['activation']))
+            
+        elif self.max_resource_rect.collidepoint(mousepos):
+            tooltip.append('Planetary resources: ' + str(sum(self.planet.resources.values())) + '/' + str(self.planet.resources_max))
+            
+        if tooltip:
+            self.draw_mouseover_text(screen, tooltip)
             
     def draw_resource_bar(self, screen):
         
         xy = (OFFSET, WEAPON_ICON_SIZE[1] + OFFSET*2)
-        
-        rect = (xy, (self.planet.resources_max * RESOURCE_BAR_LENGTH, RESOURCE_BAR_LENGTH ))
-        pygame.draw.rect(screen, 'white', rect, 1)    
-        
-        rect = (xy, (sum(self.planet.resources.values()) * RESOURCE_BAR_LENGTH, RESOURCE_BAR_LENGTH ))
-        pygame.draw.rect(screen, 'white', rect)    
-        
+
+        pygame.draw.rect(screen, 'white', self.max_resource_rect, 1)    
+
+        rect = (xy, (sum(self.planet.resources.values()) * RESOURCE_BAR, RESOURCE_BAR))
+        pygame.draw.rect(screen, 'white', rect)   
+
 
     def get_mouse_text(self):
         
