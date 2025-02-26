@@ -120,7 +120,7 @@ class Ship():
 
     def description(self):
         if self.name == 'Hero':
-            return self.name
+            return self.name + ' [' + self.fit.to_string() + ']'
         else:
             if self.name in const.species_color.keys():
                 title = 'First Lord '
