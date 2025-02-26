@@ -37,7 +37,7 @@ class PlanetView(GameView):
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
         self.shared_dict['history'].append(View.PLANET)
-        self.current_ship = self.shared_dict['current_ship']
+        
         self.planet = shared_dict['planet']
         
         self.max_resource_rect = pygame.Rect((OFFSET, WEAPON_ICON_SIZE[1] + OFFSET*2), (sum(self.planet.resources.values()) * RESOURCE_BAR, RESOURCE_BAR ))
@@ -50,12 +50,16 @@ class PlanetView(GameView):
             if ship.planet == self.planet:
                 applicable_mobs.append(ship)
            
+        
         if applicable_mobs:
             angle_increment = ( math.pi * 2 ) / len(applicable_mobs)
             
             for mob in applicable_mobs:                                 
                 angle_radians += angle_increment
-                self.mobs.append(OrbitalShip(mob, self.planet, self.get_random_r(), angle_radians))
+                orbital_ship = OrbitalShip(mob, self.planet, self.get_random_r(), angle_radians)
+                self.mobs.append(orbital_ship)
+                if orbital_ship.tmpship == shared_dict['current_ship']:
+                    self.current_ship = orbital_ship
 
         self.is_paused = False 
 
@@ -66,32 +70,36 @@ class PlanetView(GameView):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
                 self.shared_dict['system'] = self.planet.system
+                self.shared_dict['current_ship'] = self.current_ship.tmpship
                 self.next_view = (View.SOLAR, self.shared_dict)
             if event.key == pygame.K_SPACE:
                 self.is_paused = not self.is_paused
             if event.key == pygame.K_w:
                 for mob in self.mobs:
-                    if mob.object_type() == 'Ship' and mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
+                    if mob.object_type() == 'Ship' and mob.name != 'Hero' and self.current_ship.xy.distance_to(mob.xy) < DOCK_RADIUS:
                         self.shared_dict['other_ship'] = mob
                         self.next_view = (View.DOCKING, self.shared_dict)
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
-                self.mobs[0].weapons.select(pygame.key.name(event.key))
-                
+                self.current_ship.weapons.select(pygame.key.name(event.key))
+            # FIXME: Move up to game_view?
+            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
+                self.current_ship = self.do_ship_swap(self.current_ship, event.key)
+                self.shared_dict['current_ship'] = self.current_ship
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSLASH:        
-            self.mobs[0].lock_target(pygame.mouse.get_pos(), self.mobs)
+            self.current_ship.lock_target(pygame.mouse.get_pos(), self.mobs)
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
-            bullet = self.mobs[0].shoot()
+            bullet = self.current_ship.shoot()
             if bullet:
                 self.mobs.append(bullet)
                         
         keys = pygame.key.get_pressed() 
-        self.mobs[0].acceleration = 0
+        self.current_ship.acceleration = 0
         if keys[pygame.K_d]:
-            self.mobs[0].acceleration  = 1
+            self.current_ship.acceleration  = 1
         if keys[pygame.K_a]:        
-            self.mobs[0].acceleration  = -1  
+            self.current_ship.acceleration  = -1  
                         
     def update(self):
         if not self.is_paused:
@@ -156,7 +164,7 @@ class PlanetView(GameView):
         
         self.planet.draw(screen)
         self.draw_resource_bar(screen)
-        self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources, WEAPON_ICON_SIZE, OFFSET)
+        self.current_ship.weapons.draw_icons(screen,self.current_ship.resources, WEAPON_ICON_SIZE, OFFSET)
         self.draw_tooltips(screen)
         
         GameView.draw_objects(self, screen)
@@ -185,14 +193,14 @@ class PlanetView(GameView):
                     break
                 n += 1  
                     
-            weapon = self.mobs[0].weapons.get_weapon_from_key(str(n-1))
-            data = self.mobs[0].weapons.data[weapon]
+            weapon = self.current_ship.weapons.get_weapon_from_key(str(n-1))
+            data = self.current_ship.weapons.data[weapon]
             
             tooltip.append(weapon.capitalize())
             tooltip.append('speed: ' + str(data['speed']))
-            tooltip.append('damage: ' + str(data['shield_damage'] * self.mobs[0].fit('wep dmg')) + '/' + str(data['armour_damage'] * self.mobs[0].fit('wep dmg')))
+            tooltip.append('damage: ' + str(data['shield_damage'] * self.current_ship.fit('wep dmg')) + '/' + str(data['armour_damage'] * self.current_ship.fit('wep dmg')))
             tooltip.append('speed: ' + str(data['speed']))
-            tooltip.append('range: ' + str(data['range'] * self.mobs[0].fit('wep range')))
+            tooltip.append('range: ' + str(data['range'] * self.current_ship.fit('wep range')))
             tooltip.append('activation: ' + str(data['activation']))
             
         elif self.max_resource_rect.collidepoint(mousepos):
@@ -220,11 +228,11 @@ class PlanetView(GameView):
             return [self.selected_item.description()]
 
 
-    def get_local_allies(self):
+    def get_local_allies(self): # FIXME: This needed/can be consolodated?
         allies = []
-        for ship in self.ships:
-            if not ship.is_npc and ship.planet == self.current_ship.planet:
-                allies.append(ship)
+        for mob in self.mobs:
+            if not mob.is_npc:
+                allies.append(mob)
         return allies   
     
     def get_random_r(self):

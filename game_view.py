@@ -195,7 +195,7 @@ class GameView():
         
 
         allied_ships = self.get_local_allies()
-        index = allied_ships.index(self.current_ship)
+        index = allied_ships.index(current_ship)
         if event_key == pygame.K_LEFTBRACKET:
             index = (index - 1) % len(allied_ships)
         else:
