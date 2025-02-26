@@ -39,7 +39,7 @@ class Ship():
             
         self.fit = fit.Fit(fit_string)
 
-        self.resources = const.initial_resources
+        self.resources = const.initial_resources.copy()
         
         self.is_alive = True
         self.heading = 0
@@ -55,9 +55,7 @@ class Ship():
             self.image_flying.change_color(pygame.Color('white'), self.color)
 
         self.image = self.image_still
-        self.resources = const.initial_resources
         self.weapons = Weapons()
-
 
         # dev mode
         if self.name == 'Hero':

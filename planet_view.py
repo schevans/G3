@@ -71,7 +71,7 @@ class PlanetView(GameView):
                 self.is_paused = not self.is_paused
             if event.key == pygame.K_w:
                 for mob in self.mobs:
-                    if mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
+                    if mob.object_type() == 'Ship' and mob.name != 'Hero' and self.mobs[0].xy.distance_to(mob.xy) < DOCK_RADIUS:
                         mob.tmpship.recruit()  # FIXME: Better solution (tmpship - conjoined with orbital_ship)
                         self.shared_dict['other_ship'] = mob
                         self.next_view = (View.DOCKING, self.shared_dict)
@@ -80,7 +80,7 @@ class PlanetView(GameView):
                 
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSLASH:        
-            self.lock_target(self.mobs[0], pygame.mouse.get_pos())
+            self.mobs[0].lock_target(pygame.mouse.get_pos(), self.mobs)
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
             bullet = self.mobs[0].shoot()
@@ -158,7 +158,7 @@ class PlanetView(GameView):
         
         self.planet.draw(screen)
         self.draw_resource_bar(screen)
-        
+
         self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources, WEAPON_ICON_SIZE, OFFSET)
         self.draw_tooltips(screen)
         
@@ -180,8 +180,8 @@ class PlanetView(GameView):
         
         if greater_icon_rect.collidepoint(mousepos):
             
-            start_x = 5
-            end_x = 5 + WEAPON_ICON_SIZE[0]
+            start_x = OFFSET
+            end_x = OFFSET + WEAPON_ICON_SIZE[0]
             found = False
             n = 0
             while not found:    # FIXME: Will never terminate. Also: check spacing - there should be gaps.
