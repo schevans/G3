@@ -189,7 +189,7 @@ class OrbitalShip(Ship):
 
         bullet = None        
 
-        if self.is_npc:    
+        if self.is_npc and self.is_hostile(): 
 
             if not self.ai_target:
                 enemies = []
@@ -245,6 +245,8 @@ class OrbitalShip(Ship):
                 self.locked_target = None
         
 
+    def is_hostile(self):
+        return self.liege == const.hostile_capital
 
 
 

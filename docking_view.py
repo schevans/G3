@@ -52,11 +52,9 @@ class DockingView(GameView):
         expo_enum = ExpositionText.NO
         if self.other_ship.liege == const.friendly_capital:
             expo_enum = ExpositionText.YES
-            self.other_ship.recruit() 
+            self.other_ship.tmpship.recruit() 
         elif self.other_ship.liege == const.neutral_capital:
             expo_enum = ExpositionText.NO_THANKS
-            
-        self.other_ship.recruit()   # FIXME: TEMP - REMOVE (working correctly above)
         
         button.is_disabled = True
         self.exposition = ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_ok_callback, False)
