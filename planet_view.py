@@ -154,15 +154,13 @@ class PlanetView(GameView):
     def draw(self, screen):
         
         GameView.draw(self, screen)
-        GameView.draw_objects(self, screen)
         
         self.planet.draw(screen)
         self.draw_resource_bar(screen)
-
         self.mobs[0].weapons.draw_icons(screen,self.mobs[0].resources, WEAPON_ICON_SIZE, OFFSET)
         self.draw_tooltips(screen)
         
-        
+        GameView.draw_objects(self, screen)
         
         if self.is_paused:
             text = '[ Paused ]'
@@ -182,14 +180,11 @@ class PlanetView(GameView):
             
             start_x = OFFSET
             end_x = OFFSET + WEAPON_ICON_SIZE[0]
-            found = False
-            n = 0
-            while not found:    # FIXME: Will never terminate. Also: check spacing - there should be gaps.
-                n += 1
+            n = 1
+            while n <= 5:
                 if start_x + end_x * (n-1) >= mousepos[0] <= start_x + end_x * n: 
-            
-                    found = True
-                    
+                    break
+                n += 1  
                     
             weapon = self.mobs[0].weapons.get_weapon_from_key(str(n-1))
             data = self.mobs[0].weapons.data[weapon]

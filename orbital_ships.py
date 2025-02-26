@@ -98,8 +98,9 @@ class OrbitalShip(Ship):
             
         if self.color != self.orig_color and self.dmg_timer.get_next_ms_interval(HIT_FLASH_INTERVAL):
             self.image_still.change_color(self.color, self.orig_color)
+            self.image_flying.change_color(self.color, self.orig_color)
             self.color = self.orig_color
-            
+
             
     def draw(self, screen):
         
