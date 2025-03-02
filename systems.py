@@ -120,7 +120,11 @@ class System():
     
     
     def description(self):
-        return self.name + ': ' + self.system_type
+        
+        if self.name in const.species.values() and self.name != const.our_capital:
+            return self.name + ' Homeworld: ' + self.system_type
+        else:
+            return self.name + ': ' + self.system_type
 
                 
     def object_type(self):
