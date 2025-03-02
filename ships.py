@@ -87,22 +87,27 @@ class Ship():
                 self.xy.y -= math.cos(math.radians(self.heading)) * self.fit.speed()
                 
             
+        
+            
         self.image.update(self.xy, self.heading)
     
     def draw(self, screen):
 
-        if not self.is_npc:
-            if self.is_current:
-                 self.image.change_color(pygame.Color('black'), pygame.Color('red')) 
-            else:
-                self.image.change_color(pygame.Color('red'), pygame.Color('black'))         
+        self.is_current_outline()        
 
         if self.destination:    
             pygame.draw.line(screen, self.color, self.xy, self.destination.xy, 1)
 
         self.image.draw(screen)
 
-    
+    def is_current_outline(self):
+        if not self.is_npc:
+            if self.is_current:
+                 self.image.change_color(pygame.Color('black'), pygame.Color('red')) 
+            else:
+                self.image.change_color(pygame.Color('red'), pygame.Color('black'))  
+
+
     def is_moving(self):
         return self.destination and self.xy != self.destination.xy
 

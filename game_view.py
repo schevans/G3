@@ -68,9 +68,13 @@ class GameView():
         if ship.name == 'Fulu':
             ship.is_npc = False
             ship.liege = hero_name
-        if ship.name == 'Muphrid':
+        if ship.name == 'Rigel':
             TEMP_PLANET = ship.planet
             TEMP_SYSTEM = ship.system
+    for ship in shiplist:
+        if ship.name == 'Fulu':
+            ship.planet = TEMP_PLANET
+            ship.system = TEMP_SYSTEM    
     ### TEMP TEMP ###
 
     def __init__(self):
