@@ -77,8 +77,8 @@ class SolarView(GameView):
             pygame.draw.circle(screen, 'white', self.selected_item.xy, self.selected_item.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
         
-        pygame.draw.circle(screen, utils.fade_to_black(self.system.color, 2, 3), const.screen_center, (self.system.r+2)*SUN_SIZE_MULT)
-        pygame.draw.circle(screen, utils.fade_to_black(self.system.color, 1, 3), const.screen_center, (self.system.r+1)*SUN_SIZE_MULT)
+        pygame.draw.circle(screen, utils.fade_color_to(self.system.color, pygame.Color('black'), 2/3), const.screen_center, (self.system.r+2)*SUN_SIZE_MULT)
+        pygame.draw.circle(screen, utils.fade_color_to(self.system.color, pygame.Color('black'), 1/3), const.screen_center, (self.system.r+1)*SUN_SIZE_MULT)
         pygame.draw.circle(screen, self.system.color, const.screen_center, self.system.r*SUN_SIZE_MULT )
         
         for planet in self.system.planets:

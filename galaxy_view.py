@@ -115,8 +115,8 @@ class GalaxyView(GameView):
             
         for system in systems.syslist:
             
-            pygame.draw.circle(screen, utils.fade_to_black(system.color, 2, 3), system.xy, system.r+2)
-            pygame.draw.circle(screen, utils.fade_to_black(system.color, 1, 3), system.xy, system.r+1)
+            pygame.draw.circle(screen, utils.fade_color_to(system.color, pygame.Color('black'), 2/3), system.xy, system.r+2)
+            pygame.draw.circle(screen, utils.fade_color_to(system.color, pygame.Color('black'), 1/3), system.xy, system.r+1)
             pygame.draw.circle(screen, system.color, system.xy, system.r )
 
     

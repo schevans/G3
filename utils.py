@@ -20,21 +20,10 @@ import constants as const
 def angle_between_points(v1,v2):
     return math.degrees(math.atan2(v1.x - v2.x, v1.y - v2.y))
 
-def fade_to_black(color, i, num_steps):
-    
-    # FIXME: Really?    
-    color0 = color[0] / (num_steps + 1) * (num_steps + 1 - i )
-    color1 = color[1] / (num_steps + 1) * (num_steps + 1 - i )
-    color2 = color[2] / (num_steps + 1) * (num_steps + 1 - i )
-    return (color0, color1, color2)
 
-
-def whiten_a_bit(color, a_bit):
-    # FIXME: Again, really???
-    color0 = color[0]  + (( 255 - color[0] ) * a_bit)
-    color1 = color[1]  + (( 255 - color[1] ) * a_bit)
-    color2 = color[2]  + (( 255 - color[2] ) * a_bit)
-    return (color0, color1, color2)    
+def fade_color_to(current_color, fade_to_color, ratio):    
+    return pygame.Color(tuple((1-ratio)*x for x in current_color)) + pygame.Color(tuple(ratio*x for x in fade_to_color))
+     
 
 stars = []
 

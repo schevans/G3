@@ -88,8 +88,8 @@ class Button():
     def set_color(self, color):
         self.color = pygame.Color(color)
         
-        self.lighter_color = utils.whiten_a_bit(self.color, 0.5)
-        self.darker_color = utils.fade_to_black(self.color, 1, 2)
+        self.lighter_color = utils.fade_color_to(self.color, pygame.Color('white'), 0.5)
+        self.darker_color = utils.fade_color_to(self.color, pygame.Color('black'), 1/2)
         self.border_color = self.lighter_color
         self.button_color = self.color
         
@@ -142,7 +142,7 @@ class CheckBox():
         
         self.spacer = 5
         self.background_color = pygame.Color('black')
-        self.lighter_color = utils.fade_to_black(self.color, 2, 3)
+        self.lighter_color =  utils.fade_color_to(self.color, pygame.Color('black'), 2/3)
         self.is_pressed = False
         
         self.text_surface = utils.fonts[14].render(text, True, 'white')

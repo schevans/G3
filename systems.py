@@ -7,6 +7,7 @@ Created on Mon Nov  4 19:10:48 2024
 """
 import my_random
 from pygame.math import Vector2
+from pygame import Color
 import math
 import pandas as pd
 
@@ -49,8 +50,7 @@ def init_systems(num_systems):
         randr = my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX)
         
         system_type = const.system_types[my_random.my_randint(0, len(const.system_types)-1)]
-        
-        color = utils.whiten_a_bit(my_random.my_choices(STAR_TEMPERATURES, weights=STAR_TEMP_FREQS, k = 1)[0], 0.4)
+        color = utils.fade_color_to(my_random.my_choices(STAR_TEMPERATURES, weights=STAR_TEMP_FREQS, k = 1)[0], Color('white'), 0.6)
         system = System(name, randpos ,randr, color, system_type)
         
         syslist.append(system)
