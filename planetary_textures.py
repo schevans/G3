@@ -102,17 +102,10 @@ class PlanetaryTextures():
                     else:
                         value = self.combined_features[int(u)+xoffset][int(v)+yoffset]
     
-                
                     value = ( value + 1 ) / 2 # normal
-                    t1 = 207
-                    t2 = 1 + 206 * value
-                    t3 = 21 * value
-                
-                    newcolor = ( t1, t2, t3 )
-                
-                    newcolor = utils.fade_color_to(planet.color1, planet.color2, value)
+                    color = utils.fade_color_to(planet.color1, planet.color2, value)
         
-                    surface.set_at((x, y), newcolor)
+                    surface.set_at((x, y), color)
     
         else: # devmode TEMP?
             pygame.draw.circle(surface, planet.color1, (planet_view_r/2,planet_view_r/2), planet_view_r/2)
