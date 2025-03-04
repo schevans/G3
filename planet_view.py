@@ -107,6 +107,8 @@ class PlanetView(GameView):
  
         self.get_selected_item(self.mobs)
         
+        self.planet.update()
+        
         for mob in self.mobs:
             if mob.object_type() == 'Ship':
                 

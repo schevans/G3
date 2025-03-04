@@ -15,6 +15,7 @@ temp_rng = np.random.RandomState()      # FIXME TEMP
   
 import constants as const
 import my_random
+from planetary_textures import PlanetaryTextures
 
 planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0) 
 
@@ -22,6 +23,7 @@ MINING_HIT_COUNTER = 10
 
 PLANET_VIEW_RADIUS_MULT = 8
 
+planetary_textures = PlanetaryTextures()#True)    # TEMP: True == devmode
 
 class Planet():
     
@@ -31,7 +33,8 @@ class Planet():
         self.p = p
         self.planet_type = planet_type
         self.size = size
-        self.color = planet_type_data[planet_type].color
+        self.color1 = pygame.Color(planet_type_data[planet_type].color1)
+        self.color2 = pygame.Color(planet_type_data[planet_type].color2)
         self.system = system
         self.xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
         
@@ -47,7 +50,9 @@ class Planet():
                 self.resources[resource] = amount
                 
         self.resources_max = sum(self.resources.values())
-
+        
+        self.image = planetary_textures.get_image(self)
+        self.spin = 0
             
     def description(self):
         return self.name + ', ' + self.planet_type.capitalize() + ', resouces: ' +  str(sum(self.resources.values()))
@@ -81,10 +86,13 @@ class Planet():
             self.mining_can = {}
             
         return retval
+    
+    def update(self):
+        self.image.angle_deg = self.spin
+        self.spin += 0.3
                 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, const.screen_center, self.planet_view_r)
-        
+        self.image.draw(screen)
         
         
 

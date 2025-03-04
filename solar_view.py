@@ -83,7 +83,7 @@ class SolarView(GameView):
         
         for planet in self.system.planets:
             pygame.draw.circle(screen, 'gray', const.screen_center, planet.r, 1)
-            pygame.draw.circle(screen, planet.color, planet.xy, planet.size)
+            pygame.draw.circle(screen, planet.color1, planet.xy, planet.size)
         
         
         

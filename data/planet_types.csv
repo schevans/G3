@@ -1,5 +1,6 @@
 ,ocean,lava,rocky,earth-like
-color,blue,yellow,brown,green
+color1,lightblue,yellow,brown4,green
+color2,blue,brown,darkorange3,blue
 fuel,10,10,10,10
 tech,2,1,5,10
 credits,1,2,10,5
