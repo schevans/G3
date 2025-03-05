@@ -23,7 +23,7 @@ MINING_HIT_COUNTER = 10
 
 PLANET_VIEW_RADIUS_MULT = 8
 
-planetary_textures = PlanetaryTextures()#True)    # TEMP: True == devmode
+planetary_textures = PlanetaryTextures()
 
 class Planet():
     
@@ -51,7 +51,8 @@ class Planet():
                 
         self.resources_max = sum(self.resources.values())
         
-        (self.image, self.small_image) = planetary_textures.get_image(self)
+        (self.image, self.small_image) = (None, None)
+
         self.spin = 0
             
     def description(self):
@@ -88,15 +89,27 @@ class Planet():
         return retval
     
     def update(self):
+        # defer planet gen 'till needed for perf
+        if not self.image:
+            (self.image, self.small_image) = planetary_textures.get_image(self)
+            
         self.image.angle_deg = self.spin
         self.spin += 0.3
                 
     def planet_view_draw(self, screen):
+        # defer planet gen 'till needed for perf
+        if not self.image:
+            (self.image, self.small_image) = planetary_textures.get_image(self)
         self.image.draw(screen)
         
     def solar_view_draw(self, screen):
-        self.small_image.draw(screen) 
+        # defer planet gen 'till needed for perf
+        if not self.small_image:
+            (self.image, self.small_image) = planetary_textures.get_image(self)
+           
         pygame.draw.circle(screen, 'gray', const.screen_center, self.r, 1)
+        self.small_image.draw(screen)
+        
 
 
 

@@ -33,31 +33,28 @@ def gen_data(data, feature_size):
 
 class PlanetaryTextures():
     
-    def __init__(self, devmode=False):
+    def __init__(self):
         
-        self.devmode = devmode
+        small_filename = './data/SmallFeatures_' + str(const.random_seed) + '.npy'
+        large_filename = './data/LargeFeatures_' + str(const.random_seed) + '.npy'
         
-        if not devmode:
-            small_filename = './data/SmallFeatures_' + str(const.random_seed) + '.npy'
-            large_filename = './data/LargeFeatures_' + str(const.random_seed) + '.npy'
+        self.small_features = np.zeros([BLOCK_SIZE, BLOCK_SIZE])
+        self.large_features = np.zeros([BLOCK_SIZE, BLOCK_SIZE])
+        
+
+        if os.path.isfile(small_filename):
+            self.small_features = np.load(small_filename)
+        else:
+            gen_data(self.small_features, SMALL_FEATURES)
+            np.save(small_filename, self.small_features)
             
-            self.small_features = np.zeros([BLOCK_SIZE, BLOCK_SIZE])
-            self.large_features = np.zeros([BLOCK_SIZE, BLOCK_SIZE])
-            
-    
-            if os.path.isfile(small_filename):
-                self.small_features = np.load(small_filename)
-            else:
-                gen_data(self.small_features, SMALL_FEATURES)
-                np.save(small_filename, self.small_features)
-                
-            if os.path.isfile(large_filename):
-                self.large_features = np.load(large_filename)
-            else:
-                gen_data(self.large_features, LARGE_FEATURES)       
-                np.save(large_filename, self.large_features)
-    
-            self.combined_features = self.small_features * self.large_features
+        if os.path.isfile(large_filename):
+            self.large_features = np.load(large_filename)
+        else:
+            gen_data(self.large_features, LARGE_FEATURES)       
+            np.save(large_filename, self.large_features)
+
+        self.combined_features = self.small_features * self.large_features
 
 
     def get_image(self, planet):
@@ -66,49 +63,44 @@ class PlanetaryTextures():
         
         surface = pygame.Surface((planet_view_r, planet_view_r), pygame.SRCALPHA)
         
-        if not self.devmode:
+        buffer = 50
         
-            buffer = 50
-            
-            # FIXME: Switch to my_random
-            xoffset =  temp_rng.randint(buffer, BLOCK_SIZE - planet_view_r - buffer)
-            yoffset = temp_rng.randint(buffer, BLOCK_SIZE - planet_view_r - buffer)
+        # FIXME: Switch to my_random
+        xoffset =  temp_rng.randint(buffer, BLOCK_SIZE - planet_view_r - buffer)
+        yoffset = temp_rng.randint(buffer, BLOCK_SIZE - planet_view_r - buffer)
+
+        for x in range(planet_view_r):
+            for y in range(planet_view_r):
     
-            for x in range(planet_view_r):
-                for y in range(planet_view_r):
-        
-                    # convert pixel position into a vector relative to the center and normalize
-                    px = x * 2/planet_view_r - 1
-                    py = y * 2/planet_view_r - 1
-                    
-                    # get the squared magnitude
-                    magSq = px * px + py * py
-                    
-                    # outside the circle? leave blank.
-                    if ( magSq > 1 ):
-                        continue
-                    
-                    # lens distortion
-                    scale = 0.35 * magSq + (1 - 0.35)
-                    px = px * scale
-                    py = py * scale
-                    
-                    # convert our local offsets into lookup coordinates into our map texture
-                    u = (px + 1) * (MAP_HEIGHT/2) 
-                    v = (py + 1) * (MAP_HEIGHT/2)
-        
-                    if planet.planet_type == 'earth-like':
-                        value = self.large_features[int(u)+xoffset][int(v)+yoffset]
-                    else:
-                        value = self.combined_features[int(u)+xoffset][int(v)+yoffset]
+                # convert pixel position into a vector relative to the center and normalize
+                px = x * 2/planet_view_r - 1
+                py = y * 2/planet_view_r - 1
+                
+                # get the squared magnitude
+                magSq = px * px + py * py
+                
+                # outside the circle? leave blank.
+                if ( magSq > 1 ):
+                    continue
+                
+                # lens distortion
+                scale = 0.35 * magSq + (1 - 0.35)
+                px = px * scale
+                py = py * scale
+                
+                # convert our local offsets into lookup coordinates into our map texture
+                u = (px + 1) * (MAP_HEIGHT/2) 
+                v = (py + 1) * (MAP_HEIGHT/2)
     
-                    value = ( value + 1 ) / 2 # normal
-                    color = utils.fade_color_to(planet.color1, planet.color2, value)
-        
-                    surface.set_at((x, y), color)
+                if planet.planet_type == 'earth-like':
+                    value = self.large_features[int(u)+xoffset][int(v)+yoffset]
+                else:
+                    value = self.combined_features[int(u)+xoffset][int(v)+yoffset]
+
+                value = ( value + 1 ) / 2 # normal
+                color = utils.fade_color_to(planet.color1, planet.color2, value)
     
-        else: # devmode TEMP?
-            pygame.draw.circle(surface, planet.color1, (planet_view_r/2,planet_view_r/2), planet_view_r/2)
+                surface.set_at((x, y), color)
             
         small_image = pygame.transform.scale_by(surface, 1/PLANET_VIEW_RADIUS_MULT)
         
