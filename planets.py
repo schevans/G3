@@ -103,16 +103,16 @@ class Planet():
         self.image.draw(screen)
         
         self.shadow_surface.fill((0,0,0,0))
-        theta = self.p - math.pi
+        theta = self.p + math.pi/2
         r = self.planet_view_r
         
         umbra_overhang = 2
-        umbra1 = (const.screen_center[0]+math.sin(theta)*(r+umbra_overhang), const.screen_center[1]+math.cos(theta)*(r+umbra_overhang))
-        umbra2 = (const.screen_center[0]-math.sin(theta)*(r+umbra_overhang), const.screen_center[1]-math.cos(theta)*(r+umbra_overhang))
+        umbra1 = (const.screen_center[0]+math.cos(theta)*(r+umbra_overhang), const.screen_center[1]+math.sin(theta)*(r+umbra_overhang))
+        umbra2 = (const.screen_center[0]-math.cos(theta)*(r+umbra_overhang), const.screen_center[1]-math.sin(theta)*(r+umbra_overhang))
         
         extent = const.screen_width / 2
-        extent1 = (umbra1[0]+math.sin(theta+math.pi/2)*extent, umbra1[1]+math.cos(theta+math.pi/2)*extent)
-        extent2 = (umbra2[0]+math.sin(theta+math.pi/2)*extent, umbra2[1]+math.cos(theta+math.pi/2)*extent)
+        extent1 = (umbra1[0]+math.cos(theta+math.pi/2)*extent, umbra1[1]+math.sin(theta+math.pi/2)*extent)
+        extent2 = (umbra2[0]+math.cos(theta+math.pi/2)*extent, umbra2[1]+math.sin(theta+math.pi/2)*extent)
         
         pygame.draw.polygon(self.shadow_surface, UMBRA_COLOR, (umbra1, umbra2, extent2, extent1))
         screen.blit(self.shadow_surface, (0,0))
