@@ -110,7 +110,9 @@ class PlanetaryTextures():
         else: # devmode TEMP?
             pygame.draw.circle(surface, planet.color1, (planet_view_r/2,planet_view_r/2), planet_view_r/2)
             
-        return RotatableImage(const.screen_center, surface)
+        small_image = pygame.transform.scale_by(surface, 1/PLANET_VIEW_RADIUS_MULT)
+        
+        return (RotatableImage(const.screen_center, surface), RotatableImage(planet.xy, small_image))
 
 
 

@@ -164,7 +164,7 @@ class PlanetView(GameView):
         
         GameView.draw(self, screen)
         
-        self.planet.draw(screen)
+        self.planet.planet_view_draw(screen)
         self.draw_resource_bar(screen)
         self.current_ship.weapons.draw_icons(screen,self.current_ship.resources, WEAPON_ICON_SIZE, OFFSET)
         self.draw_tooltips(screen)
