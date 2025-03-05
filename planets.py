@@ -20,8 +20,8 @@ from planetary_textures import PlanetaryTextures
 planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0) 
 
 MINING_HIT_COUNTER = 10
-
 PLANET_VIEW_RADIUS_MULT = 8
+UMBRA_COLOR = ( 0, 0, 0, 128)
 
 planetary_textures = PlanetaryTextures()
 
@@ -52,7 +52,7 @@ class Planet():
         self.resources_max = sum(self.resources.values())
         
         (self.image, self.small_image) = (None, None)
-
+        self.shadow_surface = pygame.Surface((const.screen_width,const.screen_height), pygame.SRCALPHA)
         self.spin = 0
             
     def description(self):
@@ -101,6 +101,21 @@ class Planet():
         if not self.image:
             (self.image, self.small_image) = planetary_textures.get_image(self)
         self.image.draw(screen)
+        
+        self.shadow_surface.fill((0,0,0,0))
+        theta = self.p - math.pi
+        r = self.planet_view_r
+        
+        umbra_overhang = 2
+        umbra1 = (const.screen_center[0]+math.sin(theta)*(r+umbra_overhang), const.screen_center[1]+math.cos(theta)*(r+umbra_overhang))
+        umbra2 = (const.screen_center[0]-math.sin(theta)*(r+umbra_overhang), const.screen_center[1]-math.cos(theta)*(r+umbra_overhang))
+        
+        extent = const.screen_width / 2
+        extent1 = (umbra1[0]+math.sin(theta+math.pi/2)*extent, umbra1[1]+math.cos(theta+math.pi/2)*extent)
+        extent2 = (umbra2[0]+math.sin(theta+math.pi/2)*extent, umbra2[1]+math.cos(theta+math.pi/2)*extent)
+        
+        pygame.draw.polygon(self.shadow_surface, UMBRA_COLOR, (umbra1, umbra2, extent2, extent1))
+        screen.blit(self.shadow_surface, (0,0))
         
     def solar_view_draw(self, screen):
         # defer planet gen 'till needed for perf

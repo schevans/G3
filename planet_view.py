@@ -24,6 +24,7 @@ RIGHT_MOUSE_CLICK = 3
 OFFSET = 5
 WEAPON_ICON_SIZE = (44, 52)
 RESOURCE_BAR = 20
+RED_FADE = pygame.Color(207, 1, 0, 64)
 
 class PlanetView(GameView):
 
@@ -164,12 +165,18 @@ class PlanetView(GameView):
         
         GameView.draw(self, screen)
         
-        self.planet.planet_view_draw(screen)
         self.draw_resource_bar(screen)
         self.current_ship.weapons.draw_icons(screen,self.current_ship.resources, WEAPON_ICON_SIZE, OFFSET)
         self.draw_tooltips(screen)
         
         GameView.draw_objects(self, screen)
+        
+        self.planet.planet_view_draw(screen)
+        
+        for mob in self.mobs:
+            if mob.object_type() == 'Ship' and mob.locked_target:
+                pygame.draw.circle(screen, RED_FADE, mob.locked_target.xy, 20, 1)
+                pygame.draw.line(screen, RED_FADE, mob.xy, mob.locked_target.xy)
         
         if self.is_paused:
             text = '[ Paused ]'

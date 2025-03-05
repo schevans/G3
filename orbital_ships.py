@@ -19,8 +19,6 @@ G = 1
 BAR_SCALE = 25
 LOCK_RADIUS = 15
 
-red_fade = pygame.Color(207, 1, 0, 64)
-
 hit_color = pygame.Color('orangered')
 HIT_FLASH_INTERVAL = 100 # ms
 
@@ -144,10 +142,6 @@ class OrbitalShip(Ship):
         new_rect = rotated_image.get_rect(center = surface.get_rect(topleft = self.xy).center)
         
         screen.blit(rotated_image, (new_rect[0]-new_rect[2]/2, new_rect[1]-new_rect[3]/2))
-        
-        if self.locked_target:
-            pygame.draw.circle(screen, red_fade, self.locked_target.xy, 20, 1)
-            pygame.draw.line(screen, red_fade, self.xy, self.locked_target.xy)
 
 
     def shoot(self):
