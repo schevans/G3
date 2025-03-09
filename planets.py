@@ -39,6 +39,9 @@ class Planet():
         self.xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
         
         self.planet_view_r = self.size * PLANET_VIEW_RADIUS_MULT
+        self.atmos_color = self.color1
+        if self.planet_type in ['rocky', 'earth-like']:
+            self.atmos_color = self.color2
         
         # FIXME: Temp - use my_random
         self.resources = {}
@@ -97,10 +100,15 @@ class Planet():
         self.spin += 0.3
                 
     def planet_view_draw(self, screen):
+        
+        pygame.draw.circle(screen, self.atmos_color, const.screen_center, self.planet_view_r, 3)
+
         # defer planet gen 'till needed for perf
         if not self.image:
             (self.image, self.small_image) = planetary_textures.get_image(self)
         self.image.draw(screen)
+        
+        
         
         self.shadow_surface.fill((0,0,0,0))
         theta = self.p + math.pi/2
