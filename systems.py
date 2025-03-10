@@ -13,8 +13,8 @@ import pandas as pd
 
 import constants as const
 import planets
-
 import utils
+from stations import Station
 
 STAR_SIZE_MIN = 3
 STAR_SIZE_MAX = 8
@@ -93,16 +93,18 @@ class System():
         self.system_type = system_type
         self.planets = []
         
-        
-        
-        
         for i in range(0, my_random.my_randint(1, 4)):
             r = self.get_random_r()
             p =  math.radians(my_random.my_random() * 360)            
             planet_type = planets.planet_type_data.columns.values[my_random.my_randint(0,len(planets.planet_type_data.columns.values)-1)]
             size = const.planet_size_freq[my_random.my_randint(0,len(const.planet_size_freq)-1)]
             planet_name = self.name + ' ' + utils.numbers_to_roman(i)
-            planet = planets.Planet(planet_name, r, p, planet_type, size, self)
+            
+            station = None 
+            if self.system_type == 'Uninhabited' and i == 1:
+                station = Station(planet_name, const.screen_height/4)
+            
+            planet = planets.Planet(planet_name, r, p, planet_type, size, self, station)
             self.planets.append(planet)
          
 

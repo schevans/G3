@@ -46,6 +46,7 @@ class PlanetView(GameView):
         angle_radians = 0
         
         applicable_mobs = []
+
         
         for ship in self.ships:
             if ship.planet == self.planet:
@@ -61,6 +62,10 @@ class PlanetView(GameView):
                 self.mobs.append(orbital_ship)
                 if orbital_ship.tmpship == shared_dict['current_ship']:
                     self.current_ship = orbital_ship
+
+        
+        if self.planet.station:
+            self.mobs.append(self.planet.station)
 
         self.is_paused = False 
 

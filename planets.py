@@ -27,7 +27,7 @@ planetary_textures = PlanetaryTextures()
 
 class Planet():
     
-    def __init__(self, name, r, p, planet_type, size, system):
+    def __init__(self, name, r, p, planet_type, size, system, station):
         self.name = name
         self.r = r
         self.p = p
@@ -36,9 +36,11 @@ class Planet():
         self.color1 = pygame.Color(planet_type_data[planet_type].color1)
         self.color2 = pygame.Color(planet_type_data[planet_type].color2)
         self.system = system
-        self.xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
+        self.station = station
         
+        self.xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
         self.planet_view_r = self.size * PLANET_VIEW_RADIUS_MULT
+        
         self.atmos_color = self.color1
         if self.planet_type in ['rocky', 'earth-like']:
             self.atmos_color = self.color2
@@ -57,6 +59,7 @@ class Planet():
         (self.image, self.small_image) = (None, None)
         self.shadow_surface = pygame.Surface((const.screen_width,const.screen_height), pygame.SRCALPHA)
         self.spin = 0
+
             
     def description(self):
         return self.name + ', ' + self.planet_type.capitalize() + ', resouces: ' +  str(sum(self.resources.values()))

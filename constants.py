@@ -29,7 +29,7 @@ ship_width = 18
 
 initial_resources = {
     'credits': 30,
-    'fuel': 300,
+    'fuel': 900,
     'metal': 10,
     'tech': 10,
     'laser': math.inf,
@@ -124,4 +124,5 @@ weapon_hit_radius = 15
 # relationship between orbital acceleration and ship speed
 acc_over_speed = 1/3
 
-
+# G
+G = 1
