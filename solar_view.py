@@ -59,10 +59,7 @@ class SolarView(GameView):
             if  event.key == pygame.K_j:   
                 if self.selected_item:
                     self.current_ship.destination = self.selected_item       
-            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
-                self.current_ship = self.do_ship_swap(self.current_ship, event.key)    
-                self.shared_dict['current_ship'] = self.current_ship
-                
+
                 
     def update(self):
         GameView.update(self)

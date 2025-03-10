@@ -106,6 +106,9 @@ class GameView():
                     self.next_view = (self.shared_dict['history'].pop(), self.shared_dict)
             if event.key == pygame.K_f:
                 self.next_view = (View.FITTING, self.shared_dict)
+            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
+                self.current_ship = self.do_ship_swap(event.key)
+                self.shared_dict['current_ship'] = self.current_ship
                         
         if self.show_help and self.exposition:
            self.exposition.process_event(event)
@@ -195,21 +198,24 @@ class GameView():
                     self.selected_item = item
                     break
         
-    def do_ship_swap(self, current_ship, event_key):
+    def do_ship_swap(self, event_key):
         
 
         allied_ships = self.get_local_allies()
-        index = allied_ships.index(current_ship)
+        index = allied_ships.index(self.current_ship)
         if event_key == pygame.K_LEFTBRACKET:
             index = (index - 1) % len(allied_ships)
         else:
             index = (index + 1) % len(allied_ships)   
         
-        current_ship.is_current = False
-        current_ship = allied_ships[index]
-        current_ship.is_current = True
+        self.current_ship.is_current = False
+        self.current_ship = allied_ships[index]
+        self.current_ship.is_current = True
         
-        return current_ship
+        return self.current_ship
+    
+    def get_local_allies(self):
+        return [self.current_ship]
     
     def exposition_ok_callback(self, button):
         self.exposition = None

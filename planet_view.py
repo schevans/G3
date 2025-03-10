@@ -82,10 +82,6 @@ class PlanetView(GameView):
                         self.next_view = (View.DOCKING, self.shared_dict)
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
                 self.current_ship.weapons.select_from_key(pygame.key.name(event.key))
-            # FIXME: Move up to game_view?
-            if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
-                self.current_ship = self.do_ship_swap(self.current_ship, event.key)
-                self.shared_dict['current_ship'] = self.current_ship
         #if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSLASH:        
             self.current_ship.lock_target(pygame.mouse.get_pos(), self.mobs)
