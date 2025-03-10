@@ -89,7 +89,8 @@ class OrbitalShip(Ship):
         self.xy[1] = const.screen_center.y - math.sin(self.p)*self.r
         
         if self.cap_timer.get_next_second():
-            self.fit.systems['capacitor'].value += self.fit('reactor')
+            extra_cap = self.fit.systems['capacitor'].add_value(self.fit('reactor'))
+            self.fit.systems['shield'].add_value(extra_cap)
             
         if self.locked_target and not self.locked_target.is_alive:
             self.locked_target = None

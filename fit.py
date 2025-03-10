@@ -49,6 +49,16 @@ class ShipSystem():
         self.value = self.maximum
         
         
+    def add_value(self, value):
+        
+        remainder = self.value + value - self.maximum
+        if remainder > 0:
+            self.value = self.maximum
+            return remainder
+        else:
+            self.value += value
+            return 0
+
         
 class Fit():
     
