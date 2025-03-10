@@ -120,3 +120,8 @@ fx_rates[friendly_capital] = {
     }
 
 weapon_hit_radius = 15
+
+# relationship between orbital acceleration and ship speed
+acc_over_speed = 1/3
+
+

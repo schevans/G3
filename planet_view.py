@@ -94,9 +94,9 @@ class PlanetView(GameView):
         keys = pygame.key.get_pressed() 
         self.current_ship.acceleration = 0
         if keys[pygame.K_d]:
-            self.current_ship.acceleration  = 1
+            self.current_ship.acceleration  = const.acc_over_speed * self.current_ship.fit.speed()
         if keys[pygame.K_a]:        
-            self.current_ship.acceleration  = -1  
+            self.current_ship.acceleration  = -const.acc_over_speed * self.current_ship.fit.speed()
                         
     def update(self):
         if not self.is_paused:

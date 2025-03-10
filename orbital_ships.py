@@ -235,9 +235,9 @@ class OrbitalShip(Ship):
                     else:
                         # close on enemy - go lower if ahead and higher if behind
                         if self.p - self.locked_target.p > math.pi:
-                            self.acceleration = AI_ACCELERATION
+                            self.acceleration = AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
                         else:
-                            self.acceleration = -AI_ACCELERATION
+                            self.acceleration = -AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
                             
                     
                 else:
