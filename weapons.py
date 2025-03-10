@@ -27,11 +27,14 @@ class Weapons():
             self.images[weapon] = pygame.image.load('./graphics/' + weapon + '.png')
         
         
-    def get_weapon_from_key(self, key): # FIXME: Should be private or utils or something?
-        return list(self.data.keys())[int(key)-1]
+    def select_from_key(self, key):
         
-    def select(self, key):
-        self.selected_weapon = self.get_weapon_from_key(key)
+        weapon = list(self.data.keys())[int(key)-1]
+        self.select(weapon)
+        return weapon
+        
+    def select(self, weapon):
+        self.selected_weapon = weapon
     
     def fire(self, shooter, target):
 

@@ -81,7 +81,7 @@ class PlanetView(GameView):
                         self.shared_dict['other_ship'] = mob
                         self.next_view = (View.DOCKING, self.shared_dict)
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
-                self.current_ship.weapons.select(pygame.key.name(event.key))
+                self.current_ship.weapons.select_from_key(pygame.key.name(event.key))
             # FIXME: Move up to game_view?
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
                 self.current_ship = self.do_ship_swap(self.current_ship, event.key)
@@ -202,7 +202,7 @@ class PlanetView(GameView):
                     break
                 n += 1  
                     
-            weapon = self.current_ship.weapons.get_weapon_from_key(str(n-1))
+            weapon = self.current_ship.weapons.select_from_key(str(n-1))
             data = self.current_ship.weapons.data[weapon]
             
             tooltip.append(weapon.capitalize())
