@@ -62,7 +62,11 @@ class Ship():
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
 
-
+            # FIXME TEMP 
+            self.fit.systems['armour'].value = 3
+            # TEMP 
+            
+        
     def update(self):
         
         

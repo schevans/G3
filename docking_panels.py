@@ -219,3 +219,64 @@ class BoardPanel():
 
     def draw(self, screen):
         pass
+    
+class RepairPanel():
+    
+    def __init__(self, current_ship, callback):
+        
+        self.current_ship = current_ship
+        
+        self.armour_added = 0
+        
+        self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
+        
+        button_height = 30
+        button_width = 40
+        label_width = 120
+        spacer = 20
+        label_x = (const.screen_width - label_width*2 - spacer)/2
+
+        y = 150 + INNER_BORDER_HIGHT
+
+        self.metal_paid = 0
+
+        self.armour_label = Label((label_x,y), (label_width, button_height), 'Armour', 'gray')
+        
+        self.armour_amount_label = Label((label_x+label_width+spacer ,y), (label_width, button_height), str(int(current_ship.fit('armour'))) + '/' + str(int(current_ship.fit.maximum('armour'))) , 'gray')
+        y += button_height + spacer 
+        
+        x = label_x
+        self.metal_label = Label((x,y), (label_width, button_height), 'Metal', 'gray')
+        x += label_width+spacer
+        self.metal_amount_label = Label((x,y), (label_width, button_height), str(int(current_ship.resources['metal'])) , 'gray')
+        x += label_width+spacer
+        self.button = Button((x,y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback)
+        x += button_width+spacer
+        self.metal_paid_label = Label((x,y), (label_width, button_height), str(self.metal_paid), 'gray')
+
+        
+    def process_event(self, event):
+        self.button.process_event(event)
+
+    def update(self):
+        self.metal_paid_label.text = str(self.metal_paid)
+        self.metal_amount_label.text = str(int(self.current_ship.resources['metal'] - self.metal_paid))
+        self.armour_amount_label.text = str(int(self.current_ship.fit('armour') + self.armour_added)) + '/' + str(int(self.current_ship.fit.maximum('armour')))
+        self.button.update()
+    
+    def draw(self, screen):
+        
+        self.armour_label.draw(self.surface)
+        self.armour_amount_label.draw(self.surface)
+        self.metal_label.draw(self.surface)
+        self.metal_amount_label.draw(self.surface)
+        self.button.draw(self.surface)
+        self.metal_paid_label.draw(self.surface)
+        
+    def button_callback(self, button):
+        self.metal_paid += 1
+        self.armour_added += self.metal_paid * 5 # FIXME - move to const
+        
+
+
+

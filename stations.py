@@ -30,7 +30,8 @@ class Station():
 
         self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/station.png'))
 
-
+        self.liege = const.neutral_capital # FIXME: Hack? Or genius?
+        
     def update(self):
         
         self.p -= self.w

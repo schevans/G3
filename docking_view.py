@@ -13,14 +13,15 @@ import utils
 import constants as const
 from game_view import GameView, View
 from gui import Button
-from docking_panels import TradePanel, ApproachPanel, BoardPanel, INNER_BORDER_WIDTH
+from docking_panels import TradePanel, ApproachPanel, BoardPanel, RepairPanel, INNER_BORDER_WIDTH
 from exposition import ExpositionBox, ExpositionText
 
 
 class Panel(Enum):
     TRADE = 1
     APPROACH = 2
-    BOARD = 3
+    BOARD = 3,
+    REPAIR = 4
 
 class DockingView(GameView):
     
@@ -31,21 +32,13 @@ class DockingView(GameView):
    
         self.panel = None
         
-        button_width = 120
-        button_height = 30
+        self.button_width = 120
+        self.button_height = 30
         
         # FIXME: Not needed I think - array. Button text used in button_callback instead of rev_top_buttons
         self.top_buttons = {}
  
-        y = 150
-        x = INNER_BORDER_WIDTH
 
-        self.top_buttons[Panel.TRADE] = Button((x, y), (button_width, button_height), 'Trade', const.game_color, None, False, self.button_callback)
-        x = ( const.screen_width - button_width ) / 2
-        self.top_buttons[Panel.APPROACH] = Button((x, y), (button_width, button_height), 'Approach', const.game_color, None, False, self.button_callback)
-        x = const.screen_width - INNER_BORDER_WIDTH - button_width
-        self.top_buttons[Panel.BOARD] = Button((x, y), (button_width, button_height), 'Board', const.game_color, None, False, self.button_callback)
-        
         
     def approach_callback(self, button):
         
@@ -59,6 +52,8 @@ class DockingView(GameView):
         button.is_disabled = True
         self.exposition = ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_ok_callback, False)
         
+    def repair_callback(self, button):
+        pass
         
     def button_callback(self, button):
         panel = Panel[button.text.upper()]
@@ -69,6 +64,8 @@ class DockingView(GameView):
             self.panel = ApproachPanel(self.other_ship, self.approach_callback)
         elif panel == Panel.BOARD:
             self.panel = BoardPanel()
+        elif panel == Panel.REPAIR:
+            self.panel = RepairPanel(self.current_ship, self.repair_callback)
             
        
 
@@ -76,6 +73,7 @@ class DockingView(GameView):
     def cleanup(self):
         self.panel = None
         
+        self.top_buttons.clear()
     
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
@@ -84,8 +82,21 @@ class DockingView(GameView):
         self.other_ship = self.shared_dict['other_ship']
         
 
+        y = 150
+        x = INNER_BORDER_WIDTH
+
+        self.top_buttons[Panel.TRADE] = Button((x, y), (self.button_width, self.button_height), 'Trade', const.game_color, None, False, self.button_callback)
         
-        
+        if self.other_ship.object_type() == 'Ship':
+            x = ( const.screen_width - self.button_width ) / 2
+            self.top_buttons[Panel.APPROACH] = Button((x, y), (self.button_width, self.button_height), 'Approach', const.game_color, None, False, self.button_callback)
+            x = const.screen_width - INNER_BORDER_WIDTH - self.button_width
+            self.top_buttons[Panel.BOARD] = Button((x, y), (self.button_width, self.button_height), 'Board', const.game_color, None, False, self.button_callback)
+        else: # station
+            x = const.screen_width - INNER_BORDER_WIDTH - self.button_width
+            self.top_buttons[Panel.REPAIR] = Button((x, y), (self.button_width, self.button_height), 'Repair', const.game_color, None, False, self.button_callback)
+            
+
         
     def process_event(self, event):
              
@@ -111,11 +122,12 @@ class DockingView(GameView):
     def draw_background(self, screen):
         GameView.draw(self, screen)
         
+        other_ship_image = utils.scale_and_monochrome_ship_image(self.other_ship)
+        
         if self.other_ship == 'Ship':
             
             current_ship_image = utils.scale_and_monochrome_ship_image(self.current_ship)
-            other_ship_image = utils.scale_and_monochrome_ship_image(self.other_ship)
-            
+
             width, height = current_ship_image.get_size()
             screen.blit(current_ship_image, (30, const.screen_height/2 - height/2 + 60))            
             
