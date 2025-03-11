@@ -82,7 +82,7 @@ class PlanetView(GameView):
                 self.is_paused = not self.is_paused
             if event.key == pygame.K_w:
                 for mob in self.mobs:
-                    if mob.object_type() == 'Ship' and mob.name != 'Hero' and self.current_ship.xy.distance_to(mob.xy) < DOCK_RADIUS:
+                    if mob.object_type() in ['Ship', 'Station'] and mob.name != 'Hero' and self.current_ship.xy.distance_to(mob.xy) < DOCK_RADIUS:
                         self.shared_dict['other_ship'] = mob
                         self.next_view = (View.DOCKING, self.shared_dict)
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:

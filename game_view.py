@@ -75,6 +75,15 @@ class GameView():
         if ship.name == 'Fulu':
             ship.planet = TEMP_PLANET
             ship.system = TEMP_SYSTEM    
+       
+    TEMP_STATION = None
+    for system in systems.syslist:
+        if system.name == 'Ginan':
+            for planet in system.planets:
+                if planet.station:
+                    TEMP_STATION = planet.station
+        
+            
     ### TEMP TEMP ###
 
     def __init__(self):

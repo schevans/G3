@@ -19,6 +19,7 @@ class Station():
         self.r = r
         self.planet_name = planet_name
 
+        self.name = 'Sister\'s Station, ' + self.planet_name
         self.mass = 1000 # FIXME. Also check planet.planet_view_r
         self.w = math.sqrt(const.G*self.mass/math.pow(r, 3)) 
         self.p = ( math.pi * 2 )
@@ -27,7 +28,7 @@ class Station():
         
         self.resources = const.initial_resources.copy()
 
-        self.image = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/station.png'))
+        self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/station.png'))
 
 
     def update(self):
@@ -38,15 +39,15 @@ class Station():
         self.xy[0] = const.screen_center.x - math.sin(self.p)*self.r
         self.xy[1] = const.screen_center.y - math.cos(self.p)*self.r
 
-        self.image.update(self.xy, math.degrees(self.p))
+        self.image_still.update(self.xy, math.degrees(self.p))
         
         
     def draw(self, screen):
         
-        self.image.draw(screen)
+        self.image_still.draw(screen)
     
     def description(self):
-        return 'Sister\'s Station, ' +self.planet_name
+        return self.name
     
     def object_type(self):
         return "Station"
