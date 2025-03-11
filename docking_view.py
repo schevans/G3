@@ -111,14 +111,16 @@ class DockingView(GameView):
     def draw_background(self, screen):
         GameView.draw(self, screen)
         
-        current_ship_image = utils.scale_and_monochrome_ship_image(self.current_ship)
-        other_ship_image = utils.scale_and_monochrome_ship_image(self.other_ship)
-        
-        #width, height = current_ship_image.get_size()
-        #screen.blit(current_ship_image, (30, const.screen_height/2 - height/2 + 60))            
-        
-        width, height = other_ship_image.get_size()
         if self.other_ship == 'Ship':
+            
+            current_ship_image = utils.scale_and_monochrome_ship_image(self.current_ship)
+            other_ship_image = utils.scale_and_monochrome_ship_image(self.other_ship)
+            
+            width, height = current_ship_image.get_size()
+            screen.blit(current_ship_image, (30, const.screen_height/2 - height/2 + 60))            
+            
+            width, height = other_ship_image.get_size()
+            
             screen.blit(other_ship_image, (const.screen_width - width, const.screen_height/2 - height/2 + 60))    
             
             faded_gray = (25, 25, 25)   # FIXME: DUP in utils.scale_and_monochrome_ship_image
