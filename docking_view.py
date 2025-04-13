@@ -152,7 +152,7 @@ class DockingView(GameView):
             screen.blit(text_surface, (text_x, text_y))
             
         else:  # is station
-            screen.blit(other_ship_image, (0,30)) 
+            screen.blit(other_ship_image, (0,0)) 
             text_y = const.screen_height - 50
             text_surface = self.font.render(self.other_ship.description(), True, 'white')   
             text_width = self.font.size(self.other_ship.description())[0]
