@@ -236,7 +236,7 @@ class RepairPanel():
         spacer = 20
         label_x = (const.screen_width - label_width*2 - spacer)/2
 
-        y = 150 + INNER_BORDER_HIGHT
+        y = 250 + INNER_BORDER_HIGHT
 
         self.metal_paid = 0
 
@@ -245,38 +245,60 @@ class RepairPanel():
         self.armour_amount_label = Label((label_x+label_width+spacer ,y), (label_width, button_height), str(int(current_ship.fit('armour'))) + '/' + str(int(current_ship.fit.maximum('armour'))) , 'gray')
         y += button_height + spacer 
         
-        x = label_x
+        x = (const.screen_width - label_width*3 - button_width*2 - spacer*5)/2
         self.metal_label = Label((x,y), (label_width, button_height), 'Metal', 'gray')
         x += label_width+spacer
         self.metal_amount_label = Label((x,y), (label_width, button_height), str(int(current_ship.resources['metal'])) , 'gray')
         x += label_width+spacer
-        self.button = Button((x,y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback)
+        self.dec_button = Button((x,y), (button_width, button_height), '<', const.game_color, None, False, self.button_callback)
+        x += button_width+spacer
+        self.inc_button = Button((x,y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback)
         x += button_width+spacer
         self.metal_paid_label = Label((x,y), (label_width, button_height), str(self.metal_paid), 'gray')
-
+        y += button_height + spacer
+        
+        self.accept_button = Button((const.screen_width/2 - label_width - spacer/2, y), (label_width, button_height), 'Accept', const.game_color, None, False, self.button_callback)
+        self.cancel_button = Button((const.screen_width/2 + spacer/2, y), (label_width, button_height), 'Cancel', const.game_color, None, False, self.button_callback)
+    
         
     def process_event(self, event):
-        self.button.process_event(event)
-
+        self.dec_button.process_event(event)
+        self.inc_button.process_event(event)
+        self.accept_button.process_event(event)
+        self.cancel_button.process_event(event)
+        
+        
     def update(self):
         self.metal_paid_label.text = str(self.metal_paid)
         self.metal_amount_label.text = str(int(self.current_ship.resources['metal'] - self.metal_paid))
         self.armour_amount_label.text = str(int(self.current_ship.fit('armour') + self.armour_added)) + '/' + str(int(self.current_ship.fit.maximum('armour')))
-        self.button.update()
-    
+        self.dec_button.update()
+        self.inc_button.update()
+        
+        
     def draw(self, screen):
         
         self.armour_label.draw(self.surface)
         self.armour_amount_label.draw(self.surface)
         self.metal_label.draw(self.surface)
-        self.metal_amount_label.draw(self.surface)
-        self.button.draw(self.surface)
+        self.metal_amount_label.draw(self.surface)#
+        self.dec_button.draw(self.surface)
+        self.inc_button.draw(self.surface)
         self.metal_paid_label.draw(self.surface)
+        self.accept_button.draw(self.surface)
+        self.cancel_button.draw(self.surface)
+        
         
     def button_callback(self, button):
-        self.metal_paid += 1
-        self.armour_added += self.metal_paid * 5 # FIXME - move to const
         
-
-
+        if button == self.inc_button:
+            self.metal_paid += 1
+            self.armour_added += self.metal_paid * const.armour_per_metal
+        elif button == self.dec_button:
+            self.metal_paid -= 1
+            self.armour_added -= self.metal_paid * const.armour_per_metal
+        elif button == self.accept_button:
+            pass
+        elif button == self.cancel_button:
+            pass
 

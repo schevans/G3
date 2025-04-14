@@ -126,3 +126,9 @@ acc_over_speed = 1/3
 
 # G
 G = 1
+
+# cost of armour repair
+armour_per_metal = 5
+
+
+
