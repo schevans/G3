@@ -29,7 +29,7 @@ ship_width = 18
 
 initial_resources = {
     'credits': 30,
-    'fuel': 900,
+    'fuel': 100,
     'metal': 10,
     'tech': 10,
     'laser': math.inf,
@@ -41,7 +41,7 @@ initial_resources = {
 
 initial_planetary_resources = {
     'credits': 5,
-    'fuel': 10,
+    'fuel': 75,
     'metal': 4,
     'tech': 4,
     'cannon': 1,

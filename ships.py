@@ -115,9 +115,11 @@ class Ship():
     def is_moving(self):
         return self.destination and self.xy != self.destination.xy
 
+    def jump_cost(self, destination):
+        return self.xy.distance_to(destination.xy)
 
     def can_jump(self, destination):
-           distance = self.xy.distance_to(destination.xy)
+           distance = self.jump_cost(destination)
            return distance < self.resources['fuel']
         
         

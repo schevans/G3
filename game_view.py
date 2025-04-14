@@ -10,6 +10,7 @@ import pygame
 from pygame.math import Vector2
 from enum import Enum
 import my_random
+import copy
 
 import ships
 import systems
@@ -286,6 +287,62 @@ class ViewManager():
             self.draw()
             pygame.display.update()
             self.clock.tick(24)
+            
+    def solve(self):
+         
+        self.system_fuel = {}
+        
+        for system in systems.syslist:
+            #print(system.name)
+            system_fuel = 0
+            for planet in system.planets:
+                #print('  ' + planet.name)
+                if 'fuel' in planet.resources:
+                    system_fuel += planet.resources['fuel']
+
+            self.system_fuel[system] = system_fuel
+            #print(system_fuel)
+
+        ship = copy.copy(GameView.shiplist[0])
+
+        route = []
+        num_branches = [0,0]
+
+        self.jump_solve(ship, route, num_branches)
+        
+        print(num_branches)
+        
+    def jump_solve(self, ship, route, num_branches):
+        
+        num_branches[0] += 1
+        
+        for system in systems.syslist:
+            
+            if ship.can_jump(system) and system.xy[0] > ship.xy[0] and system.xy[1] < ship.xy[1]: 
+                #print(system.name, ship.resources['fuel'] )
+                if system.name == 'Polaris':
+                    num_branches[1] += 1
+                    break
+                
+                newship = copy.copy(ship)
+                newship.resources = ship.resources.copy()
+                newship.resources['fuel'] -= ship.jump_cost(system)
+                newship.reset_xy(system.xy)
+                newship.resources['fuel'] +=self.system_fuel[system]
+                newroute = route.copy()
+                newroute.append(system.name)
+                self.jump_solve(newship, newroute, num_branches )
+
+        
+        
+
+            
+
+
+
+
+
+
 
 
     

@@ -28,6 +28,8 @@ view_dict = {
 
 view.setup_views(view_dict, View.GALAXY)
 
+view.solve()
+
 view.run()
 
 sys.exit()

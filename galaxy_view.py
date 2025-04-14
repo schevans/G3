@@ -53,6 +53,7 @@ class GalaxyView(GameView):
                     self.next_view = (View.SOLAR, self.shared_dict)
             if event.key == pygame.K_j:   
                 if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
+                    self.current_ship.resources['fuel'] -= self.current_ship.jump_cost(self.selected_item.xy)
                     self.current_ship.destination = self.selected_item
             if event.key == pygame.K_w:
                 self.shared_dict['other_ship'] = GameView.TEMP_STATION #GameView.shiplist[8]       # FIXME: Temp
