@@ -26,7 +26,7 @@ class Station():
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
         self.is_alive = True
         
-        self.resources = const.initial_resources.fromkeys(const.initial_resources, const.station_resources)
+        self.resources = const.our_initial_resources.fromkeys(const.our_initial_resources, const.station_resources)
 
         self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/station.png'))
 

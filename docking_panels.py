@@ -66,7 +66,7 @@ class TradePanel():
         their_transaction_x = their_x - spacer - resource_width
         
         y = 150 + INNER_BORDER_HIGHT
-        for resource in const.initial_resources.keys():
+        for resource in const.our_initial_resources.keys():
             if resource != 'laser':
                 if resource != 'credits':
                     key = (resource, ButtonType.BUY)
@@ -141,7 +141,7 @@ class TradePanel():
             elif label_type == LabelType.THEIR_TRANSACTION:
                 self.label_map[(resource, LabelType.THEIR_TRANSACTION)].text = str(-self.transaction[resource])
             elif label_type == LabelType.OUR_AMOUNT:
-                self.label_map[(resource, LabelType.OUR_AMOUNT)].text = str(self.our_resources[resource])
+                self.label_map[(resource, LabelType.OUR_AMOUNT)].text = str(int(self.our_resources[resource]))
             elif label_type == LabelType.THEIR_AMOUNT:
                 self.label_map[(resource, LabelType.THEIR_AMOUNT)].text = str(self.their_resources[resource])
                 

@@ -61,32 +61,12 @@ class GameView():
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '2222222'))
             else:
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
-    """
+    
     ### TEMP TEMP ###
-    TEMP_PLANET = None
-    TEMP_SYSTEM = None
-    for ship in shiplist:
-        if ship.name == 'Fulu':
-            ship.is_npc = False
-            ship.liege = hero_name
-        if ship.name == 'Rigel':
-            TEMP_PLANET = ship.planet
-            TEMP_SYSTEM = ship.system
-    for ship in shiplist:
-        if ship.name == 'Fulu':
-            ship.planet = TEMP_PLANET
-            ship.system = TEMP_SYSTEM    
-       
-    TEMP_STATION = None
-    for system in systems.syslist:
-        if system.name == 'Ginan':
-            for planet in system.planets:
-                if planet.station:
-                    TEMP_STATION = planet.station
-        
-            
+    TEMP_PLANET = shiplist[9].planet
+    TEMP_SYSTEM = shiplist[9].system  
     ### TEMP TEMP ###
-    """
+    
     
     def __init__(self):
         self.next_view = None     

@@ -27,15 +27,27 @@ planet_size_freq = [4,4,4,4,4,4,5,5,5,5,5,6,6,6,7,7,8,9,10]
 
 ship_width = 18
 
-initial_resources = {
-    'credits': 30,
+our_initial_resources = {
+    'credits': 0,
     'fuel': 100,
-    'metal': 10,
-    'tech': 10,
+    'metal': 0,
+    'tech': 0,
     'laser': math.inf,
-    'cannon': 10,
-    'rocket': 100,
-    'torpedo': 50,
+    'cannon': 0,
+    'rocket': 0,
+    'torpedo': 0,
+    'mine': 0
+    }
+
+their_initial_resources = {
+    'credits': 50,
+    'fuel': 100,
+    'metal': 20,
+    'tech': 20,
+    'laser': math.inf,
+    'cannon': 40,
+    'rocket': 40,
+    'torpedo': 20,
     'mine': 10
     }
 

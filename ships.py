@@ -15,7 +15,7 @@ import utils
 import constants as const 
 import fit
 from weapons import Weapons
-
+import my_random
 
 class Ship():
         
@@ -32,15 +32,20 @@ class Ship():
         if system:
             self.liege = const.species[system.system_type]
             self.color = const.species_color[self.liege]
+
+            self.resources = {}
+            for k, v in const.their_initial_resources.items():
+                if k == 'laser':
+                    self.resources[k] = v
+                else:
+                    self.resources[k] = int(v*my_random.my_random())
         else:
             self.liege = const.our_capital
             self.color = pygame.Color('white')
-            #ammo = const.our_starter_ammo
+            self.resources = const.our_initial_resources
             
         self.fit = fit.Fit(fit_string)
 
-        self.resources = const.initial_resources.copy()
-        
         self.is_alive = True
         self.heading = 0
         self.destination = None
@@ -61,10 +66,9 @@ class Ship():
         if self.name == 'Hero':
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
+            self.resources['fuel'] = 500
 
-            # FIXME TEMP 
-            self.fit.systems['armour'].value = 3
-            # TEMP 
+
             
         
     def update(self):
