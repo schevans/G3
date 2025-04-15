@@ -272,8 +272,21 @@ class RepairPanel():
         self.metal_paid_label.text = str(self.metal_paid)
         self.metal_amount_label.text = str(int(self.current_ship.resources['metal'] - self.metal_paid))
         self.armour_amount_label.text = str(int(self.current_ship.fit('armour') + self.armour_added)) + '/' + str(int(self.current_ship.fit.maximum('armour')))
+        
+        if self.current_ship.resources['metal'] - self.metal_paid <= 0:
+            self.inc_button.is_disabled = True
+        else:
+            self.inc_button.is_disabled = False
+            
+        if self.metal_paid <= 0:
+            self.dec_button.is_disabled = True
+        else:
+            self.dec_button.is_disabled = False            
+        
         self.dec_button.update()
         self.inc_button.update()
+        self.accept_button.update()
+        self.cancel_button.update()
         
         
     def draw(self, screen):
@@ -293,12 +306,18 @@ class RepairPanel():
         
         if button == self.inc_button:
             self.metal_paid += 1
-            self.armour_added += self.metal_paid * const.armour_per_metal
+            self.armour_added += const.armour_per_metal
         elif button == self.dec_button:
             self.metal_paid -= 1
-            self.armour_added -= self.metal_paid * const.armour_per_metal
+            self.armour_added -= const.armour_per_metal
         elif button == self.accept_button:
-            pass
+            self.current_ship.fit.systems['armour'].value = min(self.current_ship.fit('armour') + self.armour_added, self.current_ship.fit.maximum('armour'))
+            self.current_ship.resources['metal'] -= self.metal_paid
+            self.metal_paid = 0
+            self.armour_added = 0
         elif button == self.cancel_button:
-            pass
+            self.metal_paid = 0
+            self.armour_added = 0
+
+
 
