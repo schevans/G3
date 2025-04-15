@@ -61,7 +61,7 @@ class GameView():
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '2222222'))
             else:
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
-    
+    """
     ### TEMP TEMP ###
     TEMP_PLANET = None
     TEMP_SYSTEM = None
@@ -86,7 +86,8 @@ class GameView():
         
             
     ### TEMP TEMP ###
-
+    """
+    
     def __init__(self):
         self.next_view = None     
         self.font = utils.fonts[20]

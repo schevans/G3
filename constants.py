@@ -50,6 +50,9 @@ initial_planetary_resources = {
     'mine': 1
     }
 
+# of each
+station_resources = 500
+
 system_types = ['Uninhabited', 'Neutral', 'Friendly', 'Hostile']
 
 our_capital = 'Polaris'

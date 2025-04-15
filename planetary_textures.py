@@ -14,10 +14,9 @@ import numpy as np
 import utils
 import constants as const
 from rotatable_image import RotatableImage
+import my_random
 
 opensimplex.seed(const.random_seed)
-temp_rng = np.random.RandomState()      # FIXME TEMP
-
 
 PLANET_VIEW_RADIUS_MULT = 8  # FIXME: Dup im planets
 MAP_HEIGHT = 100
@@ -64,10 +63,9 @@ class PlanetaryTextures():
         surface = pygame.Surface((planet_view_r, planet_view_r), pygame.SRCALPHA)
         
         buffer = 50
-        
-        # FIXME: Switch to my_random
-        xoffset =  temp_rng.randint(buffer, BLOCK_SIZE - planet_view_r - buffer)
-        yoffset = temp_rng.randint(buffer, BLOCK_SIZE - planet_view_r - buffer)
+
+        xoffset =  my_random.my_randint(buffer, BLOCK_SIZE - planet_view_r - buffer)
+        yoffset = my_random.my_randint(buffer, BLOCK_SIZE - planet_view_r - buffer)
 
         for x in range(planet_view_r):
             for y in range(planet_view_r):

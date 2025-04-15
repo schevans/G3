@@ -10,8 +10,6 @@ import pygame
 import math
 from pygame.math import Vector2
 import pandas as pd
-import numpy as np # FIXME TEMP
-temp_rng = np.random.RandomState()      # FIXME TEMP
   
 import constants as const
 import my_random
@@ -45,12 +43,11 @@ class Planet():
         if self.planet_type in ['rocky', 'earth-like']:
             self.atmos_color = self.color2
         
-        # FIXME: Temp - use my_random
         self.resources = {}
         self.mining_hit_counter = MINING_HIT_COUNTER
         self.mining_can = {}
         for resource in const.initial_planetary_resources:
-            amount = int(const.initial_planetary_resources[resource] * temp_rng.random_sample())
+            amount = int(const.initial_planetary_resources[resource] *  my_random.my_random())
             if amount:
                 self.resources[resource] = amount
                 
