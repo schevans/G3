@@ -274,24 +274,24 @@ class ViewManager():
         self.system_fuel = {}
         
         for system in systems.syslist:
-            #print(system.name)
             system_fuel = 0
             for planet in system.planets:
-                #print('  ' + planet.name)
                 if 'fuel' in planet.resources:
                     system_fuel += planet.resources['fuel']
 
             self.system_fuel[system] = system_fuel
-            #print(system_fuel)
 
         ship = copy.copy(GameView.shiplist[0])
 
         route = []
-        num_branches = [0,0]
+        num_branches = [0,0,[]]
 
         self.jump_solve(ship, route, num_branches)
         
-        print(num_branches)
+        lengths = [len(i) for i in num_branches[2]]
+        average = 0 if len(lengths) == 0 else (float(sum(lengths)) / len(lengths)) 
+        
+        print(num_branches[0], 'paths,', num_branches[1], 'home,', round(num_branches[1]/num_branches[0]*100, 2), '%,', round(average, 2), 'av#jumps')
         
     def jump_solve(self, ship, route, num_branches):
         
@@ -300,9 +300,9 @@ class ViewManager():
         for system in systems.syslist:
             
             if ship.can_jump(system) and system.xy[0] > ship.xy[0] and system.xy[1] < ship.xy[1]: 
-                #print(system.name, ship.resources['fuel'] )
                 if system.name == 'Polaris':
                     num_branches[1] += 1
+                    num_branches[2].append(route)
                     break
                 
                 newship = copy.copy(ship)
