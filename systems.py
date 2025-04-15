@@ -94,7 +94,7 @@ class System():
         self.planets = []
         
         for i in range(0, my_random.my_randint(1, 4)):
-            r = self.get_random_r()
+            r = utils.get_random_r(r, max(const.planet_size_freq), self.planets)            
             p =  math.radians(my_random.my_random() * 360)            
             planet_type = planets.planet_type_data.columns.values[my_random.my_randint(0,len(planets.planet_type_data.columns.values)-1)]
             size = const.planet_size_freq[my_random.my_randint(0,len(const.planet_size_freq)-1)]
@@ -106,19 +106,6 @@ class System():
             
             planet = planets.Planet(planet_name, r, p, planet_type, size, self, station)
             self.planets.append(planet)
-         
-
-         
-    def get_random_r(self):
-        
-        max_planet_r = max(const.planet_size_freq)
-        
-        r = int((my_random.my_random() * ( const.screen_height/2 - self.r - 80 - max_planet_r )) + 40)
-        
-        for planet in self.planets:
-            if math.isclose(r, planet.r, abs_tol=max_planet_r*2):
-                return self.get_random_r()
-        return r
     
     
     def description(self):

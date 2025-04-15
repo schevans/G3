@@ -58,7 +58,8 @@ class PlanetView(GameView):
             
             for mob in applicable_mobs:                                 
                 angle_radians += angle_increment
-                orbital_ship = OrbitalShip(mob, self.planet, self.get_random_r(), angle_radians)
+                orbital_ship = OrbitalShip(mob, self.planet, utils.get_random_r(self.planet.planet_view_r, const.ship_width, self.mobs), angle_radians)
+
                 self.mobs.append(orbital_ship)
                 if orbital_ship.tmpship == shared_dict['current_ship']:
                     self.current_ship = orbital_ship
@@ -245,13 +246,6 @@ class PlanetView(GameView):
                 allies.append(mob)
         return allies   
     
-    def get_random_r(self):
-        r = int(my_random.my_gauss() * ( const.screen_height/2 - self.planet.planet_view_r + const.ship_width ) + 40)
-        
-        for mob in self.mobs:
-            if math.isclose(r, mob.r, abs_tol=const.ship_width):
-                return self.get_random_r()
-        return r
 
    
 
