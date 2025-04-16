@@ -40,26 +40,26 @@ our_initial_resources = {
     }
 
 their_initial_resources = {
-    'credits': 50,
+    'credits': 20,
     'fuel': 10,
     'metal': 20,
     'tech': 20,
     'laser': math.inf,
-    'cannon': 40,
-    'rocket': 40,
-    'torpedo': 20,
-    'mine': 10
+    'cannon': 5,
+    'rocket': 5,
+    'torpedo': 2,
+    'mine': 2
     }
 
 initial_planetary_resources = {
-    'credits': 5,
-    'fuel': 7.5,
+    'credits': 6,
+    'fuel': 10,
     'metal': 4,
     'tech': 4,
-    'cannon': 1,
-    'rocket': 1,
-    'torpedo': 1,
-    'mine': 1
+    'cannon': 2,
+    'rocket': 2,
+    'torpedo': 2,
+    'mine': 2
     }
 
 # of each
