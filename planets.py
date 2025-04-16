@@ -59,7 +59,7 @@ class Planet():
 
             
     def description(self):
-        return self.name + ', ' + self.planet_type.capitalize() + ', resouces: ' +  str(sum(self.resources.values()))
+        return self.name + ', ' + self.planet_type.capitalize() + ', resouces: ' +  str(int(sum(self.resources.values())))
 
                 
     def object_type(self):

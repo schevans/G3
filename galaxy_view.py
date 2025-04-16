@@ -85,7 +85,7 @@ class GalaxyView(GameView):
             self.master_timer += 1
             
         
-        if self.master_timer % SHIP_LAUNCH_TIMER == 0:
+        if self.master_timer % SHIP_LAUNCH_TIMER == 0 and self.master_timer != 0:
             self.master_timer += 1
             
             suitable = []
