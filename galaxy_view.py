@@ -141,8 +141,8 @@ class GalaxyView(GameView):
                 pygame.draw.circle(screen, 'white', self.selected_item.xy, self.selected_item.r+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
             else:
-                distance = self.current_ship.xy.distance_to(self.selected_item.xy)
-                ratio = self.current_ship.resources['fuel'] / distance                
+                jump_cost = self.current_ship.jump_cost(self.selected_item.xy)
+                ratio = self.current_ship.resources['fuel'] / jump_cost                
                 newpoint = self.current_ship.xy.lerp(self.selected_item.xy, ratio)
 
                 pygame.draw.line(screen, 'white', self.current_ship.xy, newpoint) 

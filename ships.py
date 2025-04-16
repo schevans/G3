@@ -66,7 +66,7 @@ class Ship():
         if self.name == 'Hero':
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
-            self.resources['fuel'] = 500
+            #self.resources['fuel'] = 500
 
 
             
@@ -120,7 +120,7 @@ class Ship():
         return self.destination and self.xy != self.destination.xy
 
     def jump_cost(self, destination):
-        return self.xy.distance_to(destination.xy)
+        return self.xy.distance_to(destination.xy) / const.distance_per_fuel
 
     def can_jump(self, destination):
            distance = self.jump_cost(destination)

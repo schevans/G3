@@ -29,7 +29,7 @@ ship_width = 18
 
 our_initial_resources = {
     'credits': 0,
-    'fuel': 100,
+    'fuel': 10,
     'metal': 0,
     'tech': 0,
     'laser': math.inf,
@@ -41,7 +41,7 @@ our_initial_resources = {
 
 their_initial_resources = {
     'credits': 50,
-    'fuel': 100,
+    'fuel': 10,
     'metal': 20,
     'tech': 20,
     'laser': math.inf,
@@ -53,7 +53,7 @@ their_initial_resources = {
 
 initial_planetary_resources = {
     'credits': 5,
-    'fuel': 75,
+    'fuel': 7.5,
     'metal': 4,
     'tech': 4,
     'cannon': 1,
@@ -145,5 +145,6 @@ G = 1
 # cost of armour repair
 armour_per_metal = 5
 
-
+# pixels per unit of fuel
+distance_per_fuel = 10
 

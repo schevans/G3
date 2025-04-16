@@ -47,7 +47,7 @@ class Planet():
         self.mining_hit_counter = MINING_HIT_COUNTER
         self.mining_can = {}
         for resource in const.initial_planetary_resources:
-            amount = int(const.initial_planetary_resources[resource] *  my_random.my_random())
+            amount = const.initial_planetary_resources[resource] *  my_random.my_random()
             if amount:
                 self.resources[resource] = amount
                 
