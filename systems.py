@@ -103,6 +103,10 @@ class System():
             station = None 
             if self.system_type == 'Uninhabited' and i == 1:
                 station = Station(planet_name, const.screen_height/4)
+    
+            if self.name == const.our_capital:
+                if i == 0:
+                    planet_type = 'earth-like'
             
             planet = planets.Planet(planet_name, r, p, planet_type, size, self, station)
             self.planets.append(planet)

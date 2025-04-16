@@ -105,6 +105,8 @@ class GalaxyView(GameView):
             if mob.is_npc and not mob.is_moving():
                 self.mobs.remove(mob)
                 if mob.xy == const.home_xy:
+                    mob.system = GameView.home_system
+                    mob.planet = GameView.home_planet
                     self.threat_level += 1
     
     def draw(self, screen):

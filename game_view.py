@@ -46,6 +46,7 @@ class GameView():
     
     
     home_system = systems.syslist[0]
+    home_planet = home_system.planets[0]
 
     my_ship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-const.free_space_in_corners), None, None, False)
     my_ship.is_current = True
