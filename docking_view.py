@@ -124,7 +124,7 @@ class DockingView(GameView):
         
         other_ship_image = utils.scale_and_monochrome_ship_image(self.other_ship)
         
-        if self.other_ship == 'Ship':
+        if self.other_ship.object_type() == 'Ship':
             
             current_ship_image = utils.scale_and_monochrome_ship_image(self.current_ship)
 
@@ -152,7 +152,6 @@ class DockingView(GameView):
             screen.blit(text_surface, (text_x, text_y))
             
         else:  # is station
-            screen.blit(other_ship_image, (0,0)) 
             text_y = const.screen_height - 50
             text_surface = self.font.render(self.other_ship.description(), True, 'white')   
             text_width = self.font.size(self.other_ship.description())[0]
