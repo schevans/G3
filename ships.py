@@ -66,10 +66,10 @@ class Ship():
         if self.name == 'Hero':
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
-            #self.resources['fuel'] = 500
+            self.fit.upgrade('engine')
+            self.resources = self.resources.fromkeys(self.resources, 500)
 
 
-            
         
     def update(self):
         
