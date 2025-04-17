@@ -47,7 +47,10 @@ class Weapons():
         if shooter.fit('capacitor') < self.data[self.selected_weapon]['activation']:
             return None
         
-        shooter.resources[self.selected_weapon] -= 1
+        # npcs don't run out of ammo
+        if not shooter.is_npc:
+            shooter.resources[self.selected_weapon] -= 1
+            
         shooter.fit.systems['capacitor'].value -= self.data[self.selected_weapon]['activation']
             
         return Bullet(shooter, target, pygame.mouse.get_pos(), self.images[self.selected_weapon], self.data[self.selected_weapon])
