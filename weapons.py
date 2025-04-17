@@ -41,14 +41,13 @@ class Weapons():
         if self.data[self.selected_weapon]['homing'] and not target:
             return None
         
-        if shooter.resources[self.selected_weapon] <= 0:
-            return None
-        
         if shooter.fit('capacitor') < self.data[self.selected_weapon]['activation']:
             return None
         
-        # npcs don't run out of ammo
+        # npcs don't consume ammo
         if not shooter.is_npc:
+            if shooter.resources[self.selected_weapon] <= 0:
+                return None
             shooter.resources[self.selected_weapon] -= 1
             
         shooter.fit.systems['capacitor'].value -= self.data[self.selected_weapon]['activation']
