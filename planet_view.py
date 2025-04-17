@@ -157,6 +157,7 @@ class PlanetView(GameView):
                         if resource != 'laser':
                             mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
                     self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
+                    self.ships.remove(mob.tmpship)
                 elif mob.object_type() == 'Explosion':
                     self.mobs.append(LootBox(mob.xy, mob.resources))
                 
