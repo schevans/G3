@@ -128,12 +128,8 @@ class GalaxyView(GameView):
         pygame.draw.circle(screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
 
         if self.threat_level >= 11:
-            text = "Game Over"
-            text_surface = utils.fonts[100].render(text, False, 'white', 'black')
-            text_width, text_height = text_surface.get_size()
-            text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
-            screen.blit(text_surface, text_pos )
-
+            self.game_over = True
+            self.draw_game_over(screen)
 
         if self.selected_item and self.selected_item.object_type() != 'Ship':
             

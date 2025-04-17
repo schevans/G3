@@ -158,6 +158,8 @@ class PlanetView(GameView):
                             mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
                     self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
                     self.ships.remove(mob.tmpship)
+                    if mob.name == 'Hero':      # FIXME hardcode
+                        self.game_over = True
                 elif mob.object_type() == 'Explosion':
                     self.mobs.append(LootBox(mob.xy, mob.resources))
                 
@@ -180,6 +182,9 @@ class PlanetView(GameView):
             if mob.object_type() == 'Ship' and mob.locked_target:
                 pygame.draw.circle(screen, RED_FADE, mob.locked_target.xy, 20, 1)
                 pygame.draw.line(screen, RED_FADE, mob.xy, mob.locked_target.xy)
+        
+        if self.game_over:
+            self.draw_game_over(screen)
         
         if self.is_paused:
             text = '[ Paused ]'

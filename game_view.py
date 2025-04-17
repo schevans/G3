@@ -85,6 +85,8 @@ class GameView():
         self.exposition = None 
         self.tmp_ex = 0      # FIXME: Remove
         
+        self.game_over = False
+        
     def process_event(self, event):
         
         if event.type == pygame.KEYDOWN:
@@ -215,6 +217,15 @@ class GameView():
     def exposition_checkbox_callback(self, is_checked):
         self.show_help = is_checked
  
+    
+    def draw_game_over(self, screen):
+        text = "Game Over"
+        text_surface = utils.fonts[100].render(text, False, 'white', 'black')
+        text_width, text_height = text_surface.get_size()
+        text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
+        screen.blit(text_surface, text_pos )   
+ 
+    
 class ViewManager():
     
     def __init__(self):
