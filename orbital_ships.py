@@ -61,7 +61,8 @@ class OrbitalShip(Ship):
         self.p = p
         self.acceleration = 0
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
-        self.locked_target = None    
+        self.locked_target = None   
+        self.in_combat = False
         self.ai_target = None
         self.ai_timer = Timer()
         self.cap_timer = Timer()
@@ -150,6 +151,8 @@ class OrbitalShip(Ship):
 
 
     def hit(self, shield_damage, armour_damage):
+        
+        self.in_combat = True
         
         if self.fit('shield') >= shield_damage:
             self.fit.systems['shield'].value -= shield_damage
@@ -257,7 +260,7 @@ class OrbitalShip(Ship):
         
 
     def is_hostile(self):
-        return self.liege == const.hostile_capital
+        return self.liege == const.hostile_capital or self.in_combat
 
 
 
