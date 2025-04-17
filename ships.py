@@ -27,7 +27,7 @@ class Ship():
         self.planet = planet
         self.is_npc = is_npc
 
-        #ammo = const.npc_starter_ammo
+        self.fit = fit.Fit(fit_string)
 
         if system:
             self.liege = const.species[system.system_type]
@@ -39,12 +39,17 @@ class Ship():
                     self.resources[k] = v
                 else:
                     self.resources[k] = int(v*my_random.my_random())
+                    
+            # harden neutrals
+            if self.liege == const.neutral_capital:
+                self.fit.upgrade('capacitor')
+                self.fit.upgrade('wep dmg')
+                self.fit.upgrade('wep range')
+                    
         else:
             self.liege = const.our_capital
             self.color = pygame.Color('white')
             self.resources = const.our_initial_resources
-            
-        self.fit = fit.Fit(fit_string)
 
         self.is_alive = True
         self.heading = 0
