@@ -16,7 +16,7 @@ import constants as const
 
 
 
-from game_view import GameView, View
+from game_view import GameView, View, State
 
   
 SYSTEM_HIGHLIGHT = 3
@@ -128,8 +128,7 @@ class GalaxyView(GameView):
         pygame.draw.circle(screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
 
         if self.threat_level >= 11:
-            self.game_over = True
-            self.draw_game_over(screen)
+            self.game_state = State.GAME_OVER
 
         if self.selected_item and self.selected_item.object_type() != 'Ship':
             

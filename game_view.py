@@ -35,6 +35,13 @@ class View(Enum):
     SHIP_SELECT = 9
     GAME_OVER = 10
     CREDITS = 11
+    
+
+class State(Enum):
+    IN_PROGRESS = 1,
+    GAME_OVER = 2,
+    VICTORY = 3
+    
 
 class GameView():
       
@@ -85,7 +92,8 @@ class GameView():
         self.exposition = None 
         self.tmp_ex = 0      # FIXME: Remove
         
-        self.game_over = False
+        self.game_state = State.IN_PROGRESS
+
         
     def process_event(self, event):
         
@@ -151,6 +159,8 @@ class GameView():
             
         if self.show_help and self.exposition:
             self.exposition.draw(screen)
+            
+        self.draw_game_state(screen)
 
 
     def draw_mouseover_text(self, screen, text_arr):
@@ -217,15 +227,15 @@ class GameView():
     def exposition_checkbox_callback(self, is_checked):
         self.show_help = is_checked
  
-    
-    def draw_game_over(self, screen):
-        text = "Game Over"
-        text_surface = utils.fonts[100].render(text, False, 'white', 'black')
-        text_width, text_height = text_surface.get_size()
-        text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
-        screen.blit(text_surface, text_pos )   
+    def draw_game_state(self, screen):       
+        if self.game_state != State.IN_PROGRESS:
+            text = self.game_state.name.replace('_', ' ') +'!'
+            text_surface = utils.fonts[100].render(text, False, 'white', 'black')
+            text_width, text_height = text_surface.get_size()
+            text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
+            screen.blit(text_surface, text_pos )   
  
-    
+        
 class ViewManager():
     
     def __init__(self):

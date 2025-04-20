@@ -13,7 +13,7 @@ import constants as const
 from orbital_ships import OrbitalShip
 import utils
 import my_random
-from game_view import GameView, View
+from game_view import GameView, View, State
 from explosions import Explosion, LootBox
 
 DOCK_RADIUS = 15
@@ -159,11 +159,13 @@ class PlanetView(GameView):
                     self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
                     self.ships.remove(mob.tmpship)
                     if mob.name == 'Hero':      # FIXME hardcode
-                        self.game_over = True
+                        self.game_state = State.GAME_OVER
                 elif mob.object_type() == 'Explosion':
                     self.mobs.append(LootBox(mob.xy, mob.resources))
                 
-        
+                
+        if self.home_planet == self.planet and not len(list(mob for mob in self.mobs if mob.object_type() == 'Ship' and mob.is_npc)):
+            self.game_state = State.VICTORY
         
 
     def draw(self, screen):
@@ -174,8 +176,6 @@ class PlanetView(GameView):
         self.current_ship.weapons.draw_icons(screen,self.current_ship.resources, WEAPON_ICON_SIZE, OFFSET)
         self.draw_tooltips(screen)
         
-        GameView.draw_objects(self, screen)
-        
         self.planet.planet_view_draw(screen)
         
         for mob in self.mobs:
@@ -183,8 +183,7 @@ class PlanetView(GameView):
                 pygame.draw.circle(screen, RED_FADE, mob.locked_target.xy, 20, 1)
                 pygame.draw.line(screen, RED_FADE, mob.xy, mob.locked_target.xy)
         
-        if self.game_over:
-            self.draw_game_over(screen)
+        GameView.draw_objects(self, screen)
         
         if self.is_paused:
             text = '[ Paused ]'
@@ -192,6 +191,8 @@ class PlanetView(GameView):
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, text_height + 10)
             screen.blit(text_surface, text_pos )
+          
+           
           
     def draw_tooltips(self, screen):
         
