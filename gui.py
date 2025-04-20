@@ -43,8 +43,8 @@ class Button():
         
         self.is_pressed = False
         if not self.is_disabled and self.is_active:
-            #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+            #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
                 self.is_pressed = True
                 self.callback(self)
 

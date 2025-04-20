@@ -88,11 +88,11 @@ class PlanetView(GameView):
                         self.next_view = (View.DOCKING, self.shared_dict)
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
                 self.current_ship.weapons.select_from_key(pygame.key.name(event.key))
-        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSLASH:        
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == RIGHT_MOUSE_CLICK:
+        #if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSLASH:        
             self.current_ship.lock_target(pygame.mouse.get_pos(), self.mobs)
-        #if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+        #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
             bullet = self.current_ship.shoot()
             if bullet:
                 self.mobs.append(bullet)
