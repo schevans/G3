@@ -43,6 +43,7 @@ class Ship():
             # harden neutrals
             if self.liege == const.neutral_capital:
                 self.fit.upgrade('capacitor')
+                self.fit.upgrade('reactor')
                 self.fit.upgrade('wep dmg')
                 self.fit.upgrade('wep range')
                     
