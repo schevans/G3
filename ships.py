@@ -72,7 +72,7 @@ class Ship():
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
-            self.resources = self.resources.fromkeys(self.resources, 500)
+            self.resources = self.resources.fromkeys(self.resources, 70)
 
 
         
@@ -150,17 +150,22 @@ class Ship():
         
 
     def object_type(self):
-        return "Ship"
+        return 'Ship'
 
-
-    def can_upgrade(self, system, level):
-        return True
+    def can_upgrade(self, system):
+        
+        retval = True
+        for resource in self.fit.systems[system].upgrade:
+            if self.resources[resource] < self.fit.systems[system].get_upgrade_cost(self.fit.level(system)+1, resource):
+                retval = False
+                
+        return retval
     
     def upgrade_system(self, system):
         self.fit.systems[system].upgrade_system()
         
         for resource in self.fit.systems[system].upgrade:
-            self.resources[resource] -= self.fit.systems[system].get_upgrade_cost(self.fit.level(system)+1, resource)
+            self.resources[resource] -= self.fit.systems[system].get_upgrade_cost(self.fit.level(system), resource)
              
   
     def recruit(self):

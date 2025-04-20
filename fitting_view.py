@@ -90,7 +90,6 @@ class FittingView(GameView):
         
     def update(self):
         
-        # TODO PROFILE: Allways called. 
         # FIXME: Dup with init
         for button in self.button_map.keys():
             key, level = self.button_map[button]
@@ -105,8 +104,9 @@ class FittingView(GameView):
             if level <= current_level:
                 color = got_color                  
             elif level == current_level + 1:
-                color = available_color
-                button.is_disabled = False
+                if self.current_ship.can_upgrade(key):
+                    color = available_color
+                    button.is_disabled = False
                 button.mousover_text += upgrade_cost
             else:
                 button.mousover_text += upgrade_cost   
@@ -147,16 +147,18 @@ class FittingView(GameView):
         
         system, level = self.button_map[button]
         
-        self.current_ship.upgrade_system(system)
-        
-        button.is_disabled = True
-        button.set_color(got_color)
-        button.mouseover_text = [button.mouseover_text[0]]
-        
-        if level < 3:
-            next_button = self.rev_button_map[(system,level+1)]
-            next_button.is_disabled = False
-            next_button.set_color(available_color)
+        if self.current_ship.can_upgrade(system):
+            
+            self.current_ship.upgrade_system(system)
+            
+            button.is_disabled = True
+            button.set_color(got_color)
+            button.mouseover_text = [button.mouseover_text[0]]
+            
+            if level < 3:
+                next_button = self.rev_button_map[(system,level+1)]
+                next_button.is_disabled = False
+                next_button.set_color(available_color)
 
 
 
