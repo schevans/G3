@@ -67,27 +67,30 @@ class Planet():
     
     def mine(self, bullet):
         
+        retval = None
+        
         mining_hit = 1 #bullet.shield_damage + bullet.armour_damage
         
-        for i in range(int(mining_hit)):
-            if bool(self.resources):
-                resource = my_random.my_choices(list(self.resources.keys()))[0]
-                if resource in self.mining_can:
-                    self.mining_can[resource] += 1
-                else:
-                    self.mining_can[resource] = 1
-                                    
-                self.resources[resource] -= 1
-                if self.resources[resource] == 0:
-                    del(self.resources[resource])
-                            
-        self.mining_hit_counter -= mining_hit
-        
-        retval = None
-        if self.mining_hit_counter <= 0:
-            self.mining_hit_counter = MINING_HIT_COUNTER
-            retval = self.mining_can.copy()
-            self.mining_can = {}
+        if sum(self.resources.values()) > mining_hit:
+            for i in range(int(mining_hit)):
+                if bool(self.resources):
+                    resource = my_random.my_choices(list(self.resources.keys()))[0]
+                    if resource in self.mining_can:
+                        self.mining_can[resource] += 1
+                    else:
+                        self.mining_can[resource] = 1
+                                        
+                    self.resources[resource] -= 1
+                    if self.resources[resource] == 0:
+                        del(self.resources[resource])
+                                
+            self.mining_hit_counter -= mining_hit
+            
+            
+            if self.mining_hit_counter <= 0:
+                self.mining_hit_counter = MINING_HIT_COUNTER
+                retval = self.mining_can.copy()
+                self.mining_can = {}
             
         return retval
     
