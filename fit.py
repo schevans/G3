@@ -66,7 +66,7 @@ class Fit():
     
     def __init__(self, fit):
         
-        self.system_names = ship_systems_data.keys()
+        self.system_names = list(ship_systems_data.keys())
         
         if not fit:
             fit = ''

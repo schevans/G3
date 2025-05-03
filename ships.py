@@ -74,11 +74,10 @@ class Ship():
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
             self.resources = self.resources.fromkeys(self.resources, 70)
-
+            self.resources['laser'] = math.inf
 
         
     def update(self):
-        
         
         if self.destination:
             
@@ -114,6 +113,7 @@ class Ship():
 
         self.image.draw(screen)
 
+        
     def is_current_outline(self):
         if not self.is_npc:
             if self.is_current:
@@ -173,7 +173,39 @@ class Ship():
         self.is_npc = False
         self.liege = 'Hero'
         
+        
+    def pickle(self):
+        
 
+        destination = [self.destination.object_type(), self.destination.name] if self.destination else None
+        system = self.system.name if self.system else None
+        planet = self.planet.name if self.planet else None
+        
+        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading]
+        
+        return data
+        
+        
+    
+    def unpickle(self, syslist, data):
+        
+        self.xy = data[0]
+        self.system = next((x for x in syslist if x.name == data[1]), None)
+        self.planet = next(x for x in self.system.planets if x.name == data[2]) if self.system else None
+        
+        self.destination = data[3]
+        if self.destination:
+            if self.destination[0] == 'System':
+                self.destination = next(x for x in syslist if x.name == self.destination[1])
+        
+        self.resources = data[4]
+        self.fit = data[5]
+        self.weapons.unpickle(data[6])
+        self.is_npc = data[7]
+        self.liege = data[8]
+        self.heading = data[9]
+        
+        self.image.update(self.xy, self.heading)
 
 
 

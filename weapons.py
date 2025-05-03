@@ -88,7 +88,11 @@ class Weapons():
             x_offset += size[0] + 4
 
 
-
+    def pickle(self):
+        return self.data
+    
+    def unpickle(self, data):
+        self.data = data
 
 
 

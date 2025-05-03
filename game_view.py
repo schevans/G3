@@ -11,6 +11,7 @@ from pygame.math import Vector2
 from enum import Enum
 import my_random
 import copy
+import pickle
 
 import ships
 import systems
@@ -111,7 +112,11 @@ class GameView():
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
                 self.current_ship = self.do_ship_swap(event.key)
                 self.shared_dict['current_ship'] = self.current_ship
-                        
+            if event.key == pygame.K_m:
+                self.save_game()
+            if event.key == pygame.K_n:
+                self.load_game()                
+                
         if self.show_help and self.exposition:
            self.exposition.process_event(event)
           
@@ -235,6 +240,58 @@ class GameView():
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
             screen.blit(text_surface, text_pos )   
  
+    def pickle(self):
+        
+        shared_dict = copy.copy(self.shared_dict)
+        shared_dict['current_ship'] = shared_dict['current_ship'].name
+        shared_dict['system'] = shared_dict['system'].name if shared_dict['system'] else None
+        shared_dict['planet'] = shared_dict['planet'].name if shared_dict['planet'] else None
+        
+        data = [ self.master_timer, shared_dict]
+        
+        return data
+    
+    def unpickle(self, data):
+        
+        self.master_timer = data[0]
+        self.shared_dict = data[1]
+        
+        self.shared_dict['current_ship'] = next(x for x in self.ships if x.name == self.shared_dict['current_ship'])
+        self.shared_dict['system'] = next((x for x in systems.syslist if x.name == self.shared_dict['system']), None)
+        if self.shared_dict['system']:
+            self.shared_dict['planet'] = next(x for x in self.shared_dict['system'].planets if x.name == self.shared_dict['planet'])
+        self.next_view = (self.shared_dict['history'][-1], self.shared_dict)
+
+
+    def save_game(self):
+        
+        filename = 'saved_game.pkl'
+
+        ships = [x.pickle() for x in self.ships]
+        syslist = systems.pickle()
+        
+        data = [self.pickle(), ships, syslist]
+
+        with open(filename, "wb") as f:
+            pickle.dump(data, f)
+            f.close()
+    
+    
+    def load_game(self):
+        
+        filename = 'saved_game.pkl'
+    
+        with open(filename, "rb") as f:
+            data = pickle.load(f)
+            f.close()
+            
+        self.unpickle(data[0])
+        
+        for i in range(len(data[1])):
+            self.ships[i].unpickle(systems.syslist, data[1][i])
+
+        systems.unpickle(data[2])  
+        
         
 class ViewManager():
     
