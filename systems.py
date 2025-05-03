@@ -95,7 +95,6 @@ def unpickle(data):
     
      for system in syslist:
          for planet in system.planets:
-             print(system.name, planet.name)
              planet.resources = data[system.name][planet.name]
 
 class System():

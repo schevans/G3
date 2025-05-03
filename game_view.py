@@ -268,9 +268,8 @@ class GameView():
         filename = 'saved_game.pkl'
 
         ships = [x.pickle() for x in self.ships]
-        syslist = systems.pickle()
         
-        data = [self.pickle(), ships, syslist]
+        data = [self.pickle(), ships, systems.pickle()]
 
         with open(filename, "wb") as f:
             pickle.dump(data, f)
