@@ -84,7 +84,7 @@ class GameView():
         self.current_ship = GameView.my_ship
         
         self.mobs = []
-        self.master_timer = 3
+        self.master_timer = 0
         self.threat_level = 3
         
         self.selected_item = None

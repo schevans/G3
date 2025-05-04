@@ -33,8 +33,6 @@ class LoadSaveView(GameView):
         self.file_name = None 
         self.is_load_view = True
         
-        
-        
         label_width = 300
         button_width = 150
         file_button_width = 80
@@ -42,15 +40,12 @@ class LoadSaveView(GameView):
         
         self.load_select_button = Button((const.screen_width/2-button_width-space, 100), (button_width, 30), 'Load Menu', const.game_color, None, False, self.button_callback)
         self.save_select_button = Button((const.screen_width/2+space, 100), (button_width, 30), 'Save Menu', available_color, None, False, self.button_callback)
-        self.load_save_button = Button((const.screen_width/2-button_width/2, 700), (button_width, 30), 'Load', const.game_color, None, False, self.button_callback)
+        self.load_save_button = Button((const.screen_width/2-button_width/2, 700), (button_width, 30), 'Load', const.game_color, None, True, self.button_callback)
         
         files_width = (label_width + file_button_width + space) * self.save_spot_cols + space * 2
         files_height = (self.save_spot_rows * 40) - 10
         
         files_pos = Vector2(const.screen_width / 2 - files_width / 2, const.screen_height / 2 - files_height / 2)
-        
-        
-        
         
         x = files_pos[0]
         y = files_pos[1]
@@ -70,30 +65,49 @@ class LoadSaveView(GameView):
             y = files_pos[1]
         
         
-        self.load_files()
+        self.load_file_slots()
 
         self.widgets = [self.load_select_button, self.save_select_button, self.load_save_button] + self.save_slot_buttons + self.save_slot_lables
         
         
-    def load_files(self):
+    def load_file_slots(self):
         
         files = glob.glob(data_dir + 'RtP_*.pkl')
+        
+        for label in self.save_slot_lables:
+            label.text = None
         
         for file in files:
             save_slot_number = int(file.split('_')[1]) - 1
             label_text = os.path.basename(file).split('.')[0]
             self.save_slot_lables[save_slot_number].text = label_text
 
+    def reset_slots(self):
+
+        self.file_name = None
+        self.load_save_button.is_disabled = True
         
-    def cleanup(self):
-        pass
+        for button in self.save_slot_buttons:
+            button.set_color(available_color)    
+            
+        for label in self.save_slot_lables:
+            label.text = None
+
+        self.load_file_slots()
+        
+        
+    def cleanup(self):        
+        self.is_load_view = True
+        self.reset_slots()
+        
         
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
         self.shared_dict['history'].append(View.LOAD_SAVE)
         self.current_ship = self.shared_dict['current_ship']
     
-    
+        self.load_file_slots()
+        
     def process_event(self, event):
 
         GameView.process_event(self, event)   
@@ -109,10 +123,15 @@ class LoadSaveView(GameView):
 
         for widget in self.widgets:
             widget.update()  
+                     
+        for i in range(len(self.save_slot_buttons)):
+            if self.is_load_view:
+                if not self.save_slot_lables[i].text:
+                    self.save_slot_buttons[i].is_disabled = True
+            else:
+                self.save_slot_buttons[i].is_disabled = False
+                    
 
-
-               
-        
     def draw(self, screen):
         
         GameView.draw(self, screen)
@@ -126,25 +145,24 @@ class LoadSaveView(GameView):
         if button == self.load_select_button:
             self.is_load_view = True
             self.load_save_button.text = 'Load'
-        
+            self.reset_slots()   
+            
         elif button == self.save_select_button:
             self.is_load_view = False
             self.load_save_button.text = 'Save'
-
-        elif button in self.save_slot_buttons:
-            button.set_color(const.game_color)
+            self.reset_slots()   
             
+        elif button in self.save_slot_buttons:
+            
+            self.reset_slots()          
+            button.set_color(const.game_color)
             index = self.save_slot_buttons.index(button)
+            self.load_save_button.is_disabled = False
             
             if self.is_load_view:
-                
                 self.file_name = self.save_slot_lables[index].text 
-                
-            else:
-                
-                
+            else:                               
                 self.file_name = 'RtP_' + self.save_slot_buttons[index].text + '_' + str(const.random_seed) + '_' + str(self.master_timer) + '_' + self.current_ship.name
-                
                 self.save_slot_lables[index].text = self.file_name
                 
         elif button == self.load_save_button:
