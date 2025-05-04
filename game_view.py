@@ -84,7 +84,7 @@ class GameView():
         self.current_ship = GameView.my_ship
         
         self.mobs = []
-        self.master_timer = 0
+        self.master_timer = 3
         self.threat_level = 3
         
         self.selected_item = None
@@ -112,10 +112,8 @@ class GameView():
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  
                 self.current_ship = self.do_ship_swap(event.key)
                 self.shared_dict['current_ship'] = self.current_ship
-            if event.key == pygame.K_m:
-                self.save_game()
-            if event.key == pygame.K_n:
-                self.load_game()                
+            if event.key == pygame.K_l:
+                self.next_view = (View.LOAD_SAVE, self.shared_dict)
                 
         if self.show_help and self.exposition:
            self.exposition.process_event(event)
@@ -263,9 +261,7 @@ class GameView():
         self.next_view = (self.shared_dict['history'][-1], self.shared_dict)
 
 
-    def save_game(self):
-        
-        filename = 'saved_game.pkl'
+    def save_game(self, filename):
 
         ships = [x.pickle() for x in self.ships]
         
@@ -276,9 +272,7 @@ class GameView():
             f.close()
     
     
-    def load_game(self):
-        
-        filename = 'saved_game.pkl'
+    def load_game(self, filename):
     
         with open(filename, "rb") as f:
             data = pickle.load(f)

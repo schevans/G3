@@ -14,7 +14,7 @@ from solar_view import SolarView
 from planet_view import PlanetView
 from fitting_view import FittingView
 from docking_view import DockingView
-
+from load_save_view import LoadSaveView
 
 view = ViewManager()
 
@@ -23,7 +23,8 @@ view_dict = {
     View.SOLAR: SolarView(),
     View.PLANET: PlanetView(),
     View.FITTING: FittingView(),
-    View.DOCKING: DockingView()
+    View.DOCKING: DockingView(),
+    View.LOAD_SAVE: LoadSaveView()
 }
 
 view.setup_views(view_dict, View.GALAXY)
