@@ -23,7 +23,7 @@ RIGHT_MOUSE_CLICK = 3
 
 OFFSET = 5
 WEAPON_ICON_SIZE = (44, 52)
-RESOURCE_BAR = 20
+RESOURCE_BAR = 5
 RED_FADE = pygame.Color(207, 1, 0, 64)
 
 class PlanetView(GameView):

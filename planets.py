@@ -17,7 +17,7 @@ from planetary_textures import PlanetaryTextures
 
 planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0) 
 
-MINING_HIT_COUNTER = 10
+MINING_HIT_COUNTER = 20
 PLANET_VIEW_RADIUS_MULT = 8
 UMBRA_COLOR = ( 0, 0, 0, 128)
 
@@ -69,7 +69,7 @@ class Planet():
         
         retval = None
         
-        mining_hit = 1 #bullet.shield_damage + bullet.armour_damage
+        mining_hit = bullet.shield_damage + bullet.armour_damage
         
         if sum(self.resources.values()) > mining_hit:
             for i in range(int(mining_hit)):
@@ -91,6 +91,13 @@ class Planet():
                 self.mining_hit_counter = MINING_HIT_COUNTER
                 retval = self.mining_can.copy()
                 self.mining_can = {}
+            
+        else:
+            if sum(self.mining_can.values()):
+                retval = self.mining_can.copy()
+                self.mining_can = {}    
+                for key in self.resources:
+                    self.resources[key] = 0
             
         return retval
     
