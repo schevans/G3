@@ -68,12 +68,11 @@ class DockingView(GameView):
             self.panel = RepairPanel(self.current_ship, self.repair_callback)
             
        
-
-
     def cleanup(self):
         self.panel = None
-        
         self.top_buttons.clear()
+        self.shared_dict['other_ship'] = None
+        
     
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
@@ -81,7 +80,6 @@ class DockingView(GameView):
         self.current_ship = self.shared_dict['current_ship']
         self.other_ship = self.shared_dict['other_ship']
         
-
         y = 150
         x = INNER_BORDER_WIDTH
 

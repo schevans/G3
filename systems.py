@@ -87,16 +87,23 @@ def pickle():
     for system in syslist:
         data[system.name] = {}
         for planet in system.planets:
-            data[system.name][planet.name] = planet.resources
+            data[system.name][planet.name] = {}
+            data[system.name][planet.name]['resources'] = planet.resources
+            if planet.station:
+                data[system.name][planet.name]['station'] = planet.station.resources
             
     return data
+
 
 def unpickle(data):
     
      for system in syslist:
          for planet in system.planets:
-             planet.resources = data[system.name][planet.name]
-
+             planet.resources = data[system.name][planet.name]['resources']
+             if planet.station:
+                 planet.station.resources = data[system.name][planet.name]['station']
+                 
+                 
 class System():
     
     def __init__(self, name, xy, r, color, system_type):
@@ -115,7 +122,7 @@ class System():
             planet_name = self.name + ' ' + utils.numbers_to_roman(i)
             
             station = None 
-            if self.system_type == 'Uninhabited' and i == 1:
+            if self.system_type == 'Uninhabited' and i == 0:
                 station = Station(planet_name, const.screen_height/4)
     
             if self.name == const.our_capital:

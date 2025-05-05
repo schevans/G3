@@ -98,6 +98,7 @@ class LoadSaveView(GameView):
         
     def cleanup(self):        
         self.is_load_view = True
+        self.load_save_button.text = 'Load'
         self.reset_slots()
         
         
