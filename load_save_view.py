@@ -9,11 +9,11 @@ Created on Sat May  3 18:45:27 2025
 from pygame import Vector2
 from game_view import GameView, View
 import glob
-import os.path
+import os
 
 import constants as const
 from gui import Label, Button
-
+import utils
 
 available_color = 'grey'
 
@@ -38,15 +38,27 @@ class LoadSaveView(GameView):
         file_button_width = 80
         space = 20
         
-        self.load_select_button = Button((const.screen_width/2-button_width-space, 100), (button_width, 30), 'Load Menu', const.game_color, None, False, self.button_callback)
-        self.save_select_button = Button((const.screen_width/2+space, 100), (button_width, 30), 'Save Menu', available_color, None, False, self.button_callback)
-        self.load_save_button = Button((const.screen_width/2-button_width/2, 700), (button_width, 30), 'Load', const.game_color, None, True, self.button_callback)
-        
         files_width = (label_width + file_button_width + space) * self.save_spot_cols + space * 2
         files_height = (self.save_spot_rows * 40) - 10
         
         files_pos = Vector2(const.screen_width / 2 - files_width / 2, const.screen_height / 2 - files_height / 2)
         
+        
+        self.load_select_button = Button((const.screen_width/2-button_width-space, 100), (button_width, 30), 'Load Menu', const.game_color, None, False, self.button_callback)
+        self.save_select_button = Button((const.screen_width/2+space, 100), (button_width, 30), 'Save Menu', available_color, None, False, self.button_callback)
+        self.load_save_button = Button((const.screen_width/2-button_width/2, 700), (button_width, 30), 'Load', const.game_color, None, True, self.button_callback)
+        
+        legend ='Key: RtP SaveNum RandomSeed DaysPassed NumAllies CurrentShip'
+        self.legend_surface = utils.fonts[20].render(legend, True, 'white')
+        legend_width, legend_height = self.legend_surface.get_size()
+        self.legend_xy = Vector2(const.screen_width / 2 - legend_width / 2, 150)
+
+        overwrite_text = 'Warning: Overwriting save file'
+        self.overwrite_surface = utils.fonts[20].render(overwrite_text, True, 'white')
+        overwrite_width, overwrite_height = self.overwrite_surface.get_size()
+        self.overwrite_xy = Vector2(const.screen_width / 2 - overwrite_width / 2, 640)
+        self.overwrite_file = None
+
         x = files_pos[0]
         y = files_pos[1]
         
@@ -86,6 +98,7 @@ class LoadSaveView(GameView):
 
         self.file_name = None
         self.load_save_button.is_disabled = True
+        self.overwrite_file = None
         
         for button in self.save_slot_buttons:
             button.set_color(available_color)    
@@ -141,7 +154,12 @@ class LoadSaveView(GameView):
         for widget in self.widgets:
             widget.draw(screen)  
 
+        screen.blit(self.legend_surface, self.legend_xy)
 
+        if self.overwrite_file:        
+            screen.blit(self.overwrite_surface, self.overwrite_xy)
+        
+        
     def button_callback(self, button):
         
         if button == self.load_select_button:
@@ -160,16 +178,27 @@ class LoadSaveView(GameView):
             button.set_color(const.game_color)
             index = self.save_slot_buttons.index(button)
             self.load_save_button.is_disabled = False
+            self.overwrite_file = None
             
             if self.is_load_view:
                 self.file_name = self.save_slot_lables[index].text 
-            else:                               
-                self.file_name = 'RtP_' + self.save_slot_buttons[index].text + '_' + str(const.random_seed) + '_' + str(self.master_timer()) + '_' + self.current_ship.name
+            else:                  
+                num_alies = sum(x.is_npc == False and x.is_alive for x in self.ships) - 1
+                self.file_name = 'RtP_' + self.save_slot_buttons[index].text + '_' + str(const.random_seed) + '_' + str(self.master_timer()) + '_' + str(num_alies) + '_' + self.current_ship.name
+                
+                if self.save_slot_lables[index].text:
+                    self.overwrite_file = self.save_slot_lables[index].text
+                    
                 self.save_slot_lables[index].text = self.file_name
                 
         elif button == self.load_save_button:
             
             if self.file_name:
+                
+                if self.overwrite_file:
+                    full_path = data_dir + self.overwrite_file + '.pkl'
+                    os.remove(full_path)
+                    self.overwrite_file = None
                 
                 full_path = data_dir + self.file_name + '.pkl'
                 
