@@ -12,6 +12,7 @@ from enum import Enum
 import my_random
 import copy
 import pickle
+from statistics import mean 
 
 import ships
 import systems
@@ -340,28 +341,32 @@ class ViewManager():
             
     def solve(self):
          
-        self.system_fuel = {}
+        self.system_resources = {}
         
         for system in systems.syslist:
-            system_fuel = 0
+            self.system_resources[system] = const.our_initial_resources.fromkeys(const.our_initial_resources, 0)
             for planet in system.planets:
-                if 'fuel' in planet.resources:
-                    system_fuel += planet.resources['fuel']
-
-            self.system_fuel[system] = system_fuel
+                for key in planet.resources:
+                    self.system_resources[system][key] += planet.resources[key]
 
         ship = copy.copy(GameView.shiplist[0])
 
         route = []
-        num_branches = [0,0,[]]
+        num_branches = [0,0,[],[]]
 
         self.jump_solve(ship, route, num_branches)
-        
+
         lengths = [len(i) for i in num_branches[2]]
         average = 0 if len(lengths) == 0 else (float(sum(lengths)) / len(lengths)) 
         
         print(num_branches[0], 'paths,', num_branches[1], 'home,', round(num_branches[1]/num_branches[0]*100, 2), '%,', round(average, 2), 'av#jumps')
         
+        mean_resources = {}     
+        for key in const.our_initial_resources.keys():
+            mean_resources[key] = mean([d[key] for d in num_branches[3]])
+        
+        print(mean_resources)
+                
     def jump_solve(self, ship, route, num_branches):
         
         num_branches[0] += 1
@@ -371,14 +376,18 @@ class ViewManager():
             if ship.can_jump(system) and system.xy[0] > ship.xy[0] and system.xy[1] < ship.xy[1]: 
                 if system.name == 'Polaris':
                     num_branches[1] += 1
-                    num_branches[2].append(route)
+                    num_branches[2].append(route)                    
+                    num_branches[3].append(ship.resources)
                     break
                 
                 newship = copy.copy(ship)
                 newship.resources = ship.resources.copy()
                 newship.resources['fuel'] -= ship.jump_cost(system)
                 newship.reset_xy(system.xy)
-                newship.resources['fuel'] +=self.system_fuel[system]
+                
+                for key in self.system_resources[system]:
+                    newship.resources[key] +=self.system_resources[system][key]
+                    
                 newroute = route.copy()
                 newroute.append(system.name)
                 self.jump_solve(newship, newroute, num_branches )
