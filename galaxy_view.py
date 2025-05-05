@@ -33,7 +33,8 @@ class GalaxyView(GameView):
         self.shared_dict = shared_dict
         self.shared_dict['history'].append(View.GALAXY)
         self.current_ship = self.shared_dict['current_ship']
-          
+        self.master_timer = self.shared_dict['master_timer']
+        
         for ship in self.ships:
             if ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
@@ -82,11 +83,11 @@ class GalaxyView(GameView):
         self.get_selected_item(systems.syslist + self.mobs)
         
         if self.current_ship == self.my_ship and ( self.current_ship.is_moving() or self.is_waiting):
-            self.master_timer += 1
+            self.master_timer.increment()
             
         
-        if self.master_timer % SHIP_LAUNCH_TIMER == 0 and self.master_timer != 0:
-            self.master_timer += 1
+        if self.master_timer() % SHIP_LAUNCH_TIMER == 0 and self.master_timer() != 0:
+            self.master_timer.increment()
             
             suitable = []
             for ship in self.ships:
@@ -120,7 +121,7 @@ class GalaxyView(GameView):
             pygame.draw.circle(screen, system.color, system.xy, system.r )
 
     
-        text = 'Days passed: ' + str(self.master_timer)
+        text = 'Days passed: ' + str(self.master_timer())
         text_surface = utils.fonts[20].render(text, True, 'white', 'black')
         screen.blit(text_surface, (15, 15) )
         

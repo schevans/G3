@@ -84,7 +84,6 @@ class GameView():
         self.current_ship = GameView.my_ship
         
         self.mobs = []
-        self.master_timer = 0
         self.threat_level = 3
         
         self.selected_item = None
@@ -240,19 +239,16 @@ class GameView():
  
     def pickle(self):
         
-        shared_dict = copy.copy(self.shared_dict)
-        shared_dict['current_ship'] = shared_dict['current_ship'].name
-        shared_dict['system'] = shared_dict['system'].name if shared_dict['system'] else None
-        shared_dict['planet'] = shared_dict['planet'].name if shared_dict['planet'] else None
-        
-        data = [ self.master_timer, shared_dict]
+        data = copy.copy(self.shared_dict)
+        data['current_ship'] = data['current_ship'].name
+        data['system'] = data['system'].name if data['system'] else None
+        data['planet'] = data['planet'].name if data['planet'] else None
         
         return data
     
     def unpickle(self, data):
         
-        self.master_timer = data[0]
-        self.shared_dict = data[1]
+        self.shared_dict = data
         
         self.shared_dict['current_ship'] = next(x for x in self.ships if x.name == self.shared_dict['current_ship'])
         self.shared_dict['system'] = next((x for x in systems.syslist if x.name == self.shared_dict['system']), None)
@@ -302,7 +298,8 @@ class ViewManager():
             'current_ship': GameView.my_ship,
             'system': None,
             'planet': None,
-            'history': []
+            'history': [],
+            'master_timer': MasterTimer(0)
             }
         
         self.view.startup(shared_dict)
@@ -387,7 +384,16 @@ class ViewManager():
                 self.jump_solve(newship, newroute, num_branches )
 
         
-        
+class MasterTimer():
+
+    def __init__(self, days):
+        self.days = days
+
+    def __call__(self):
+        return self.days
+
+    def increment(self):
+        self.days += 1        
 
             
 

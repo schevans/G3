@@ -106,7 +106,8 @@ class LoadSaveView(GameView):
         self.shared_dict = shared_dict
         self.shared_dict['history'].append(View.LOAD_SAVE)
         self.current_ship = self.shared_dict['current_ship']
-    
+        self.master_timer = self.shared_dict['master_timer']
+        
         self.load_file_slots()
         
     def process_event(self, event):
@@ -163,7 +164,7 @@ class LoadSaveView(GameView):
             if self.is_load_view:
                 self.file_name = self.save_slot_lables[index].text 
             else:                               
-                self.file_name = 'RtP_' + self.save_slot_buttons[index].text + '_' + str(const.random_seed) + '_' + str(self.master_timer) + '_' + self.current_ship.name
+                self.file_name = 'RtP_' + self.save_slot_buttons[index].text + '_' + str(const.random_seed) + '_' + str(self.master_timer()) + '_' + self.current_ship.name
                 self.save_slot_lables[index].text = self.file_name
                 
         elif button == self.load_save_button:
