@@ -46,6 +46,7 @@ class DockingView(GameView):
         if self.other_ship.liege == const.friendly_capital:
             expo_enum = ExpositionText.YES
             self.other_ship.tmpship.recruit() 
+            self.other_ship.recruit() 
         elif self.other_ship.liege == const.neutral_capital:
             expo_enum = ExpositionText.NO_THANKS
         
