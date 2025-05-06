@@ -262,12 +262,12 @@ class GameView():
 
         ships = [x.pickle() for x in self.ships]
         
-        data = [self.pickle(), ships, systems.pickle()]
+        data = [self.pickle(), ships, systems.pickle(), my_random.get_state()]
 
         with open(filename, "wb") as f:
             pickle.dump(data, f)
             f.close()
-    
+
     
     def load_game(self, filename):
     
@@ -281,6 +281,8 @@ class GameView():
             self.ships[i].unpickle(systems.syslist, data[1][i])
 
         systems.unpickle(data[2])  
+        
+        my_random.set_state(data[3])
         
         
 class ViewManager():

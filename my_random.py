@@ -28,3 +28,10 @@ def my_choices(mylist, weights=None, cum_weights=None, k=1):
 
 def my_gauss(mu=0.5, sigma=0.1):
     return random.gauss(mu=mu, sigma=sigma)
+
+
+def get_state():
+    return random.getstate()
+
+def set_state(state):
+    random.setstate(state)
