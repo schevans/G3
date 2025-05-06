@@ -47,9 +47,7 @@ class Planet():
         self.mining_hit_counter = MINING_HIT_COUNTER
         self.mining_can = {}
         for resource in const.initial_planetary_resources:
-            amount = const.initial_planetary_resources[resource] *  my_random.my_random()
-            if amount:
-                self.resources[resource] = amount
+            self.resources[resource] = int(const.initial_planetary_resources[resource] *  my_random.my_random())
                 
         self.resources_max = sum(self.resources.values())
         
@@ -70,19 +68,19 @@ class Planet():
         retval = None
         
         mining_hit = bullet.shield_damage + bullet.armour_damage
-        
+
         if sum(self.resources.values()) > mining_hit:
             for i in range(int(mining_hit)):
-                if bool(self.resources):
-                    resource = my_random.my_choices(list(self.resources.keys()))[0]
-                    if resource in self.mining_can:
-                        self.mining_can[resource] += 1
-                    else:
-                        self.mining_can[resource] = 1
-                                        
-                    self.resources[resource] -= 1
-                    if self.resources[resource] == 0:
-                        del(self.resources[resource])
+                
+                available_resources = [k for k in self.resources.keys() if self.resources[k] > 0]
+                resource = my_random.my_choices(available_resources)[0]
+                               
+                if resource in self.mining_can:
+                    self.mining_can[resource] += 1
+                else:
+                    self.mining_can[resource] = 1
+                                    
+                self.resources[resource] -= 1
                                 
             self.mining_hit_counter -= mining_hit
             
