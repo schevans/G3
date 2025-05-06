@@ -46,9 +46,6 @@ class Ship():
                 self.fit.upgrade('reactor')
                 self.fit.upgrade('wep dmg')
                 self.fit.upgrade('wep range')
-            # ensure potential allies have enough fuel to get about
-            elif self.liege == const.friendly_capital:
-                self.resources['fuel'] = const.our_initial_resources['fuel']
                     
         else:
             self.liege = const.our_capital
@@ -175,7 +172,9 @@ class Ship():
     def recruit(self):
         self.is_npc = False
         self.liege = 'Hero'
-        
+
+        # ensure allies have enough fuel to get about
+        self.resources['fuel'] = const.our_initial_resources['fuel']
         
     def pickle(self):
         
