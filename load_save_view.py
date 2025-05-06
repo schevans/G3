@@ -206,7 +206,9 @@ class LoadSaveView(GameView):
                     self.load_game(full_path) 
                 else:
                     self.save_game(full_path)
-
+                    
+                self.load_save_button.is_disabled = True
+                self.reset_slots() 
             
                 
                 
