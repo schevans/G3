@@ -53,7 +53,7 @@ their_initial_resources = {
 
 initial_planetary_resources = {
     'credits': 100,
-    'fuel': 10,
+    'fuel': 6,
     'metal': 40,
     'tech': 40,
     'cannon': 2,
