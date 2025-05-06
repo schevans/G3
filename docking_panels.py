@@ -167,8 +167,11 @@ class TradePanel():
             self.transaction = dict.fromkeys(self.transaction, 0)
         else:
             buysell = 1 if button_type == ButtonType.BUY else -1
-            amount = const.fx_rates[self.their_ship.liege][resource] * buysell
             
+            amount = 0
+            if self.their_ship.liege != 'Hero':   # FIXME - hardcode
+                amount = const.fx_rates[self.their_ship.liege][resource] * buysell    
+                
             self.transaction[resource] += buysell
             self.our_resources[resource] += buysell
             self.their_resources[resource] -= buysell
