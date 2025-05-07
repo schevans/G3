@@ -49,12 +49,12 @@ class LoadSaveView(GameView):
         self.load_save_button = Button((const.screen_width/2-button_width/2, 700), (button_width, 30), 'Load', const.game_color, None, True, self.button_callback)
         
         legend ='Key: RtP SaveNum RandomSeed DaysPassed NumAllies CurrentShip'
-        self.legend_surface = utils.fonts[20].render(legend, True, 'white')
+        self.legend_surface = utils.fonts[20].render(legend, True, available_color, False)
         legend_width, legend_height = self.legend_surface.get_size()
         self.legend_xy = Vector2(const.screen_width / 2 - legend_width / 2, 150)
 
         overwrite_text = 'Warning: Overwriting save file'
-        self.overwrite_surface = utils.fonts[20].render(overwrite_text, True, 'white')
+        self.overwrite_surface = utils.fonts[20].render(overwrite_text, True, 'white', False)
         overwrite_width, overwrite_height = self.overwrite_surface.get_size()
         self.overwrite_xy = Vector2(const.screen_width / 2 - overwrite_width / 2, 640)
         self.overwrite_file = None
