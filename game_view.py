@@ -13,6 +13,7 @@ import my_random
 import copy
 import pickle
 from statistics import mean 
+import webbrowser
 
 import ships
 import systems
@@ -94,8 +95,17 @@ class GameView():
         self.tmp_ex = 0      # FIXME: Remove
         
         self.game_state = State.IN_PROGRESS
-
         
+        self.manual_url = './story/ship_manual.html'
+        self.manual_text = 'DON\'T PANIC'
+        self.manual_surface_normal = self.font.render(self.manual_text, True, 'pink') 
+        self.manual_surface_highlight = self.font.render(self.manual_text, True, 'white') 
+        self.manual_surface = self.manual_surface_normal
+        manual_width, manual_height = self.font.size(self.manual_text)     
+        self.manual_pos = (const.screen_width - manual_width-5, const.screen_height-manual_height)
+        self.manual_rect = pygame.Rect((const.screen_width - manual_width-10, const.screen_height-manual_height), (manual_width+10, manual_height))
+
+
     def process_event(self, event):
         
         if event.type == pygame.KEYDOWN:
@@ -117,6 +127,10 @@ class GameView():
                 
         if self.show_help and self.exposition:
            self.exposition.process_event(event)
+           
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.manual_rect.collidepoint(pygame.mouse.get_pos()):
+                webbrowser.open(self.manual_url)
           
             
     def update(self):
@@ -126,6 +140,12 @@ class GameView():
             
         if self.show_help and self.exposition:
             self.exposition.update()
+            
+        if self.manual_rect.collidepoint(pygame.mouse.get_pos()):
+            self.manual_surface = self.manual_surface_highlight
+        else:
+            self.manual_surface = self.manual_surface_normal
+        print()
         
     def draw(self, screen):
         
@@ -149,7 +169,12 @@ class GameView():
         text_offset = (TEXTBOX_HEIGHT - font_height) /2        
         screen.blit(text_surface, (10, const.screen_height+text_offset))
 
+        screen.blit(self.manual_surface, self.manual_pos)
         
+        pygame.draw.line(screen, 'white', self.manual_rect.topleft, self.manual_rect.topright, 2)
+        pygame.draw.line(screen, 'white', self.manual_rect.topleft, self.manual_rect.bottomleft, 2)
+
+
     def draw_objects(self, screen):
         
         for mob in self.mobs:

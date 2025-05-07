@@ -73,8 +73,14 @@ class GalaxyView(GameView):
                 
     def update(self):
         
-        if self.exposition:
+        # this doesn't call GameView.update as it does it's own thing with mob.update
+        if self.show_help and self.exposition:
             self.exposition.update()
+        
+        if self.manual_rect.collidepoint(pygame.mouse.get_pos()):
+            self.manual_surface = self.manual_surface_highlight
+        else:
+            self.manual_surface = self.manual_surface_normal
         
         for mob in self.mobs:
             if self.my_ship.is_moving() or self.is_waiting:
@@ -100,7 +106,6 @@ class GalaxyView(GameView):
 
             fresh_mob.destination = self.home_system
             self.mobs.append(fresh_mob)
-            
             
         for mob in self.mobs:
             if mob.is_npc and not mob.is_moving():
