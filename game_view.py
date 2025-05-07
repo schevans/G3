@@ -145,7 +145,7 @@ class GameView():
             self.manual_surface = self.manual_surface_highlight
         else:
             self.manual_surface = self.manual_surface_normal
-        print()
+            
         
     def draw(self, screen):
         
