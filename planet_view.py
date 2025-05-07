@@ -34,6 +34,7 @@ class PlanetView(GameView):
         
     def cleanup(self):
         self.mobs = []
+        self.shared_dict['current_ship'] = self.current_ship.tmpship
 
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
@@ -77,7 +78,6 @@ class PlanetView(GameView):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
                 self.shared_dict['system'] = self.planet.system
-                self.shared_dict['current_ship'] = self.current_ship.tmpship
                 self.next_view = (View.SOLAR, self.shared_dict)
             if event.key == pygame.K_SPACE:
                 self.is_paused = not self.is_paused
