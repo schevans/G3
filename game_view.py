@@ -61,8 +61,6 @@ class GameView():
     my_ship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-const.free_space_in_corners), None, None, False)
     my_ship.is_current = True
 
-
-
     shiplist = [ my_ship ]
 
     for system in systems.syslist:
@@ -72,11 +70,6 @@ class GameView():
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '2222222'))
             else:
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
-    
-    ### TEMP TEMP ###
-    TEMP_PLANET = shiplist[9].planet
-    TEMP_SYSTEM = shiplist[9].system  
-    ### TEMP TEMP ###
     
     
     def __init__(self):

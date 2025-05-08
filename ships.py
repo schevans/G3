@@ -69,7 +69,7 @@ class Ship():
         self.weapons = Weapons()
 
         # dev mode
-        if self.name == 'Hero':
+        if False: #self.name == 'Hero':
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
