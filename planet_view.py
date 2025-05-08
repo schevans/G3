@@ -84,7 +84,7 @@ class PlanetView(GameView):
             if event.key == pygame.K_w:
                 for mob in self.mobs:
                     if mob.object_type() in ['Ship', 'Station'] and mob.name != 'Hero' and self.current_ship.xy.distance_to(mob.xy) < DOCK_RADIUS:
-                        self.shared_dict['other_ship'] = mob
+                        self.shared_dict['other_ship'] = mob.tmpship
                         self.next_view = (View.DOCKING, self.shared_dict)
             if pygame.key.name(event.key) in ['1', '2', '3', '4', '5']:
                 self.current_ship.weapons.select_from_key(pygame.key.name(event.key))
