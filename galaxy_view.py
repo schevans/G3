@@ -48,7 +48,7 @@ class GalaxyView(GameView):
         GameView.process_event(self, event)
         
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_s:
+            if event.key == pygame.K_RETURN:
                 if self.current_ship.system and not self.current_ship.is_moving():
                     self.shared_dict['system'] = self.current_ship.system
                     self.next_view = (View.SOLAR, self.shared_dict)

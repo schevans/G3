@@ -48,10 +48,10 @@ class SolarView(GameView):
         GameView.process_event(self, event)
         
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_g:
+            if event.key == pygame.K_ESCAPE:
                 self.shared_dict['system'] = self.system
                 self.next_view = (View.GALAXY, self.shared_dict)
-            if event.key == pygame.K_p:
+            if event.key == pygame.K_RETURN:
                 if self.current_ship.planet and not self.current_ship.is_moving():
                     self.current_ship.destination = None
                     self.shared_dict['planet'] = self.current_ship.planet

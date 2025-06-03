@@ -29,7 +29,7 @@ ship_width = 18
 
 our_initial_resources = {
     'credits': 0,
-    'fuel': 10,
+    'fuel': 20,
     'metal': 0,
     'tech': 0,
     'laser': math.inf,
@@ -52,10 +52,10 @@ their_initial_resources = {
     }
 
 initial_planetary_resources = {
-    'credits': 100,
-    'fuel': 6,
-    'metal': 40,
-    'tech': 40,
+    'credits': 80,
+    'fuel': 8,
+    'metal': 30,
+    'tech': 30,
     'cannon': 2,
     'rocket': 2,
     'torpedo': 2,
