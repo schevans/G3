@@ -28,7 +28,7 @@ class SolarView(GameView):
         
     def startup(self, shared_dict):  
         self.shared_dict = shared_dict
-        self.shared_dict['history'].append(View.SOLAR)
+        self.shared_dict['history'] = [(View.SOLAR)]
         self.current_ship = self.shared_dict['current_ship']
         self.system = shared_dict['system']
 

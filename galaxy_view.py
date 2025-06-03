@@ -7,20 +7,15 @@ Created on Sun Nov 10 17:48:16 2024
 """
 
 import pygame
-from pygame.math import Vector2
-
 
 import systems
 import utils
 import constants as const
-
-
-
 from game_view import GameView, View, State
 
-  
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 50   
+
 class GalaxyView(GameView):
     
     def __init__(self):
@@ -31,7 +26,7 @@ class GalaxyView(GameView):
         
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
-        self.shared_dict['history'].append(View.GALAXY)
+        self.shared_dict['history'] = [(View.GALAXY)]
         self.current_ship = self.shared_dict['current_ship']
         self.master_timer = self.shared_dict['master_timer']
         

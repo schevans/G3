@@ -14,7 +14,6 @@ import copy
 import pickle
 from statistics import mean 
 import webbrowser
-import time
 
 import ships
 import systems
@@ -107,11 +106,11 @@ class GameView():
             if event.key == pygame.K_x and self.show_help:  # FIXME: Remove
                 self.exposition = ExpositionBox(list(ExpositionText)[self.tmp_ex], self.exposition_ok_callback, self.exposition_checkbox_callback)
                 self.tmp_ex += 1
-                
-            if event.key == pygame.K_b:
-                if self.shared_dict['history']:
-                    self.shared_dict['history'].pop()   # clear the one we're leaving
-                    self.next_view = (self.shared_dict['history'].pop(), self.shared_dict)
+            if event.key == pygame.K_ESCAPE:
+                if len(self.shared_dict['history']):
+                    current_view = self.shared_dict['history'].pop()
+                    if current_view in [View.FITTING, View.LOAD_SAVE, View.DOCKING]:
+                        self.next_view = (self.shared_dict['history'].pop(), self.shared_dict)
             if event.key == pygame.K_f:
                 self.next_view = (View.FITTING, self.shared_dict)
             if event.key == pygame.K_LEFTBRACKET or event.key == pygame.K_RIGHTBRACKET:  

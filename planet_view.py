@@ -35,7 +35,7 @@ class PlanetView(GameView):
 
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
-        self.shared_dict['history'].append(View.PLANET)
+        self.shared_dict['history'] = [(View.PLANET)]
         
         self.planet = shared_dict['planet']
         
