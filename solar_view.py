@@ -56,7 +56,9 @@ class SolarView(GameView):
                     self.current_ship.destination = None
                     self.shared_dict['planet'] = self.current_ship.planet
                     self.next_view = (View.PLANET, self.shared_dict)
-            if  event.key == pygame.K_j:   
+                    
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == const.left_mouse_click:
+            if self.doubleclick_timer.tick() < const.doubleclick_delay:
                 if self.selected_item:
                     self.current_ship.destination = self.selected_item       
 

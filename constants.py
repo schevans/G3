@@ -148,3 +148,11 @@ armour_per_metal = 5
 # pixels per unit of fuel
 distance_per_fuel = 10
 
+# left mouse clisk
+left_mouse_click = 1
+
+# right mouse click
+right_mouse_click = 3
+
+# doubleclick delay (ms)
+doubleclick_delay = 400

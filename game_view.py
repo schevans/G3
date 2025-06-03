@@ -14,6 +14,7 @@ import copy
 import pickle
 from statistics import mean 
 import webbrowser
+import time
 
 import ships
 import systems
@@ -88,6 +89,7 @@ class GameView():
         self.tmp_ex = 0      # FIXME: Remove
         
         self.game_state = State.IN_PROGRESS
+        self.doubleclick_timer = pygame.time.Clock()
         
         self.manual_url = './story/ship_manual.html'
         self.manual_text = 'DON\'T PANIC'

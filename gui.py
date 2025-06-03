@@ -11,8 +11,7 @@ from pygame import Vector2
 
 import utils
 import constants as const
- 
-LEFT_MOUSE_CLICK = 1       
+  
        
 class Button():
     
@@ -43,7 +42,7 @@ class Button():
         
         self.is_pressed = False
         if not self.is_disabled and self.is_active:
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == const.left_mouse_click:
             #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
                 self.is_pressed = True
                 self.callback(self)

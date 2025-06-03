@@ -52,11 +52,13 @@ class GalaxyView(GameView):
                 if self.current_ship.system and not self.current_ship.is_moving():
                     self.shared_dict['system'] = self.current_ship.system
                     self.next_view = (View.SOLAR, self.shared_dict)
-            if event.key == pygame.K_j:   
+                    
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == const.left_mouse_click:
+            if self.doubleclick_timer.tick() < const.doubleclick_delay:
                 if self.selected_item and self.current_ship.can_jump(self.selected_item.xy):
                     self.current_ship.resources['fuel'] -= self.current_ship.jump_cost(self.selected_item.xy)
                     self.current_ship.destination = self.selected_item
-                    
+            
         keys = pygame.key.get_pressed() 
         self.is_waiting = False
         if keys[pygame.K_z]:
