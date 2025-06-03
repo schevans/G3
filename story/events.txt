@@ -8,5 +8,15 @@ FIRST_FRIENDLY = "Aha! These guys - the $FRIENDLYS - should be on our side. They
 # NOTE: On planet/discovery
 FIRST_SISTERS = "Oh, that's interesting - that's a Sister's Station. They're some quazi-religous-space-nun-thing. They have their own agenda, but we should be safe docking here. We can buy weapons, repair my armor and maybe pick up some crew. Be nice to have someone else to talk to."
 
+FIRST_COMBAT = "We're entering combat. Good luck. Did you remember to switch off the coffee machine? It says here 'Entering combat, p3.4.23.6: Stitch off the coffee machine.
+Frankly if the worst thing that happens to you today is getting burned by hot coffee I think you'll have done ok.
+
+In case you've forgotten what to do, and are too lazy to read my manual:
+Weapons select: 1-5. Note only some weapons are homing (denoted by the crosshairs on the icon)
+Right-click: Lock (homing weapons only)
+Left-click: Fire
+
+Again: Good Luck. I'll have my eyes closed."
+
 
 
