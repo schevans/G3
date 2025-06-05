@@ -145,7 +145,15 @@ class GalaxyView(GameView):
     def get_mouse_text(self):
         text = []
         if self.selected_item:
-            text.append(self.selected_item.description())
+            planets_text = ''
+            if self.selected_item.object_type() == 'System':
+                num_planets = len(self.selected_item.planets) 
+                if num_planets > 1:
+                    planets_text = ', ' + str(num_planets) + ' planets'
+                else:
+                    planets_text = ', ' + str(num_planets) + ' planet'
+                
+            text.append(self.selected_item.description() + planets_text)
             for mob in self.mobs:
                 if mob.system == self.selected_item:
                     text.append(mob.description())
