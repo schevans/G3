@@ -108,8 +108,8 @@ class GameView():
                 self.tmp_ex += 1
             if event.key == pygame.K_ESCAPE:
                 if len(self.shared_dict['history']):
-                    current_view = self.shared_dict['history'].pop()
-                    if current_view in [View.FITTING, View.LOAD_SAVE, View.DOCKING]:
+                    if self.shared_dict['history'][-1] in [View.FITTING, View.LOAD_SAVE, View.DOCKING]:
+                        self.shared_dict['history'].pop()
                         self.next_view = (self.shared_dict['history'].pop(), self.shared_dict)
             if event.key == pygame.K_f:
                 self.next_view = (View.FITTING, self.shared_dict)
