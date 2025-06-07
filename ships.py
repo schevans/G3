@@ -28,7 +28,8 @@ class Ship():
         self.is_npc = is_npc
 
         self.fit = fit.Fit(fit_string)
-
+        self.fuel_modifier = 1
+        
         if system:
             self.liege = const.species[system.system_type]
             self.color = const.species_color[self.liege]
@@ -126,7 +127,7 @@ class Ship():
         return self.destination and self.xy != self.destination.xy
 
     def jump_cost(self, destination):
-        return self.xy.distance_to(destination.xy) / const.distance_per_fuel
+        return self.xy.distance_to(destination.xy) / ( const.distance_per_fuel * self.fuel_modifier )
 
     def can_jump(self, destination):
            distance = self.jump_cost(destination)
@@ -168,7 +169,10 @@ class Ship():
         for resource in self.fit.systems[system].upgrade:
             self.resources[resource] -= self.fit.systems[system].get_upgrade_cost(self.fit.level(system), resource)
              
-  
+        if system =='engine':
+            self.fuel_modifier = const.fuel_efficiency[self.fit.level(system)]
+            
+            
     def recruit(self):
         self.is_npc = False
         self.liege = 'Hero'
