@@ -89,6 +89,7 @@ class GameView():
         
         self.game_state = State.IN_PROGRESS
         self.doubleclick_timer = pygame.time.Clock()
+        self.clock_tick = const.clock_tick
         
         self.manual_url = './story/ship_manual.html'
         self.manual_text = 'DON\'T PANIC'
@@ -358,7 +359,7 @@ class ViewManager():
             self.update()
             self.draw()
             pygame.display.update()
-            self.clock.tick(24)
+            self.clock.tick(self.view.clock_tick)
             
     def solve(self):
          

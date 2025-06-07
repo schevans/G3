@@ -160,5 +160,5 @@ doubleclick_delay = 400
 # fuel efficiency per engine upgrade level
 fuel_efficiency = [1, 1.15, 1.3, 1.5]
 
-
+clock_tick = 24
 
