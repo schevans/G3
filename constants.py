@@ -40,10 +40,10 @@ our_initial_resources = {
     }
 
 their_initial_resources = {
-    'credits': 20,
+    'credits': 10,
     'fuel': 10,
-    'metal': 20,
-    'tech': 20,
+    'metal': 10,
+    'tech': 10,
     'laser': math.inf,
     'cannon': 5,
     'rocket': 5,
@@ -52,10 +52,10 @@ their_initial_resources = {
     }
 
 initial_planetary_resources = {
-    'credits': 80,
+    'credits': 40,
     'fuel': 8,
-    'metal': 30,
-    'tech': 30,
+    'metal': 15,
+    'tech': 15,
     'cannon': 2,
     'rocket': 2,
     'torpedo': 2,
@@ -160,5 +160,6 @@ doubleclick_delay = 400
 # fuel efficiency per engine upgrade level
 fuel_efficiency = [1, 1.15, 1.3, 1.5]
 
+# frames per second
 clock_tick = 24
 
