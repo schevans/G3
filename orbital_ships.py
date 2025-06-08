@@ -159,7 +159,7 @@ class OrbitalShip(Ship):
         elif self.fit('shield') > 0:
             ratio = (shield_damage - self.fit('shield')) / shield_damage
             self.fit.systems['shield'].value = 0
-            self.fit.systems['armour'].value = armour_damage * ratio
+            self.fit.systems['armour'].value -= armour_damage * ratio
         elif self.fit('armour') > armour_damage:
             self.fit.systems['armour'].value -= armour_damage
         else:
