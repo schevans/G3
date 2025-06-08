@@ -276,7 +276,7 @@ class RepairPanel():
         self.metal_amount_label.text = str(int(self.current_ship.resources['metal'] - self.metal_paid))
         self.armour_amount_label.text = str(int(self.current_ship.fit('armour') + self.armour_added)) + '/' + str(int(self.current_ship.fit.maximum('armour')))
         
-        if self.current_ship.resources['metal'] - self.metal_paid <= 0:
+        if self.current_ship.resources['metal'] - self.metal_paid <= 0 or self.current_ship.fit.maximum('armour') - self.current_ship.fit('armour') <= 0:
             self.inc_button.is_disabled = True
         else:
             self.inc_button.is_disabled = False
