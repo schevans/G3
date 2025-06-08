@@ -221,7 +221,7 @@ class PlanetView(GameView):
             
             tooltip.append(weapon.capitalize())
             tooltip.append('speed: ' + str(data['speed']))
-            tooltip.append('damage: ' + str(data['shield_damage'] * self.current_ship.fit('wep dmg')) + '/' + str(data['armour_damage'] * self.current_ship.fit('wep dmg')))
+            tooltip.append('damage: ' + str(round(data['shield_damage'] * self.current_ship.fit('wep dmg'),2)) + '/' + str(round(data['armour_damage'] * self.current_ship.fit('wep dmg'), 2)))
             tooltip.append('speed: ' + str(data['speed']))
             tooltip.append('range: ' + str(data['range'] * self.current_ship.fit('wep range')))
             tooltip.append('activation: ' + str(data['activation']))
