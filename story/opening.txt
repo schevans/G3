@@ -33,4 +33,3 @@ Ship: Seems like the guy died while typing the message. We'd better get back as 
 Hero: Without engines, weapons or fuel?
 Ship: Or friends.
 Hero: *sigh* Lets see what we can find...
-
