@@ -265,7 +265,7 @@ class GameView():
         data['system'] = data['system'].name if data['system'] else None
         data['planet'] = data['planet'].name if data['planet'] else None
         data['other_ship'] = data['other_ship'].name if data['other_ship'] else None
-        
+            
         return data
     
     
@@ -332,7 +332,8 @@ class ViewManager():
             'system': None,
             'planet': None,
             'history': [],
-            'master_timer': MasterTimer(0)
+            'master_timer': MasterTimer(0),
+            'other_ship': None
             }
         
         self.view.startup(shared_dict)
