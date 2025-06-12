@@ -20,6 +20,8 @@ free_space_in_corners = 20
 
 home_xy = Vector2(screen_width - free_space_in_corners, free_space_in_corners)
 
+initial_ship_position = (free_space_in_corners, screen_height - free_space_in_corners)
+
 num_stars = 600
 num_systems = 96
 

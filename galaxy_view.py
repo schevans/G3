@@ -29,6 +29,7 @@ class GalaxyView(GameView):
         self.shared_dict['history'] = [(View.GALAXY)]
         self.current_ship = self.shared_dict['current_ship']
         self.master_timer = self.shared_dict['master_timer']
+        self.fogofwar_mask = self.shared_dict['fogofwar_mask']
         
         for ship in self.ships:
             if ship.is_moving() or not ship.is_npc:
@@ -73,7 +74,11 @@ class GalaxyView(GameView):
         for mob in self.mobs:
             if self.my_ship.is_moving() or self.is_waiting:
                 mob.update()
-        
+                fow_halo = 20
+                if mob == self.current_ship:
+                    fow_halo = 150
+                pygame.draw.circle(self.fogofwar_mask, (0,0,0,0), mob.xy, fow_halo)
+                    
         self.get_selected_item(systems.syslist + self.mobs)
         
         if self.current_ship == self.my_ship and ( self.current_ship.is_moving() or self.is_waiting):
@@ -139,8 +144,10 @@ class GalaxyView(GameView):
                 pygame.draw.line(screen, 'white', self.current_ship.xy, newpoint) 
                 pygame.draw.line(screen, 'red', newpoint, self.selected_item.xy) 
                 
-                
+        screen.blit(self.fogofwar_mask, (0, 0))
+
         GameView.draw_objects(self, screen) 
+
         
     def get_mouse_text(self):
         text = []

@@ -58,7 +58,7 @@ class GameView():
     home_system = systems.syslist[0]
     home_planet = home_system.planets[0]
 
-    my_ship = ships.Ship(hero_name, (const.free_space_in_corners,const.screen_height-const.free_space_in_corners), None, None, False)
+    my_ship = ships.Ship(hero_name, const.initial_ship_position, None, None, False)
     my_ship.is_current = True
 
     shiplist = [ my_ship ]
@@ -265,6 +265,7 @@ class GameView():
         data['system'] = data['system'].name if data['system'] else None
         data['planet'] = data['planet'].name if data['planet'] else None
         data['other_ship'] = data['other_ship'].name if data['other_ship'] else None
+        data['fogofwar_mask'] = pygame.image.tobytes(data['fogofwar_mask'], 'RGBA')
             
         return data
     
@@ -284,6 +285,8 @@ class GameView():
             if not other_ship:
                 other_ship = self.shared_dict['planet'].station
             self.shared_dict['other_ship'] = other_ship
+            
+        self.shared_dict['fogofwar_mask'] = pygame.image.frombytes(self.shared_dict['fogofwar_mask'], (const.screen_width, const.screen_height), 'RGBA')
 
         self.next_view = (self.shared_dict['history'][-1], self.shared_dict)
         
@@ -327,14 +330,20 @@ class ViewManager():
         self.view_dict = view_dict
         self.view = self.view_dict[start_view]
         
+        fogofwar_mask = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
+        fogofwar_mask.fill('black')
+        pygame.draw.circle(fogofwar_mask, (0,0,0,0), const.initial_ship_position, 150)
+        pygame.draw.circle(fogofwar_mask, (0,0,0,0), const.home_xy, 25)
+        
         shared_dict = {
             'current_ship': GameView.my_ship,
             'system': None,
             'planet': None,
             'history': [],
             'master_timer': MasterTimer(0),
-            'other_ship': None
-            }
+            'other_ship': None,
+            'fogofwar_mask': fogofwar_mask,
+        }
         
         self.view.startup(shared_dict)
 
