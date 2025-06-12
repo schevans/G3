@@ -264,8 +264,10 @@ class GameView():
         data['current_ship'] = data['current_ship'].name
         data['system'] = data['system'].name if data['system'] else None
         data['planet'] = data['planet'].name if data['planet'] else None
+        data['other_ship'] = data['other_ship'].name if data['other_ship'] else None
         
         return data
+    
     
     def unpickle(self, data):
         
@@ -275,9 +277,17 @@ class GameView():
         self.shared_dict['system'] = next((x for x in systems.syslist if x.name == self.shared_dict['system']), None)
         if self.shared_dict['system']:
             self.shared_dict['planet'] = next(x for x in self.shared_dict['system'].planets if x.name == self.shared_dict['planet'])
+        
+        # handle saving during docking view for completeness
+        if self.shared_dict['system'] and self.shared_dict['planet'] and self.shared_dict['other_ship']:
+            other_ship = next((x for x in self.ships if x.name == self.shared_dict['other_ship']), None)
+            if not other_ship:
+                other_ship = self.shared_dict['planet'].station
+            self.shared_dict['other_ship'] = other_ship
+
         self.next_view = (self.shared_dict['history'][-1], self.shared_dict)
-
-
+        
+        
     def save_game(self, filename):
 
         ships = [x.pickle() for x in self.ships]

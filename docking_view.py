@@ -71,7 +71,6 @@ class DockingView(GameView):
     def cleanup(self):
         self.panel = None
         self.top_buttons.clear()
-        self.shared_dict['other_ship'] = None
         
     
     def startup(self, shared_dict):
@@ -121,7 +120,7 @@ class DockingView(GameView):
         GameView.draw(self, screen)
         
         other_ship_image = utils.scale_and_monochrome_ship_image(self.other_ship)
-        
+    
         if self.other_ship.object_type() == 'Ship':
             
             current_ship_image = utils.scale_and_monochrome_ship_image(self.current_ship)
@@ -150,11 +149,16 @@ class DockingView(GameView):
             screen.blit(text_surface, (text_x, text_y))
             
         else:  # is station
+            
+            width, height = other_ship_image.get_size()
+            screen.blit(other_ship_image, (const.screen_width - width, const.screen_height/2 - height/2 + 60))    
+            
             text_y = const.screen_height - 50
             text_surface = self.font.render(self.other_ship.description(), True, 'white')   
             text_width = self.font.size(self.other_ship.description())[0]
             text_x = const.screen_width/2 - text_width/2
             screen.blit(text_surface, (text_x, text_y))
+
             
     def draw(self, screen):
 
