@@ -6,3 +6,4 @@ reactor,2,4,7,12
 engine,3,4,5,6
 wep dmg,1,1.2,1.5,2
 wep range,1,1.2,1.5,2
+scanner,150,170,200,240

@@ -67,7 +67,7 @@ class GameView():
         if system.system_type != 'Uninhabited' and system.name != const.our_capital:
             planet = system.planets[my_random.my_randint(0, len(system.planets)-1)]
             if system.name in const.species_color.keys():
-                shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '2222222'))
+                shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '22222222'))
             else:
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
     

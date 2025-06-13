@@ -16,6 +16,8 @@ from game_view import GameView, View, State
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 50   
 
+FOW_ENENMY_HALO = 20
+
 class GalaxyView(GameView):
     
     def __init__(self):
@@ -74,10 +76,12 @@ class GalaxyView(GameView):
         for mob in self.mobs:
             if self.my_ship.is_moving() or self.is_waiting:
                 mob.update()
-                fow_halo = 20
-                if mob == self.current_ship:
-                    fow_halo = 150
+                
+                fow_halo = FOW_ENENMY_HALO if mob.is_npc else mob.fit.systems['scanner'].value
                 pygame.draw.circle(self.fogofwar_mask, (0,0,0,0), mob.xy, fow_halo)
+                
+            if mob == self.current_ship:    # ship may have upgraded scanner
+                pygame.draw.circle(self.fogofwar_mask, (0,0,0,0), mob.xy, mob.fit.systems['scanner'].value)
                     
         self.get_selected_item(systems.syslist + self.mobs)
         
