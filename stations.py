@@ -47,7 +47,7 @@ class Station():
         
         self.image_still.draw(screen)
     
-    def description(self):
+    def description(self, scanner_lvl):
         return self.name
     
     def object_type(self):

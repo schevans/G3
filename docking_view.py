@@ -61,7 +61,7 @@ class DockingView(GameView):
         if panel == Panel.TRADE:
             self.panel = TradePanel(self.current_ship, self.other_ship)
         elif panel == Panel.APPROACH:
-            self.panel = ApproachPanel(self.other_ship, self.approach_callback)
+            self.panel = ApproachPanel(self.current_ship, self.other_ship, self.approach_callback)
         elif panel == Panel.BOARD:
             self.panel = BoardPanel()
         elif panel == Panel.REPAIR:
@@ -120,7 +120,8 @@ class DockingView(GameView):
         GameView.draw(self, screen)
         
         other_ship_image = utils.scale_and_monochrome_ship_image(self.other_ship)
-    
+        other_ship_description = self.other_ship.description(self.current_ship.scanner_lvl())
+        
         if self.other_ship.object_type() == 'Ship':
             
             current_ship_image = utils.scale_and_monochrome_ship_image(self.current_ship)
@@ -137,14 +138,15 @@ class DockingView(GameView):
                  
             pygame.draw.rect(screen, faded_gray, rect)
 
+            current_ship_description = self.current_ship.description(self.current_ship.scanner_lvl())
             text_y = const.screen_height - 50
-            text_surface = self.font.render(self.current_ship.description(), True, 'white')    
-            text_width = self.font.size(self.current_ship.description())[0]
+            text_surface = self.font.render(current_ship_description, True, 'white')    
+            text_width = self.font.size(current_ship_description)[0]
             text_x = 30 + width/2 - text_width/2
             screen.blit(text_surface, (text_x, text_y))
             
-            text_surface = self.font.render(self.other_ship.description(), True, 'white')    
-            text_width = self.font.size(self.other_ship.description())[0]
+            text_surface = self.font.render(other_ship_description, True, 'white')    
+            text_width = self.font.size(other_ship_description)[0]
             text_x = const.screen_width - width/2 - text_width/2
             screen.blit(text_surface, (text_x, text_y))
             
@@ -154,8 +156,8 @@ class DockingView(GameView):
             screen.blit(other_ship_image, (const.screen_width - width, const.screen_height/2 - height/2 + 60))    
             
             text_y = const.screen_height - 50
-            text_surface = self.font.render(self.other_ship.description(), True, 'white')   
-            text_width = self.font.size(self.other_ship.description())[0]
+            text_surface = self.font.render(other_ship_description, True, 'white')   
+            text_width = self.font.size(other_ship_description)[0]
             text_x = const.screen_width/2 - text_width/2
             screen.blit(text_surface, (text_x, text_y))
 

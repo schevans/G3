@@ -89,10 +89,10 @@ class SolarView(GameView):
     def get_mouse_text(self):
         text = []
         if self.selected_item:
-            text.append(self.selected_item.description())
+            text.append(self.selected_item.description(self.current_ship.scanner_lvl()))
             for mob in self.mobs:
                 if mob.planet == self.selected_item:
-                    text.append(mob.description())
+                    text.append(mob.description(self.current_ship.scanner_lvl()))
                     
         return text
     

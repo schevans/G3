@@ -63,7 +63,7 @@ class LootBox():
             image_rect.center = self.xy
             screen.blit(self.image, image_rect )
 
-    def description(self):
+    def description(self, scanner_lvl):
         retval = ['Loot Box:']
         
         for resource in self.resources:

@@ -140,7 +140,7 @@ class Ship():
         self.image.update(self.xy, self.heading)
       
 
-    def description(self):
+    def description(self, scanner_lvl):
         if self.name == 'Hero':
             return self.name + ' [' + self.fit.to_string() + ']'
         else:
@@ -211,5 +211,8 @@ class Ship():
         
         self.image.update(self.xy, self.heading)
 
+
+    def scanner_lvl(self):
+        return self.fit.systems['scanner'].level
 
 

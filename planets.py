@@ -56,7 +56,7 @@ class Planet():
         self.spin = 0
 
             
-    def description(self):
+    def description(self, scanner_lvl):
         return self.name + ', ' + self.planet_type.capitalize() + ', resouces: ' +  str(int(sum(self.resources.values())))
 
                 

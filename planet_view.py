@@ -244,11 +244,11 @@ class PlanetView(GameView):
 
     def get_mouse_text(self):
         
-        text = self.selected_item.description()
+        text = self.selected_item.description(self.current_ship.scanner_lvl())
         if isinstance(text, list):
             return text
         else:
-            return [self.selected_item.description()]
+            return [text]
 
 
     def get_local_allies(self): # FIXME: This needed/can be consolodated?

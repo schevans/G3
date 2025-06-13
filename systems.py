@@ -133,7 +133,7 @@ class System():
             self.planets.append(planet)
     
     
-    def description(self):
+    def description(self, scanner_lvl):
         
         if self.name in const.species.values() and self.name != const.our_capital:
             return self.name + ' Homeworld: ' + self.system_type

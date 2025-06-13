@@ -183,11 +183,11 @@ class TradePanel():
     
 class ApproachPanel():
     
-    def __init__(self, other_ship, callback):
+    def __init__(self, current_ship, other_ship, callback):
         
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
-        text = 'Approach ' + other_ship.description()       
+        text = 'Approach ' + other_ship.description(current_ship.scanner_lvl())       
         text_width = utils.fonts[20].size(text)[0]
         button_width = text_width + 60
         button_height = 50
