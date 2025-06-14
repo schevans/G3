@@ -16,7 +16,7 @@ from game_view import GameView, View, State
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 50   
 
-FOW_ENENMY_HALO = 20
+FOW_ENEMY_HALO = 20
 
 class GalaxyView(GameView):
     
@@ -68,7 +68,8 @@ class GalaxyView(GameView):
         if self.show_help and self.exposition:
             self.exposition.update()
         
-        if self.manual_rect.collidepoint(pygame.mouse.get_pos()):
+        mousepos = pygame.mouse.get_pos()
+        if self.manual_rect.collidepoint(mousepos):
             self.manual_surface = self.manual_surface_highlight
         else:
             self.manual_surface = self.manual_surface_normal
@@ -77,14 +78,14 @@ class GalaxyView(GameView):
             if self.my_ship.is_moving() or self.is_waiting:
                 mob.update()
                 
-                fow_halo = FOW_ENENMY_HALO if mob.is_npc else mob.fit.systems['scanner'].value
+                fow_halo = FOW_ENEMY_HALO if mob.is_npc else mob.fit.systems['scanner'].value
                 pygame.draw.circle(self.fogofwar_mask, (0,0,0,0), mob.xy, fow_halo)
                 
             if mob == self.current_ship:    # ship may have upgraded scanner
                 pygame.draw.circle(self.fogofwar_mask, (0,0,0,0), mob.xy, mob.fit.systems['scanner'].value)
          
         self.selected_item = None
-        if self.fogofwar_mask.get_at(pygame.mouse.get_pos()) != const.fogofwar_black:
+        if self.fogofwar_mask.get_rect().collidepoint(mousepos) and self.fogofwar_mask.get_at(mousepos) != const.fogofwar_black:
             self.get_selected_item(systems.syslist + self.mobs)
         
         if self.current_ship == self.my_ship and ( self.current_ship.is_moving() or self.is_waiting):
@@ -118,16 +119,10 @@ class GalaxyView(GameView):
         
         GameView.draw(self, screen)
             
-        for system in systems.syslist:
-            
+        for system in systems.syslist:          
             pygame.draw.circle(screen, utils.fade_color_to(system.color, pygame.Color('black'), 2/3), system.xy, system.r+2)
             pygame.draw.circle(screen, utils.fade_color_to(system.color, pygame.Color('black'), 1/3), system.xy, system.r+1)
             pygame.draw.circle(screen, system.color, system.xy, system.r )
-
-    
-        text = 'Days passed: ' + str(self.master_timer())
-        text_surface = utils.fonts[20].render(text, True, 'white', 'black')
-        screen.blit(text_surface, (15, 15) )
         
         # draw red halo around home
         pygame.draw.circle(screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
@@ -137,7 +132,6 @@ class GalaxyView(GameView):
 
         if self.selected_item and self.selected_item.object_type() != 'Ship':
             
-
             if self.current_ship.can_jump(self.selected_item.xy):
                 pygame.draw.line(screen, 'white', self.current_ship.xy, self.selected_item.xy)
                 pygame.draw.circle(screen, 'white', self.selected_item.xy, self.selected_item.r+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
@@ -151,7 +145,11 @@ class GalaxyView(GameView):
                 pygame.draw.line(screen, 'red', newpoint, self.selected_item.xy) 
                 
         screen.blit(self.fogofwar_mask, (0, 0))
-
+        
+        text = 'Days passed: ' + str(self.master_timer())
+        text_surface = utils.fonts[20].render(text, True, 'white', 'black')
+        screen.blit(text_surface, (15, 15) )
+        
         GameView.draw_objects(self, screen) 
 
         

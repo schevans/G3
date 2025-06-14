@@ -265,12 +265,12 @@ class GameView():
         data['system'] = data['system'].name if data['system'] else None
         data['planet'] = data['planet'].name if data['planet'] else None
         data['other_ship'] = data['other_ship'].name if data['other_ship'] else None
-        data['fogofwar_mask'] = pygame.image.tobytes(data['fogofwar_mask'], 'RGBA')
+        data['fogofwar_mask'] = None # saved separately as a png for smaller save files
             
         return data
     
     
-    def unpickle(self, data):
+    def unpickle(self, data, fogofwar_mask):
         
         self.shared_dict = data
         
@@ -285,9 +285,9 @@ class GameView():
             if not other_ship:
                 other_ship = self.shared_dict['planet'].station
             self.shared_dict['other_ship'] = other_ship
-            
-        self.shared_dict['fogofwar_mask'] = pygame.image.frombytes(self.shared_dict['fogofwar_mask'], (const.screen_width, const.screen_height), 'RGBA')
-
+        
+        self.shared_dict['fogofwar_mask'] = fogofwar_mask
+        
         self.next_view = (self.shared_dict['history'][-1], self.shared_dict)
         
         
@@ -301,14 +301,17 @@ class GameView():
             pickle.dump(data, f)
             f.close()
 
-    
+        pygame.image.save(self.shared_dict['fogofwar_mask'], filename.replace('pkl', 'png'))
+
     def load_game(self, filename):
     
         with open(filename, "rb") as f:
             data = pickle.load(f)
             f.close()
             
-        self.unpickle(data[0])
+        fogofwar_mask = pygame.image.load(filename.replace('pkl', 'png'))
+        
+        self.unpickle(data[0], fogofwar_mask)
         
         for i in range(len(data[1])):
             self.ships[i].unpickle(systems.syslist, data[1][i])
@@ -330,10 +333,7 @@ class ViewManager():
         self.view_dict = view_dict
         self.view = self.view_dict[start_view]
         
-        fogofwar_mask = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
-        fogofwar_mask.fill(const.fogofwar_black)
-        pygame.draw.circle(fogofwar_mask, (0,0,0,0), const.initial_ship_position, 150)
-        pygame.draw.circle(fogofwar_mask, (0,0,0,0), const.home_xy, 25)
+        fogofwar_mask = pygame.image.load('./data/FogOfWarStart.png')
         
         shared_dict = {
             'current_ship': GameView.my_ship,
