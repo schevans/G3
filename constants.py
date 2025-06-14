@@ -165,3 +165,6 @@ fuel_efficiency = [1, 1.15, 1.3, 1.5]
 # frames per second
 clock_tick = 24
 
+# fog of war color, so we can check pixels to see if a thing's uncovered
+fogofwar_black = (1,1,1)
+

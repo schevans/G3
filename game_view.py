@@ -331,7 +331,7 @@ class ViewManager():
         self.view = self.view_dict[start_view]
         
         fogofwar_mask = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
-        fogofwar_mask.fill('black')
+        fogofwar_mask.fill(const.fogofwar_black)
         pygame.draw.circle(fogofwar_mask, (0,0,0,0), const.initial_ship_position, 150)
         pygame.draw.circle(fogofwar_mask, (0,0,0,0), const.home_xy, 25)
         

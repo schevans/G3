@@ -82,8 +82,10 @@ class GalaxyView(GameView):
                 
             if mob == self.current_ship:    # ship may have upgraded scanner
                 pygame.draw.circle(self.fogofwar_mask, (0,0,0,0), mob.xy, mob.fit.systems['scanner'].value)
-                    
-        self.get_selected_item(systems.syslist + self.mobs)
+         
+        self.selected_item = None
+        if self.fogofwar_mask.get_at(pygame.mouse.get_pos()) != const.fogofwar_black:
+            self.get_selected_item(systems.syslist + self.mobs)
         
         if self.current_ship == self.my_ship and ( self.current_ship.is_moving() or self.is_waiting):
             self.master_timer.increment()
