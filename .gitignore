@@ -1,4 +1,5 @@
 
-data/*.pkl
+data/RtP_*.pkl
+data/RtP_*.png
 data/*.npy
 
