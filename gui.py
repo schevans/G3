@@ -162,7 +162,7 @@ class CheckBox():
             
         if self.is_active:
             self.is_pressed = False
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT_MOUSE_CLICK:
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == const.left_mouse_click:
             #if event.type == pygame.KEYDOWN and pygame.K_RETURN:
                 self.is_checked = not self.is_checked
                 self.callback(self.is_checked)
