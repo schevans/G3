@@ -90,7 +90,13 @@ class Fit():
             retval += str(self.systems[system_name].level)
             
         return retval
+         
+    def to_string_ave(self):
+        retval = 0
+        for system_name in self.system_names:
+            retval += self.systems[system_name].level
             
+        return str(retval/len(self.system_names))
 
     def speed(self):
         return self.systems['engine'].value

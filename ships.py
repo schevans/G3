@@ -70,11 +70,14 @@ class Ship():
         self.weapons = Weapons()
 
         # dev mode
-        if False: #self.name == 'Hero':
+        if const.dev_mode and self.name == 'Hero':
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
-            self.resources = self.resources.fromkeys(self.resources, 70)
+            if const.dev_mode >= 2:
+                self.resources = self.resources.fromkeys(self.resources, 999)
+            else:
+                self.resources = self.resources.fromkeys(self.resources, 70)
             self.resources['laser'] = math.inf
 
         
@@ -141,14 +144,27 @@ class Ship():
       
 
     def description(self, scanner_lvl):
+        
+        retval = self.name
         if self.name == 'Hero':
-            return self.name + ' [' + self.fit.to_string() + ']'
+            retval += ' [' + self.fit.to_string() + ']'
         else:
             if self.name in const.species_color.keys():
                 title = 'First Lord '
             else:
                 title = 'Lord '
-            return title + self.name + ', ' + self.liege + ' [' + self.fit.to_string() + ']'
+                
+            retval = title + self.name
+            
+            fit_str = ''
+            if scanner_lvl == 2:
+                fit_str = ' (' + self.fit.to_string_ave() + ')'
+            elif scanner_lvl >= 3:
+                fit_str = ' [' + self.fit.to_string() + ']'
+                
+            retval += fit_str
+            
+        return retval
         
 
     def object_type(self):

@@ -158,16 +158,17 @@ class GalaxyView(GameView):
         if self.selected_item:
             planets_text = ''
             if self.selected_item.object_type() == 'System':
-                num_planets = len(self.selected_item.planets) 
-                if num_planets > 1:
-                    planets_text = ', ' + str(num_planets) + ' planets'
-                else:
-                    planets_text = ', ' + str(num_planets) + ' planet'
+                if self.current_ship.scanner_lvl() >= 1:
+                    num_planets = len(self.selected_item.planets) 
+                    if num_planets > 1:
+                        planets_text = ', ' + str(num_planets) + ' planets'
+                    else:
+                        planets_text = ', ' + str(num_planets) + ' planet'
                 
-            text.append(self.selected_item.description(self.current_ship.fit.systems['scanner'].value) + planets_text)
+            text.append(self.selected_item.description(self.current_ship.scanner_lvl()) + planets_text)
             for mob in self.mobs:
                 if mob.system == self.selected_item:
-                    text.append(mob.description(self.current_ship.fit.systems['scanner'].value))
+                    text.append(mob.description(self.current_ship.scanner_lvl()))
                     
         return text
         

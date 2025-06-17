@@ -57,7 +57,16 @@ class Planet():
 
             
     def description(self, scanner_lvl):
-        return self.name + ', ' + self.planet_type.capitalize() + ', resouces: ' +  str(int(sum(self.resources.values())))
+        
+        retval = self.name
+        
+        if scanner_lvl >= 1:
+            retval += ', ' + self.planet_type.capitalize()
+        
+        if scanner_lvl >= 2:
+            retval += ', resouces: ' +  str(int(sum(self.resources.values())))          
+        
+        return retval
 
                 
     def object_type(self):
