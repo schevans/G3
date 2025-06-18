@@ -115,12 +115,12 @@ class TradePanel():
             button.is_disabled = False
             
             if button_type != ButtonType.ACCEPT and button_type != ButtonType.CANCEL:
-                            
-                if self.our_resources['credits'] < 1:
+  
+                if self.our_resources['credits'] < 1 and self.their_ship.liege != 'Hero':       # FIXME - hardcode
                     if button_type == ButtonType.BUY:
                         button.is_disabled = True
                         
-                if self.their_resources['credits'] < 1:
+                if self.their_resources['credits'] < 1 and self.their_ship.liege != 'Hero':       # FIXME - hardcode
                     if button_type == ButtonType.SELL:
                         button.is_disabled = True                    
                 
