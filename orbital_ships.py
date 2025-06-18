@@ -25,6 +25,7 @@ HIT_FLASH_INTERVAL = 100 # ms
 AI_DITHER = 1000  #ms
 AI_MIN = 250 # ms
 AI_ACCELERATION = 0.3
+AI_LOW_ORBIT_BUFFER = 10
 
 def unobstructed_view(xy1, xy2, cpt, r):
     
@@ -240,6 +241,8 @@ class OrbitalShip(Ship):
                         # close on enemy - go lower if ahead and higher if behind
                         if self.p - self.locked_target.p > math.pi:
                             self.acceleration = AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
+                        elif self.r > self.planet_view_r + self.image.width + AI_LOW_ORBIT_BUFFER:
+                            self.acceleration = 0
                         else:
                             self.acceleration = -AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
                             
