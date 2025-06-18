@@ -61,8 +61,13 @@ class SolarView(GameView):
             if self.doubleclick_timer.tick() < const.doubleclick_delay:
                 if self.selected_item:
                     self.current_ship.destination = self.selected_item       
+        
+        keys = pygame.key.get_pressed() 
+        self.clock_tick = const.clock_tick
+        if keys[pygame.K_z]:
+            self.clock_tick = const.clock_tick * 3       
 
-                
+
     def update(self):
         GameView.update(self)
     
