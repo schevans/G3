@@ -51,7 +51,7 @@ class Ship():
         else:
             self.liege = const.our_capital
             self.color = pygame.Color('white')
-            self.resources = const.our_initial_resources
+            self.resources = const.our_initial_resources.copy()
 
         self.is_alive = True
         self.heading = 0
