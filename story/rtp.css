@@ -1,0 +1,15 @@
+
+
+@font-face {
+    font-family: Days;
+    src: url(../fonts/Days/Days.otf);
+}
+
+body {
+    color: white;
+    font-family: Days;
+    background-image: url('../graphics/stars.png');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
