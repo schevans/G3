@@ -59,7 +59,7 @@ class GalaxyView(GameView):
             
         keys = pygame.key.get_pressed() 
         self.is_waiting = False
-        if keys[pygame.K_z]:
+        if keys[pygame.K_z] and not self.current_ship.is_moving():
             self.is_waiting = True  
                 
     def update(self):
@@ -105,6 +105,8 @@ class GalaxyView(GameView):
             fresh_mob = suitable[0]
 
             fresh_mob.destination = self.home_system
+            fresh_mob.system = None
+            fresh_mob.planet = None
             self.mobs.append(fresh_mob)
             
         for mob in self.mobs:

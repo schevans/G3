@@ -9,6 +9,9 @@ import pygame
 from pygame.math import Vector2
 import math
 
+# dev mode
+dev_mode = 0
+
 screen_width = 1200
 screen_height = 800
 
@@ -168,6 +171,5 @@ clock_tick = 24
 # fog of war color, so we can check pixels to see if a thing's uncovered
 fogofwar_black = (1,1,1)
 
-# dev mode
-dev_mode = 0
+
 
