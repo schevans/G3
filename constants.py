@@ -171,5 +171,13 @@ clock_tick = 24
 # fog of war color, so we can check pixels to see if a thing's uncovered
 fogofwar_black = (1,1,1)
 
-
-
+# scanner target to required scanner level
+class ScanTarget():
+    NUM_PLANETS = 1
+    SPECIES = 1
+    PLANET_TYPES = 1
+    PLANETARY_RESOURCES = 2
+    FIT_AVE = 2
+    SOLAR_RESOURCES = 2
+    FIT_DETAIL = 3
+    

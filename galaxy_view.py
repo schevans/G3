@@ -160,7 +160,7 @@ class GalaxyView(GameView):
         if self.selected_item:
             planets_text = ''
             if self.selected_item.object_type() == 'System':
-                if self.current_ship.scanner_lvl() >= 1:
+                if self.current_ship.scanner_lvl() >= const.ScanTarget.NUM_PLANETS:
                     num_planets = len(self.selected_item.planets) 
                     if num_planets > 1:
                         planets_text = ', ' + str(num_planets) + ' planets'

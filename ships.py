@@ -157,9 +157,9 @@ class Ship():
             retval = title + self.name
             
             fit_str = ''
-            if scanner_lvl == 2:
+            if scanner_lvl == const.ScanTarget.FIT_AVE:
                 fit_str = ' (' + self.fit.to_string_ave() + ')'
-            elif scanner_lvl >= 3:
+            elif scanner_lvl >= const.ScanTarget.FIT_DETAIL:
                 fit_str = ' [' + self.fit.to_string() + ']'
                 
             retval += fit_str

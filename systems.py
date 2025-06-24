@@ -137,13 +137,13 @@ class System():
         
         retval = self.name
 
-        if scanner_lvl >= 1:
+        if scanner_lvl >= const.ScanTarget.SPECIES:
             if self.name in const.species.values() and self.name != const.our_capital:
                 retval += ' Homeworld: ' + self.system_type
             else:
                 retval += ': ' + self.system_type
                 
-        if scanner_lvl >= 2:
+        if scanner_lvl >= const.ScanTarget.SOLAR_RESOURCES:
             resources = 0
             for planet in self.planets:
                 resources += int(sum(planet.resources.values()))

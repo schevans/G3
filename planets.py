@@ -60,10 +60,10 @@ class Planet():
         
         retval = self.name
         
-        if scanner_lvl >= 1:
+        if scanner_lvl >= const.ScanTarget.PLANET_TYPES:
             retval += ', ' + self.planet_type.capitalize()
         
-        if scanner_lvl >= 2:
+        if scanner_lvl >= const.ScanTarget.PLANETARY_RESOURCES:
             retval += ', resouces: ' +  str(int(sum(self.resources.values())))          
         
         return retval
