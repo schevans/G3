@@ -13,3 +13,25 @@ body {
     background-attachment: fixed;
     background-size: cover;
 }
+
+th, td {
+  padding: 5px;
+}
+
+.borders {
+    position: relative;
+    border: 2px solid #FFB56C;
+    margin: 30px;
+    padding: 40px;
+}
+
+.borders:before {
+    content: " ";
+    position: absolute;
+    z-index: -1;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid #FFB56C;
+}
