@@ -7,6 +7,8 @@
 
 "FIRST_SISTERS" : "Oh, that's interesting - that's a Sister's Station. They're some quasi-religious-space-nun-thing. They have their own agenda, but we should be safe docking here. We can buy weapons, repair my armor and maybe pick up some crew. Be nice to have someone else to talk to.",
 
+"FIRST_UNINHABITED" : "Ahhhh - no one here. A bit of peace and quiet. Go nuts.",
+
 "FIRST_COMBAT" : "We're entering combat. Good luck. Did you remember to switch off the coffee machine? It says here 'Entering combat, p3.4.23.6: Stitch off the coffee machine.\nFrankly if the worst thing that happens to you today is getting burned by hot coffee I think you'll have done ok.\n\n In case you've forgotten what to do, and are too lazy to read my manual:\nWeapons select: 1-5. Note only some weapons are homing (denoted by the crosshairs on the icon)\nRight-click: Lock (homing weapons only)\nLeft-click: Fire\n\nAgain: Good Luck. I'll have my eyes closed.",
 
 "FIRST_ENEMY_LAUNCH" : "Cap, I've just detected a long range launch. Looks like a Zaurakian on intercept with Polaris. They must be reinforcing the blockade.",

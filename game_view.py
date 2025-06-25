@@ -83,7 +83,7 @@ class GameView():
         
         self.selected_item = None
         
-        self.show_help = not const.dev_mode
+        self.show_help = True
         self.exposition = None 
         
         self.game_state = State.IN_PROGRESS

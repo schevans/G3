@@ -95,7 +95,7 @@ class GalaxyView(GameView):
             self.master_timer.increment()
             
         if self.opening_timer <= OPENING_TIMER:
-            if self.opening_timer == OPENING_TIMER:
+            if self.opening_timer == OPENING_TIMER and not const.dev_mode:
                 self.show_exposition(ExpositionText.OPENING)
             self.opening_timer += 1
         

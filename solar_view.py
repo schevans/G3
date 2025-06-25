@@ -42,6 +42,9 @@ class SolarView(GameView):
                     
 
                 self.mobs.append(ship)
+         
+        self.show_exposition(const.system_to_exposition[self.system.system_type])
+
         
     def process_event(self, event):
         
