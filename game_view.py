@@ -85,7 +85,6 @@ class GameView():
         
         self.show_help = not const.dev_mode
         self.exposition = None 
-        self.tmp_ex = 0      # FIXME: Remove
         
         self.game_state = State.IN_PROGRESS
         self.doubleclick_timer = pygame.time.Clock()
@@ -104,9 +103,6 @@ class GameView():
     def process_event(self, event):
         
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_x and self.show_help:  # FIXME: Remove
-                self.exposition = ExpositionBox(list(ExpositionText)[self.tmp_ex], self.exposition_ok_callback, self.exposition_checkbox_callback)
-                self.tmp_ex += 1
             if event.key == pygame.K_ESCAPE:
                 if len(self.shared_dict['history']):
                     if self.shared_dict['history'][-1] in [View.FITTING, View.LOAD_SAVE, View.DOCKING]:

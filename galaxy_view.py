@@ -16,6 +16,7 @@ from exposition import ExpositionText
 
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 50   
+OPENING_TIMER = 50
 
 FOW_ENEMY_HALO = 20
 
@@ -23,6 +24,7 @@ class GalaxyView(GameView):
     
     def __init__(self):
         GameView.__init__(self) 
+        self.opening_timer = 0
         
     def cleanup(self):
         self.mobs = []
@@ -92,6 +94,10 @@ class GalaxyView(GameView):
         if self.current_ship == self.my_ship and ( self.current_ship.is_moving() or self.is_waiting):
             self.master_timer.increment()
             
+        if self.opening_timer <= OPENING_TIMER:
+            if self.opening_timer == OPENING_TIMER:
+                self.show_exposition(ExpositionText.OPENING)
+            self.opening_timer += 1
         
         if self.master_timer() % SHIP_LAUNCH_TIMER == 0 and self.master_timer() != 0:
             self.master_timer.increment()
