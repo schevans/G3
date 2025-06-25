@@ -12,6 +12,7 @@ import systems
 import utils
 import constants as const
 from game_view import GameView, View, State
+from exposition import ExpositionText
 
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 50   
@@ -108,6 +109,7 @@ class GalaxyView(GameView):
             fresh_mob.system = None
             fresh_mob.planet = None
             self.mobs.append(fresh_mob)
+            self.show_exposition(ExpositionText.FIRST_ENEMY_LAUNCH)
             
         for mob in self.mobs:
             if mob.is_npc and not mob.is_moving():
@@ -116,6 +118,7 @@ class GalaxyView(GameView):
                     mob.system = GameView.home_system
                     mob.planet = GameView.home_planet
                     self.threat_level += 1
+                    self.show_exposition(ExpositionText.FIRST_ENEMY_LAND)
     
     def draw(self, screen):
         

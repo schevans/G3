@@ -9,7 +9,7 @@
 
 "FIRST_COMBAT" : "We're entering combat. Good luck. Did you remember to switch off the coffee machine? It says here 'Entering combat, p3.4.23.6: Stitch off the coffee machine.\nFrankly if the worst thing that happens to you today is getting burned by hot coffee I think you'll have done ok.\n\n In case you've forgotten what to do, and are too lazy to read my manual:\nWeapons select: 1-5. Note only some weapons are homing (denoted by the crosshairs on the icon)\nRight-click: Lock (homing weapons only)\nLeft-click: Fire\n\nAgain: Good Luck. I'll have my eyes closed.",
 
-"FIRST_LAUNCH" : "Cap, I've just detected a long range launch. Looks like a Zaurakian on intercept with Polaris. They must be reinforcing the blockade.",
+"FIRST_ENEMY_LAUNCH" : "Cap, I've just detected a long range launch. Looks like a Zaurakian on intercept with Polaris. They must be reinforcing the blockade.",
 
 "FIRST_ENEMY_LAND" : "Cap, that ship I've been tracking has landed at Polaris. The Threat Level has increased. You might want to keep an eye on that.",
 

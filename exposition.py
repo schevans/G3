@@ -35,22 +35,22 @@ with open('./story/events.json') as f:
      events_exposition = json.load(f)
 
 class ExpositionText(Enum):
-    OPENING = 1
-    NO = 2
-    YES = 3
-    NO_THANKS = 4
-    FIRST_HOSTILE = 5
-    FIRST_NEUTRAL = 6
-    FIRST_FRIENDLY = 7
-    FIRST_SISTERS = 8
-    FIRST_COMBAT = 9
-    FIRST_COMBAT_WITH_ALLIES = 10
-    FIRST_LAUNCH = 11
-    FIRST_ENEMY_LAND = 12
-    FINAL_BATTLE = 13
-    FINAL_BATTLE_WITH_ALLIES = 14
-    FIRST_RECRUIT = 15
-    FIRST_PLANET = 16
+    OPENING = 'OPENING'
+    NO = 'NO'
+    YES = 'YES'
+    NO_THANKS = 'NO_THANKS'
+    FIRST_HOSTILE = 'FIRST_HOSTILE'
+    FIRST_NEUTRAL = 'FIRST_NEUTRAL'
+    FIRST_FRIENDLY = 'FIRST_FRIENDLY'
+    FIRST_SISTERS = 'FIRST_SISTERS'
+    FIRST_COMBAT = 'FIRST_COMBAT'
+    FIRST_COMBAT_WITH_ALLIES = 'FIRST_COMBAT_WITH_ALLIES'
+    FIRST_ENEMY_LAUNCH = 'FIRST_ENEMY_LAUNCH'
+    FIRST_ENEMY_LAND = 'FIRST_ENEMY_LAND'
+    FINAL_BATTLE = 'FINAL_BATTLE'
+    FINAL_BATTLE_WITH_ALLIES = 'FINAL_BATTLE_WITH_ALLIES'
+    FIRST_RECRUIT = 'FIRST_RECRUIT'
+    FIRST_PLANET = 'FIRST_PLANET'
 
 
 class ExpositionBox():
@@ -64,7 +64,6 @@ class ExpositionBox():
         
 
     def __init__(self, text_enum, ok_callback, checkbox_callback, show_help_checkbox=True):
-        print('init')
         self.checkbox_callback = checkbox_callback
         self.font = utils.fonts[20]
 
@@ -88,7 +87,14 @@ class ExpositionBox():
                         self.text.append(line)
                         
         else: # is events_exposition
-            self.text = [events_exposition[text_enum]]
+            exposition_text = events_exposition[text_enum.value].split('\n')
+            for line in exposition_text:
+                if self.font.size(line)[0] > MAX_BOX_WIDTH - borders:
+                    wrapped_lines = self.wrap_text(line, MAX_BOX_WIDTH - borders)
+                    self.text += wrapped_lines
+                else:
+                    self.text.append(line)
+
 
             
         

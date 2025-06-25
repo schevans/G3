@@ -83,7 +83,7 @@ class GameView():
         
         self.selected_item = None
         
-        self.show_help = True
+        self.show_help = not const.dev_mode
         self.exposition = None 
         self.tmp_ex = 0      # FIXME: Remove
         
@@ -320,7 +320,14 @@ class GameView():
         
         my_random.set_state(data[3])
         
+    
+    def show_exposition(self, expo_enum):
         
+        if expo_enum not in self.shared_dict['expositions_done']:
+            self.exposition = ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_checkbox_callback)
+            self.shared_dict['expositions_done'].append(expo_enum)
+            
+            
 class ViewManager():
     
     def __init__(self):
@@ -343,6 +350,7 @@ class ViewManager():
             'master_timer': MasterTimer(0),
             'other_ship': None,
             'fogofwar_mask': fogofwar_mask,
+            'expositions_done': []
         }
         
         self.view.startup(shared_dict)
