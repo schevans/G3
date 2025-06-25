@@ -9,6 +9,7 @@ Created on Thu Dec 12 18:24:44 2024
 import pygame
 from pygame import Vector2
 from enum import Enum
+import json
 
 import constants as const
 from gui import Button, CheckBox
@@ -28,26 +29,34 @@ MIN_BOX_HEIGHT = 140
 
 increment = 5.5
 
+
+events_exposition = {}
+with open('./story/events.json') as f:
+     events_exposition = json.load(f)
+
 class ExpositionText(Enum):
     OPENING = 1
-    A = 2
-    B = 3
-    C = 4
-    D = 5
-    E = 6  
-    NO = 7
-    YES = 8
-    NO_THANKS = 9
+    NO = 2
+    YES = 3
+    NO_THANKS = 4
+    FIRST_HOSTILE = 5
+    FIRST_NEUTRAL = 6
+    FIRST_FRIENDLY = 7
+    FIRST_SISTERS = 8
+    FIRST_COMBAT = 9
+    FIRST_COMBAT_WITH_ALLIES = 10
+    FIRST_LAUNCH = 11
+    FIRST_ENEMY_LAND = 12
+    FINAL_BATTLE = 13
+    FINAL_BATTLE_WITH_ALLIES = 14
+    FIRST_RECRUIT = 15
+    FIRST_PLANET = 16
+
 
 class ExpositionBox():
     
     text_filenames = {
         ExpositionText.OPENING: 'story/opening.txt',
-        ExpositionText.A: 'story/l5w.txt',
-        ExpositionText.B: 'story/l15w.txt',
-        ExpositionText.C: 'story/l60w.txt',
-        ExpositionText.D: 'story/l1p.txt',
-        ExpositionText.D: 'story/lall.txt',
         ExpositionText.NO: 'story/no_test.txt',
         ExpositionText.YES: 'story/yes_test.txt',
         ExpositionText.NO_THANKS: 'story/no_thanks_test.txt'
@@ -55,7 +64,7 @@ class ExpositionBox():
         
 
     def __init__(self, text_enum, ok_callback, checkbox_callback, show_help_checkbox=True):
-
+        print('init')
         self.checkbox_callback = checkbox_callback
         self.font = utils.fonts[20]
 
@@ -66,16 +75,22 @@ class ExpositionBox():
         button_height = 30
         
         # read-and-wrap
-        filename = ExpositionBox.text_filenames[text_enum]
         self.text = []
-        with open(filename) as file:
-            for line in file.readlines():
-                line = line.strip('\n')
-                if self.font.size(line)[0] > MAX_BOX_WIDTH - borders:
-                    wrapped_lines = self.wrap_text(line, MAX_BOX_WIDTH - borders)
-                    self.text += wrapped_lines
-                else:
-                    self.text.append(line)
+        if text_enum in [ExpositionText.OPENING, ExpositionText.NO, ExpositionText.YES, ExpositionText.NO_THANKS]:
+            filename = ExpositionBox.text_filenames[text_enum]
+            with open(filename) as file:
+                for line in file.readlines():
+                    line = line.strip('\n')
+                    if self.font.size(line)[0] > MAX_BOX_WIDTH - borders:
+                        wrapped_lines = self.wrap_text(line, MAX_BOX_WIDTH - borders)
+                        self.text += wrapped_lines
+                    else:
+                        self.text.append(line)
+                        
+        else: # is events_exposition
+            self.text = [events_exposition[text_enum]]
+
+            
         
         # measure
         text_width = 0
