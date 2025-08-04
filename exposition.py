@@ -14,6 +14,8 @@ import json
 import constants as const
 from gui import Button, CheckBox
 import utils
+import my_random
+
 
 MAX_BOX_BORDER = 100
 
@@ -33,6 +35,11 @@ increment = 5.5
 events_exposition = {}
 with open('./story/events.json') as f:
      events_exposition = json.load(f)
+     
+expo_recruit_yes = {}
+with open('./story/expo_recruit_yes.json') as f:
+     expo_recruit_yes = json.load(f)
+
 
 class ExpositionText(Enum):
     OPENING = 'OPENING'
@@ -76,7 +83,7 @@ class ExpositionBox():
         
         # read-and-wrap
         self.text = []
-        if text_enum in [ExpositionText.OPENING, ExpositionText.NO, ExpositionText.YES, ExpositionText.NO_THANKS]:
+        if text_enum in [ExpositionText.OPENING, ExpositionText.NO, ExpositionText.NO_THANKS]:
             filename = ExpositionBox.text_filenames[text_enum]
             with open(filename) as file:
                 for line in file.readlines():
@@ -86,7 +93,11 @@ class ExpositionBox():
                         self.text += wrapped_lines
                     else:
                         self.text.append(line)
-                        
+        
+        elif text_enum == ExpositionText.YES:
+            
+           self.text = [expo_recruit_yes[self.get_random_key(expo_recruit_yes)]]
+            
         else: # is events_exposition
             exposition_text = events_exposition[text_enum.value].split('\n')
             for line in exposition_text:
@@ -266,6 +277,10 @@ class ExpositionBox():
         screen.blit(self.surface,(0,0))
 
 
-            
+    def get_random_key(self, expo_dict):
+        
+        return my_random.my_choices(list(expo_dict.keys()))[0]
+
+
             
         
