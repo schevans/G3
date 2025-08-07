@@ -31,16 +31,6 @@ MIN_BOX_HEIGHT = 140
 
 increment = 5.5
 
-
-events_exposition = {}
-with open('./story/events.json') as f:
-     events_exposition = json.load(f)
-     
-expo_recruit_yes = {}
-with open('./story/expo_recruit_yes.json') as f:
-     expo_recruit_yes = json.load(f)
-
-
 class ExpositionText(Enum):
     OPENING = 'OPENING'
     NO = 'NO'
@@ -61,15 +51,27 @@ class ExpositionText(Enum):
     FIRST_PLANET = 'FIRST_PLANET'
 
 
-class ExpositionBox():
-    
-    text_filenames = {
-        ExpositionText.OPENING: 'story/opening.txt',
-        ExpositionText.NO: 'story/no_test.txt',
-        ExpositionText.YES: 'story/yes_test.txt',
-        ExpositionText.NO_THANKS: 'story/no_thanks_test.txt'
-        } 
-        
+# load exposition
+opening_exposition_filename = 'story/opening.txt'
+
+events_exposition = {}
+with open('./story/events.json') as f:
+     events_exposition = json.load(f)
+
+expo_recruit = {}
+expo_recruit[ExpositionText.YES] = {}
+expo_recruit[ExpositionText.NO_THANKS] = {}
+expo_recruit[ExpositionText.NO] = {}
+
+with open('./story/expo_recruit_yes.json') as f:
+     expo_recruit[ExpositionText.YES] = json.load(f)
+with open('./story/expo_recruit_no_thanks.json') as f:
+     expo_recruit[ExpositionText.NO_THANKS] = json.load(f)
+with open('./story/expo_recruit_no.json') as f:
+     expo_recruit[ExpositionText.NO] = json.load(f)
+     
+     
+class ExpositionBox():   
 
     def __init__(self, text_enum, ok_callback, checkbox_callback, show_help_checkbox=True):
         self.checkbox_callback = checkbox_callback
@@ -83,9 +85,8 @@ class ExpositionBox():
         
         # read-and-wrap
         self.text = []
-        if text_enum in [ExpositionText.OPENING, ExpositionText.NO, ExpositionText.NO_THANKS]:
-            filename = ExpositionBox.text_filenames[text_enum]
-            with open(filename) as file:
+        if text_enum == ExpositionText.OPENING:
+            with open(opening_exposition_filename) as file:
                 for line in file.readlines():
                     line = line.strip('\n')
                     if self.font.size(line)[0] > MAX_BOX_WIDTH - borders:
@@ -94,9 +95,8 @@ class ExpositionBox():
                     else:
                         self.text.append(line)
         
-        elif text_enum == ExpositionText.YES:
-            
-           self.text = [expo_recruit_yes[self.get_random_key(expo_recruit_yes)]]
+        elif text_enum in [ExpositionText.YES, ExpositionText.NO, ExpositionText.NO_THANKS]:         
+           self.text = [expo_recruit[text_enum][self.get_random_key(expo_recruit[text_enum])]]
             
         else: # is events_exposition
             exposition_text = events_exposition[text_enum.value].split('\n')
