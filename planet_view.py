@@ -15,6 +15,8 @@ import utils
 import my_random
 from game_view import GameView, View, State
 from explosions import Explosion, LootBox
+from exposition import ExpositionText
+
 
 DOCK_RADIUS = 15
 
@@ -50,6 +52,7 @@ class PlanetView(GameView):
             if ship.planet == self.planet:
                 applicable_mobs.append(ship)
            
+        self.is_paused = False 
         
         if applicable_mobs:
             angle_increment = ( math.pi * 2 ) / len(applicable_mobs)
@@ -61,12 +64,19 @@ class PlanetView(GameView):
                 self.mobs.append(orbital_ship)
                 if orbital_ship.tmpship == shared_dict['current_ship']:
                     self.current_ship = orbital_ship
-
+                    
+                if mob.liege == const.hostile_capital:
+                    self.show_exposition(ExpositionText.FIRST_COMBAT)
+                    self.is_paused = True
+        
+        if self.planet:
+            self.show_exposition(ExpositionText.FIRST_PLANET)
+        
         
         if self.planet.station:
             self.mobs.append(self.planet.station)
+            self.show_exposition(ExpositionText.FIRST_SISTERS)
 
-        self.is_paused = False 
 
     def process_event(self, event):
         
@@ -112,6 +122,8 @@ class PlanetView(GameView):
     def update(self):
         if not self.is_paused:
             GameView.update(self) 
+        elif self.show_help and self.exposition:
+                self.exposition.update()
  
         self.get_selected_item(self.mobs)
         
@@ -168,10 +180,10 @@ class PlanetView(GameView):
                 elif mob.object_type() == 'Explosion':
                     self.mobs.append(LootBox(mob.xy, mob.resources))
                 
-                
+        
         if self.home_planet == self.planet and not len(list(mob for mob in self.mobs if mob.object_type() == 'Ship' and mob.is_npc)):
             self.game_state = State.VICTORY
-        
+            
 
     def draw(self, screen):
         
