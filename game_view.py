@@ -115,7 +115,7 @@ class GameView():
             if event.key == pygame.K_l:
                 self.next_view = (View.LOAD_SAVE, self.shared_dict)
                 
-        if self.shared_dict['show_help'] and self.exposition:
+        if self.exposition and (not self.exposition.is_help or self.shared_dict['show_help']):
            self.exposition.process_event(event)
            
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -128,7 +128,7 @@ class GameView():
         for mob in self.mobs:
             mob.update()
             
-        if self.shared_dict['show_help'] and self.exposition:
+        if self.exposition and (not self.exposition.is_help or self.shared_dict['show_help']):
             self.exposition.update()
             
         if self.manual_rect.collidepoint(pygame.mouse.get_pos()):
@@ -173,9 +173,8 @@ class GameView():
         # mouseover text
         if self.selected_item:
             self.draw_mouseover_text(screen, self.get_mouse_text())
-            
-            
-        if self.shared_dict['show_help'] and self.exposition:
+               
+        if self.exposition and (not self.exposition.is_help or self.shared_dict['show_help']):
             self.exposition.draw(screen)
             
         self.draw_game_state(screen)

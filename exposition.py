@@ -77,7 +77,8 @@ class ExpositionBox():
     def __init__(self, text_enum, ok_callback, checkbox_callback, show_help_checkbox=True):
         self.checkbox_callback = checkbox_callback
         self.font = utils.fonts[20]
-
+        self.is_help = True
+        
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
         borders = 10*4
@@ -96,14 +97,15 @@ class ExpositionBox():
                     else:
                         self.text.append(line)
         
-        elif text_enum in [ExpositionText.YES, ExpositionText.NO, ExpositionText.NO_THANKS]:         
+        elif text_enum in [ExpositionText.YES, ExpositionText.NO, ExpositionText.NO_THANKS]:
+            self.is_help = False  
             line = expo_recruit[text_enum][self.get_random_key(expo_recruit[text_enum])]
             if self.font.size(line)[0] > MAX_BOX_WIDTH - borders:
                 wrapped_lines = self.wrap_text(line, MAX_BOX_WIDTH - borders)
                 self.text += wrapped_lines
             else:
                 self.text.append(line)          
-                    
+            
         else: # is events_exposition
             exposition_text = events_exposition[text_enum.value].split('\n')
             for line in exposition_text:
