@@ -74,6 +74,9 @@ class Ship():
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
+            self.fit.upgrade('scanner')
+            self.fit.upgrade('scanner')
+            self.fit.upgrade('scanner')
             if const.dev_mode >= 2:
                 self.resources = self.resources.fromkeys(self.resources, 999)
             else:
