@@ -44,7 +44,9 @@ class PlanetaryTextures():
         if os.path.isfile(small_filename):
             self.small_features = np.load(small_filename)
         else:
+            print('First time planetary texture generation for seed ' + str(const.random_seed) + '...')
             gen_data(self.small_features, SMALL_FEATURES)
+            print('...')
             np.save(small_filename, self.small_features)
             
         if os.path.isfile(large_filename):
@@ -52,6 +54,7 @@ class PlanetaryTextures():
         else:
             gen_data(self.large_features, LARGE_FEATURES)       
             np.save(large_filename, self.large_features)
+            print('Done.')
 
         self.combined_features = self.small_features * self.large_features
 
