@@ -122,7 +122,7 @@ class PlanetView(GameView):
     def update(self):
         if not self.is_paused:
             GameView.update(self) 
-        elif self.show_help and self.exposition:
+        elif self.shared_dict['show_help'] and self.exposition:
                 self.exposition.update()
  
         self.get_selected_item(self.mobs)

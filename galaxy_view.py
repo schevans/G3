@@ -68,7 +68,7 @@ class GalaxyView(GameView):
     def update(self):
         
         # this doesn't call GameView.update as it does it's own thing with mob.update
-        if self.show_help and self.exposition:
+        if self.shared_dict['show_help'] and self.exposition:
             self.exposition.update()
         
         mousepos = pygame.mouse.get_pos()
