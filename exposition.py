@@ -97,8 +97,13 @@ class ExpositionBox():
                         self.text.append(line)
         
         elif text_enum in [ExpositionText.YES, ExpositionText.NO, ExpositionText.NO_THANKS]:         
-           self.text = [expo_recruit[text_enum][self.get_random_key(expo_recruit[text_enum])]]
-            
+            line = expo_recruit[text_enum][self.get_random_key(expo_recruit[text_enum])]
+            if self.font.size(line)[0] > MAX_BOX_WIDTH - borders:
+                wrapped_lines = self.wrap_text(line, MAX_BOX_WIDTH - borders)
+                self.text += wrapped_lines
+            else:
+                self.text.append(line)          
+                    
         else: # is events_exposition
             exposition_text = events_exposition[text_enum.value].split('\n')
             for line in exposition_text:
@@ -107,9 +112,6 @@ class ExpositionBox():
                     self.text += wrapped_lines
                 else:
                     self.text.append(line)
-
-
-            
         
         # measure
         text_width = 0
@@ -142,7 +144,7 @@ class ExpositionBox():
             
         # rect & button & checkbox
         inner_width = max(MIN_BOX_WIDTH, text_width + borders)
-        inner_height = max(MIN_BOX_HEIGHT, min(text_height + 2*button_height, MAX_BOX_HEIGHT))
+        inner_height = max(MIN_BOX_HEIGHT, min(text_height + 3*button_height, MAX_BOX_HEIGHT))
         
         self.inner_rect = pygame.Rect(((const.screen_width - inner_width)/2, (const.screen_height - inner_height)/2), (inner_width, inner_height))
 
