@@ -271,7 +271,7 @@ class GameView():
         
         self.shared_dict['current_ship'] = next(x for x in self.ships if x.name == self.shared_dict['current_ship'])
         self.shared_dict['system'] = next((x for x in systems.syslist if x.name == self.shared_dict['system']), None)
-        if self.shared_dict['system']:
+        if self.shared_dict['system'] and self.shared_dict['planet']:
             self.shared_dict['planet'] = next(x for x in self.shared_dict['system'].planets if x.name == self.shared_dict['planet'])
         
         # handle saving during docking view for completeness
