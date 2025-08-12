@@ -117,6 +117,10 @@ class GalaxyView(GameView):
             self.mobs.append(fresh_mob)
             self.show_exposition(ExpositionText.FIRST_ENEMY_LAUNCH)
             
+        if self.shared_dict['show_help'] and ExpositionText.FIRST_SYSTEM not in self.shared_dict['expositions_done']:
+            if not self.current_ship.is_moving() and self.current_ship.destination and self.current_ship.destination.object_type() == 'System':
+                self.show_exposition(ExpositionText.FIRST_SYSTEM)
+            
         for mob in self.mobs:
             if mob.is_npc and not mob.is_moving():
                 self.mobs.remove(mob)
