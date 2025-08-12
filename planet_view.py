@@ -148,6 +148,11 @@ class PlanetView(GameView):
                     if lootbox.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
                         mob.loot(lootbox)
                         
+                # enough resources for first upgrade?
+                if self.shared_dict['show_help'] and ExpositionText.FIRST_UPGRADE not in self.shared_dict['expositions_done']:
+                    if self.current_ship.can_do_first_upgrade():
+                        self.show_exposition(ExpositionText.FIRST_UPGRADE)
+                        
                 # has ship hit planet?      
                 if mob.r <= self.planet.planet_view_r + mob.image.width:
                     mob.hit(3,3)

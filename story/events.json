@@ -23,5 +23,7 @@
 
 "FIRST_PLANET" : "(How to mine)",
 
-"FIRST_BATTLE_WITH_ALLIES" : "(controling allies)"
+"FIRST_SYSTEM" : "We've arrived at our first system - hit Return on your console to descend, Esc to ascend. This works on all your viewscreens. Read my Manual should you forget again (bottom right).",
+
+"FIRST_UPGRADE" : "We are making progress! We've collected enough resources to upgrade one of my systems. Hit F on your console to bring up my Fitting Menu. Be warned though, some upgrades are more useful than others, so it might be worth saving up."
 }

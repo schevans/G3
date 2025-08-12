@@ -234,4 +234,12 @@ class Ship():
     def scanner_lvl(self):
         return self.fit.systems['scanner'].level
 
+    def can_do_first_upgrade(self):
+        
+        for system in self.fit.systems:
+            if self.can_upgrade(system):
+                return True
+
+        return False
+
 

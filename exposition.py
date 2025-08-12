@@ -49,8 +49,9 @@ class ExpositionText(Enum):
     FINAL_BATTLE_WITH_ALLIES = 'FINAL_BATTLE_WITH_ALLIES'
     FIRST_RECRUIT = 'FIRST_RECRUIT'
     FIRST_PLANET = 'FIRST_PLANET'
-    FIRST_BATTLE_WITH_ALLIES = 'FIRST_BATTLE_WITH_ALLIES'
-
+    FIRST_UPGRADE = 'FIRST_UPGRADE'
+    FIRST_SYSTEM = 'FIRST_SYSTEM'
+    
 
 # load exposition
 opening_exposition_filename = 'story/opening.txt'
