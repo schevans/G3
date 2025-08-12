@@ -69,7 +69,7 @@ class GalaxyView(GameView):
         
         # this doesn't call GameView.update as it does it's own thing with mob.update
         if self.shared_dict['show_help'] and self.exposition:
-            self.exposition.update()
+            self.exposition[0].update()
         
         mousepos = pygame.mouse.get_pos()
         if self.manual_rect.collidepoint(mousepos):

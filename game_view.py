@@ -14,12 +14,13 @@ import copy
 import pickle
 from statistics import mean 
 import webbrowser
+from collections import deque
 
 import ships
 import systems
 import constants as const
 import utils
-from exposition import ExpositionBox, ExpositionText
+from exposition import ExpositionBox
 
 TEXT_OFFSET = 15
 MOUSE_RADIUS = 10
@@ -83,7 +84,7 @@ class GameView():
         
         self.selected_item = None
         
-        self.exposition = None 
+        self.exposition = deque()
         
         self.game_state = State.IN_PROGRESS
         self.doubleclick_timer = pygame.time.Clock()
@@ -115,8 +116,8 @@ class GameView():
             if event.key == pygame.K_l:
                 self.next_view = (View.LOAD_SAVE, self.shared_dict)
                 
-        if self.exposition and (not self.exposition.is_help or self.shared_dict['show_help']):
-           self.exposition.process_event(event)
+        if self.exposition and (not self.exposition[0].is_help or self.shared_dict['show_help']):
+           self.exposition[0].process_event(event)
            
         if event.type == pygame.MOUSEBUTTONDOWN:
             if self.manual_rect.collidepoint(pygame.mouse.get_pos()):
@@ -128,8 +129,8 @@ class GameView():
         for mob in self.mobs:
             mob.update()
             
-        if self.exposition and (not self.exposition.is_help or self.shared_dict['show_help']):
-            self.exposition.update()
+        if self.exposition and (not self.exposition[0].is_help or self.shared_dict['show_help']):
+            self.exposition[0].update()
             
         if self.manual_rect.collidepoint(pygame.mouse.get_pos()):
             self.manual_surface = self.manual_surface_highlight
@@ -174,8 +175,8 @@ class GameView():
         if self.selected_item:
             self.draw_mouseover_text(screen, self.get_mouse_text())
                
-        if self.exposition and (not self.exposition.is_help or self.shared_dict['show_help']):
-            self.exposition.draw(screen)
+        if self.exposition and (not self.exposition[0].is_help or self.shared_dict['show_help']):
+            self.exposition[0].draw(screen)
             
         self.draw_game_state(screen)
 
@@ -239,7 +240,7 @@ class GameView():
         return [self.current_ship]
     
     def exposition_ok_callback(self, button):
-        self.exposition = None
+        self.exposition.popleft()
     
     def exposition_checkbox_callback(self, is_checked):
         self.shared_dict['show_help'] = is_checked
@@ -318,7 +319,7 @@ class GameView():
     def show_exposition(self, expo_enum):
         
         if expo_enum not in self.shared_dict['expositions_done']:
-            self.exposition = ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_checkbox_callback)
+            self.exposition.append(ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_checkbox_callback))
             self.shared_dict['expositions_done'].append(expo_enum)
             
             

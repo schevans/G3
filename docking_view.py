@@ -50,7 +50,7 @@ class DockingView(GameView):
             expo_enum = ExpositionText.NO_THANKS
         
         button.is_disabled = True
-        self.exposition = ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_ok_callback, False)
+        self.exposition.append(ExpositionBox(expo_enum, self.exposition_ok_callback, self.exposition_ok_callback, False))
         
     def repair_callback(self, button):
         pass
