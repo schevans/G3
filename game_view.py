@@ -86,7 +86,6 @@ class GameView():
         
         self.exposition = deque()
         
-        self.game_state = State.IN_PROGRESS
         self.doubleclick_timer = pygame.time.Clock()
         self.clock_tick = const.clock_tick
         
@@ -246,8 +245,8 @@ class GameView():
         self.shared_dict['show_help'] = is_checked
  
     def draw_game_state(self, screen):       
-        if self.game_state != State.IN_PROGRESS:
-            text = self.game_state.name.replace('_', ' ') +'!'
+        if self.shared_dict['game_state'] != State.IN_PROGRESS:
+            text = self.shared_dict['game_state'].name.replace('_', ' ') +'!'
             text_surface = utils.fonts[100].render(text, False, 'white', 'black')
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
@@ -346,7 +345,8 @@ class ViewManager():
             'other_ship': None,
             'fogofwar_mask': fogofwar_mask,
             'show_help': not const.dev_mode,
-            'expositions_done': []
+            'expositions_done': [],
+            'game_state': State.IN_PROGRESS
         }
         
         self.view.startup(shared_dict)

@@ -181,13 +181,13 @@ class PlanetView(GameView):
                     self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
                     self.ships.remove(mob.tmpship)
                     if mob.name == 'Hero':      # FIXME hardcode
-                        self.game_state = State.GAME_OVER
+                        self.shared_dict['game_state'] = State.GAME_OVER
                 elif mob.object_type() == 'Explosion':
                     self.mobs.append(LootBox(mob.xy, mob.resources))
                 
         
         if self.home_planet == self.planet and not len(list(mob for mob in self.mobs if mob.object_type() == 'Ship' and mob.is_npc)):
-            self.game_state = State.VICTORY
+            self.shared_dict['game_state'] = State.VICTORY
             
 
     def draw(self, screen):
