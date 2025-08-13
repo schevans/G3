@@ -345,7 +345,7 @@ class ViewManager():
             'master_timer': MasterTimer(0),
             'other_ship': None,
             'fogofwar_mask': fogofwar_mask,
-            'show_help': True,
+            'show_help': not const.dev_mode,
             'expositions_done': []
         }
         
