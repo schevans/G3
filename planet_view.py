@@ -83,7 +83,7 @@ class PlanetView(GameView):
         GameView.process_event(self, event)
         
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
+            if event.key == pygame.K_ESCAPE and self.shared_dict['game_state'] == State.IN_PROGRESS:
                 self.shared_dict['system'] = self.planet.system
                 self.next_view = (View.SOLAR, self.shared_dict)
             if event.key == pygame.K_SPACE:
