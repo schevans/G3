@@ -49,7 +49,7 @@ class PlanetView(GameView):
 
         
         for ship in self.ships:
-            if ship.planet == self.planet:
+            if ship.is_alive and ship.planet == self.planet:
                 applicable_mobs.append(ship)
            
         self.is_paused = False 
@@ -179,7 +179,7 @@ class PlanetView(GameView):
                         if resource != 'laser':
                             mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
                     self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
-                    self.ships.remove(mob.tmpship)
+                    mob.tmpship.is_alive = False
                     if mob.name == 'Hero':      # FIXME hardcode
                         self.shared_dict['game_state'] = State.GAME_OVER
                 elif mob.object_type() == 'Explosion':

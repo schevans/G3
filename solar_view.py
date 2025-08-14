@@ -33,7 +33,7 @@ class SolarView(GameView):
         self.system = shared_dict['system']
 
         for ship in self.ships:
-            if ship.system == self.system:
+            if ship.is_alive and ship.system == self.system:
                 
                 if ship.planet:
                     ship.reset_xy(ship.planet.xy)

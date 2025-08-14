@@ -205,7 +205,7 @@ class Ship():
         system = self.system.name if self.system else None
         planet = self.planet.name if self.planet else None
         
-        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading]
+        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive]
         
         return data
 
@@ -227,6 +227,7 @@ class Ship():
         self.is_npc = data[7]
         self.liege = data[8]
         self.heading = data[9]
+        self.is_alive = data[10]
         
         self.image.update(self.xy, self.heading)
 

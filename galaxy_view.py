@@ -37,7 +37,7 @@ class GalaxyView(GameView):
         self.fogofwar_mask = self.shared_dict['fogofwar_mask']
         
         for ship in self.ships:
-            if ship.is_moving() or not ship.is_npc:
+            if ship.is_alive and ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
                 if self.current_ship.system and ship.system == self.current_ship.system:
                     ship.reset_xy(ship.system.xy)
