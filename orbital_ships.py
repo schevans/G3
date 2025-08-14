@@ -68,7 +68,6 @@ class OrbitalShip(Ship):
         self.ai_timer = Timer()
         self.cap_timer = Timer()
         self.dmg_timer = Timer()
-        self.orig_color = self.color
         
         self.mass = 7000 / planet.size # FIXME. Also check planet.planet_view_r
         self.planet_view_r = planet.planet_view_r

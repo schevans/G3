@@ -53,20 +53,15 @@ class Ship():
             self.color = pygame.Color('white')
             self.resources = const.our_initial_resources.copy()
 
+        self.orig_color = self.color
         self.is_alive = True
         self.heading = 0
         self.destination = None
         self.is_current = False
 
-        ship_image_number = str(const.ship_image_number[self.liege])
-        self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship' + ship_image_number + '.png'))
-        self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying' + ship_image_number + '.png'))
-        
-        if self.is_npc:
-            self.image_still.change_color(pygame.Color('white'), self.color)
-            self.image_flying.change_color(pygame.Color('white'), self.color)
-
+        self.load_and_color_images()
         self.image = self.image_still
+        
         self.weapons = Weapons()
 
         # dev mode
@@ -83,7 +78,6 @@ class Ship():
                 self.resources = self.resources.fromkeys(self.resources, 70)
             self.resources['laser'] = math.inf
 
-        
     def update(self):
         
         if self.destination:
@@ -229,6 +223,8 @@ class Ship():
         self.heading = data[9]
         self.is_alive = data[10]
         
+        self.load_and_color_images()
+        
         self.image.update(self.xy, self.heading)
 
 
@@ -242,5 +238,17 @@ class Ship():
                 return True
 
         return False
+    
+    
+    def load_and_color_images(self):
+        
+        ship_image_number = str(const.ship_image_number[self.liege])
+        self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship' + ship_image_number + '.png'))
+        self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying' + ship_image_number + '.png'))
+        
+        if self.is_npc:
+            self.image_still.change_color(pygame.Color('white'), self.orig_color)
+            self.image_flying.change_color(pygame.Color('white'), self.orig_color)
+
 
 
