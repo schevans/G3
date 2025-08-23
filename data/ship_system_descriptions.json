@@ -1,0 +1,14 @@
+
+{
+"shield" : ["Very important. Keeps damage away from our armor.", "Charged by our Capacitor.", "Unit: Mitigated damage."],
+"armour" : ["Keeps damage away from our hull.", "Can be repaired at Stations.", "Unit: Mitigated damage."],
+"capacitor" : ["Very important. Used to fire our weapons.", "Also, when fully charged, recharges our Shield.", "Unit: Farads."],
+"reactor" : ["Charges our Capacitor.", "We want this.", "Unit: Farads/second."],
+"engine" : ["Makes us go faster.", "Useful if we want to get home in time.", "Unit: Ly/second at warp."],
+"wep dmg" : ["Increase weapon damage.", "Unit: Multiple of base."],
+"wep range" : ["Increases weapon range.", "Unit: Multiple of base."],
+"scanner" : ["Allows us to see more detail at a further range.", "I want this.", "Unit: Ly."]
+}
+
+
+ 
