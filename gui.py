@@ -94,16 +94,24 @@ class Button():
         
 class Label():
     
-    def __init__(self, xy, size, text, color):
+    def __init__(self, xy, size, text, color, mouseover_text = None):
         self.xy = xy
         self.size = size
         self.text = text
         self.color = pygame.Color(color)
+        self.mouseover_text = mouseover_text
+        
+        self.is_active = False
         
         self.surface =  pygame.Surface(size)
         
     def process_event(self, event):
-        pass
+        
+        mousepos = pygame.mouse.get_pos()
+        if pygame.Rect(self.xy, self.size).collidepoint(mousepos):
+            self.is_active = True
+        else:
+            self.is_active = False
             
     def update(self):
         pass

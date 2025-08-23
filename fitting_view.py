@@ -7,6 +7,7 @@ Created on Mon Dec  2 18:53:23 2024
 """
 
 from pygame.math import Vector2
+import json
 
 import utils
 import constants as const
@@ -16,6 +17,9 @@ from gui import Label, Button
 got_color = 'mediumseagreen'
 available_color = 'grey'
 unavilable_color = 'gray56'
+
+with open('./data/ship_system_descriptions.json') as f:
+     system_descriptions = json.load(f)
 
 class FittingView(GameView):
     
@@ -41,7 +45,8 @@ class FittingView(GameView):
         y = pos[1]
         for key in self.current_ship.fit.system_names:   
             x = pos[0]
-            self.labels.append(Label((x,y), (label_width, 30), key.title(), 'gray'))
+            mouseover_text = system_descriptions.get(key, [['#MISSING# from data/system_descriptions.json']])
+            self.labels.append(Label((x,y), (label_width, 30), key.title(), 'gray', mouseover_text))
             
             x += label_width+space
             current_level = self.current_ship.fit.level(key)
@@ -84,8 +89,8 @@ class FittingView(GameView):
 
         GameView.process_event(self, event)   
 
-        for button in self.button_map.keys():
-            button.process_event(event)
+        for widget in list(self.button_map.keys()) + self.labels:
+            widget.process_event(event)
             
         
     def update(self):
@@ -134,13 +139,13 @@ class FittingView(GameView):
         for button in self.button_map.keys():
             button.draw(screen)  
 
-        # mouseover text - need to do this after all the buttons have rendered
-        for button in self.button_map.keys():
-            if button.is_active:
-                self.draw_mouseover_text(screen, button.mouseover_text)
-
         for label in self.labels:             
             label.draw(screen)
+            
+        # mouseover text - need to do this after all the buttons/labels have rendered
+        for widget in list(self.button_map.keys()) + self.labels:
+            if widget.is_active:
+                self.draw_mouseover_text(screen, widget.mouseover_text)       
 
         
     def button_callback(self, button):
