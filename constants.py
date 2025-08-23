@@ -181,6 +181,9 @@ clock_tick = 24
 # fog of war color, so we can check pixels to see if a thing's uncovered
 fogofwar_black = (1,1,1)
 
+# color of our only link
+hyperlink_blue = (0, 123, 255)
+
 # scanner target to required scanner level
 class ScanTarget():
     NUM_PLANETS = 1
