@@ -11,19 +11,27 @@
 
 "FIRST_COMBAT" : "We're entering combat. Good luck. Did you remember to switch off the coffee machine? It says here 'Entering combat, p3.4.23.6: Switch off the coffee machine.\nFrankly if the worst thing that happens to you today is getting burned by hot coffee I think you'll have done ok.\n\nIn case you've forgotten what to do, and are too lazy to read my manual:\nWeapons select: 1-5. Note only some weapons are homing (denoted by the crosshairs on the icon)\nRight-click: Lock (homing weapons only)\nLeft-click: Fire\nSpacebar to unpause\n\nAgain: Good Luck. I'll have my eyes closed.",
 
+"FIRST_COMBAT_WITH_ALLIES" : "You'll be familar with most of this this, but now it gets hard. You'll know now how to drop in and out of the various relativities, but now you'll have to dance with others. Use your pause menu (realtime) to switch between your ships (+/-) to mark targets. You'll only need to actually fly one ship - just switch to the others to give orders.",
+
 "FIRST_ENEMY_LAUNCH" : "Cap, I've just detected a long range launch. Looks like a Zaurakian on intercept with Polaris. They must be reinforcing the blockade.",
 
 "FIRST_ENEMY_LAND" : "Cap, that ship I've been tracking has landed at Polaris. The Threat Level has increased. You might want to keep an eye on that.",
 
 "FINAL_BATTLE" : "Ok Cap, here we go. You've chosen to go it alone so good luck. But I do have some good news! I can download myself from here, so I'll be fine.",
 
-"FIRST_BATTLE_WITH_ALLIES" : "Here we go Cap, this is it. Good luck. I've downloaded all my data to base. I wish I could do the same for yours.",
+"FINAL_BATTLE_WITH_ALLIES" : "Here we go Cap, this is it. Good luck. I've downloaded all my data to base. I wish I could do the same for yours.",
 
-"FIRST_RECRUIT" : "(explain relativity)",
+"FIRST_RECRUIT" : "We now have company! Another ship will really help us out - we can cover more space.\n\nA note on navigation:\nIn general you can switch ships by pushing (+/-) on your console. In Planetary and System views, you then control their ship. In Galaxy view however you can switch to their ships and issue orders, but they will only jump when you jump. Remember you're in hypersleep when you jump? Well, so are they, so you can't communicate. ",
 
-"FIRST_PLANET" : "(How to mine)",
+"FIRST_PLANET" : "Mining is easy - just shoot the planet from within weapons range. Your weapon system won't matter too much, so stick to your lasers, which just take cap to fire. Do get into the habit of watching your cap, though, as running out during a battle is problematic.\nDon't forget to pick up the cans the planet ejects. There's a bar on the top left that shows your progress.",
 
 "FIRST_SYSTEM" : "We've arrived at our first system - hit Return on your console to descend, Esc to ascend. This works on all your viewscreens. Read my Manual should you forget again (bottom right).",
 
-"FIRST_UPGRADE" : "We are making progress! We've collected enough resources to upgrade one of my systems. Hit F on your console to bring up my Fitting Menu. Be warned though, some upgrades are more useful than others, so it might be worth saving up."
+"FIRST_UPGRADE" : "We are making progress! We've collected enough resources to upgrade one of my systems. Hit F on your console to bring up my Fitting Menu. Be warned though, some upgrades are more useful than others, so it might be worth saving up.",
+
+"HOSTILE_HOMEWORLD" : "This is the Zaurakian homeworld. Be very, very careful: This is where First Lord Zaurak himself is based, and his ship is heavily upgraded. He will make short work of us.",
+
+"NEUTRAL_HOMEWORLD" : "The Castorian homeworld, home to First Lord Castor himself. His is the most heavily armed ship in his heavily armed fleet, so don't go picking any fights now.",
+
+"FRIENDLY_HOMEWORLD" : "This is the Alcorian homeworld. First Lord Alcor should join our cause, and his ship's arms and armor should fight well alongside ours."
 }
