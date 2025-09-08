@@ -29,8 +29,6 @@ MIN_BOX_WIDTH = 800
 MIN_BOX_HEIGHT = 140
 
 
-increment = 5.5
-
 class ExpositionText(Enum):
     OPENING = 'OPENING'
     NO = 'NO'
@@ -231,7 +229,7 @@ class ExpositionBox():
     
     def white_fade(self, color):
 
-        return tuple([min(255, rgb + increment) for rgb in list(color)])
+        return tuple([min(255, rgb + const.exposition_increment) for rgb in list(color)])
     
     
     def draw(self, screen):   
