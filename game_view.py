@@ -15,6 +15,7 @@ import pickle
 from statistics import mean 
 import webbrowser
 from collections import deque
+import math
 
 import ships
 import systems
@@ -71,6 +72,14 @@ class GameView():
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '22222222'))
             else:
                 shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
+    
+    # dev mode for testing recruits
+    if const.dev_mode >= 3:
+        for ship in shiplist:
+            if ship.liege == const.friendly_capital:
+                ship.recruit()
+                ship.resources = ship.resources.fromkeys(ship.resources, 999)
+                ship.resources['laser'] = math.inf
     
     
     def __init__(self):
