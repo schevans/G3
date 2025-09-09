@@ -17,6 +17,9 @@ dev_mode = 0
 # set to 100 if debugging expositions
 exposition_increment = 5.5
 
+# expo on/off at start
+exposition_on = True
+
 screen_width = 1200
 screen_height = 800
 

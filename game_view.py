@@ -351,7 +351,7 @@ class ViewManager():
             'master_timer': MasterTimer(0),
             'other_ship': None,
             'fogofwar_mask': fogofwar_mask,
-            'show_help': not const.dev_mode,
+            'show_help': const.exposition_on,
             'expositions_done': [],
             'game_state': State.IN_PROGRESS
         }
