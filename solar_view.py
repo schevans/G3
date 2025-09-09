@@ -11,6 +11,7 @@ import constants as const
 import utils
 
 from game_view import GameView, View
+from exposition import ExpositionText
 
 SUN_SIZE_MULT = 3   
 SYSTEM_HIGHLIGHT = 3 # FIXME: DUP in galaxy_
@@ -40,10 +41,15 @@ class SolarView(GameView):
                 else:
                     ship.reset_xy(const.screen_center)
                     
-
                 self.mobs.append(ship)
-         
-        self.show_exposition(const.system_to_exposition[self.system.system_type])
+        
+        if self.system.system_type == 'Home':
+            if len(self.get_local_allies()) > 1:
+                self.show_exposition(ExpositionText.FINAL_BATTLE_WITH_ALLIES)
+            else:
+                self.show_exposition(ExpositionText.FINAL_BATTLE)
+        else:
+            self.show_exposition(const.system_to_exposition[self.system.system_type])
 
         
     def process_event(self, event):

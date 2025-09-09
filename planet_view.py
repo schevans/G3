@@ -68,7 +68,7 @@ class PlanetView(GameView):
                 if mob.liege == const.hostile_capital:
                     self.show_exposition(ExpositionText.FIRST_COMBAT)
                     
-                    if len(self.get_local_allies()):
+                    if len(self.get_local_allies()) > 1:
                         self.show_exposition(ExpositionText.FIRST_COMBAT_WITH_ALLIES)
                     
                     self.is_paused = True

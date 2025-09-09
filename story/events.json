@@ -19,7 +19,7 @@
 
 "FINAL_BATTLE" : "Ok Cap, here we go. You've chosen to go it alone so good luck. But I do have some good news! I can download myself from here, so I'll be fine.",
 
-"FINAL_BATTLE_WITH_ALLIES" : "Here we go Cap, this is it. Good luck. I've downloaded all my data to base. I wish I could do the same for yours.",
+"FINAL_BATTLE_WITH_ALLIES" : "Here we go Cap, this is it.\n\nMight be a good idea to take a moment at an undefended planet to distribute ammo among your fleet before the battle.\n\nGood luck. I've downloaded all my data to base. I wish I could do the same for yours.",
 
 "FIRST_RECRUIT" : "We now have company! Another ship will really help us out - we can cover more space.\n\nA note on navigation:\nIn general you can switch ships by pushing ([/]) on your console. In Planetary and System views, you then control their ship. In Galaxy view however you can switch to their ships and issue orders, but they will only jump when you jump. Remember you're in hypersleep when you jump? Well, so are they, so you can't communicate. ",
 
@@ -31,7 +31,7 @@
 
 "HOSTILE_HOMEWORLD" : "This is the Zaurakian homeworld. Be very, very careful: This is where First Lord Zaurak himself is based, and his ship is heavily upgraded. He will make short work of us.",
 
-"NEUTRAL_HOMEWORLD" : "The Castorian homeworld, home to First Lord Castor himself. His is the most heavily armed ship in his heavily armed fleet, so don't go picking any fights now.",
+"NEUTRAL_HOMEWORLD" : "The Alcorian homeworld, home to First Lord Alcor himself. His is the most heavily armed ship in his heavily armed fleet, so don't go picking any fights now.",
 
-"FRIENDLY_HOMEWORLD" : "This is the Alcorian homeworld. First Lord Alcor should join our cause, and his ship's arms and armor should fight well alongside ours."
+"FRIENDLY_HOMEWORLD" : "This is the Castorian homeworld. First Lord Castor should join our cause, and his ship's arms and armor should fight well alongside ours."
 }
