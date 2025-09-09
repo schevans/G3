@@ -11,7 +11,7 @@
 
 "FIRST_COMBAT" : "We're entering combat. Good luck. Did you remember to switch off the coffee machine? It says here 'Entering combat, p3.4.23.6: Switch off the coffee machine.\nFrankly if the worst thing that happens to you today is getting burned by hot coffee I think you'll have done ok.\n\nIn case you've forgotten what to do, and are too lazy to read my manual:\nWeapons select: 1-5. Note only some weapons are homing (denoted by the crosshairs on the icon)\nRight-click: Lock (homing weapons only)\nLeft-click: Fire\nSpacebar to unpause\n\nAgain: Good Luck. I'll have my eyes closed.",
 
-"FIRST_COMBAT_WITH_ALLIES" : "You'll be familar with most of this this, but now it gets hard. You'll know now how to drop in and out of the various relativities, but now you'll have to dance with others. Use your pause menu (realtime) to switch between your ships ([/]) to mark targets. You'll only need to actually fly one ship - just switch to the others to give orders.",
+"FIRST_COMBAT_WITH_ALLIES" : "You'll be familiar with most of this this, but now it gets hard. You'll know now how to drop in and out of the various relativities, but now you'll have to dance with others. Use your pause menu (realtime) to switch between your ships ([/]) to mark targets. You'll only need to actually fly one ship - just switch to the others to give orders.\n\nJust remember: your remote ships can only use homing weapons, so make sure they have plenty of those before battle. You can dock with them to resupply mid-battle if needed.",
 
 "FIRST_ENEMY_LAUNCH" : "Cap, I've just detected a long range launch. Looks like a Zaurakian on intercept with Polaris. They must be reinforcing the blockade.",
 
