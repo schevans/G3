@@ -72,6 +72,9 @@ class PlanetView(GameView):
                         self.show_exposition(ExpositionText.FIRST_COMBAT_WITH_ALLIES)
                     
                     self.is_paused = True
+                    
+                if mob.liege == 'Hero':
+                    self.show_exposition(ExpositionText.FIRST_RECRUIT)
         
         if self.planet:
             self.show_exposition(ExpositionText.FIRST_PLANET)
