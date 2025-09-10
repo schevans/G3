@@ -92,6 +92,12 @@ species = {
       'Home': our_capital
     }
 
+capital_to_exposition = {
+        hostile_capital : ExpositionText.HOSTILE_HOMEWORLD,
+        neutral_capital : ExpositionText.NEUTRAL_HOMEWORLD,
+        friendly_capital : ExpositionText.FRIENDLY_HOMEWORLD
+    }
+
 system_to_exposition = {
       'Neutral': ExpositionText.FIRST_NEUTRAL,
       'Friendly': ExpositionText.FIRST_FRIENDLY,

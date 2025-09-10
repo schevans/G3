@@ -50,6 +50,9 @@ class SolarView(GameView):
                 self.show_exposition(ExpositionText.FINAL_BATTLE)
         else:
             self.show_exposition(const.system_to_exposition[self.system.system_type])
+            
+        if self.system.name in const.capital_to_exposition.keys():
+            self.show_exposition(const.capital_to_exposition[self.system.name])
 
         
     def process_event(self, event):
