@@ -9,7 +9,6 @@ import pygame
 from pygame.math import Vector2
 import math
 
-from exposition import ExpositionText
 
 # dev mode
 dev_mode = 0
@@ -90,19 +89,6 @@ species = {
       'Friendly': friendly_capital,
       'Hostile': hostile_capital,
       'Home': our_capital
-    }
-
-capital_to_exposition = {
-        hostile_capital : ExpositionText.HOSTILE_HOMEWORLD,
-        neutral_capital : ExpositionText.NEUTRAL_HOMEWORLD,
-        friendly_capital : ExpositionText.FRIENDLY_HOMEWORLD
-    }
-
-system_to_exposition = {
-      'Neutral': ExpositionText.FIRST_NEUTRAL,
-      'Friendly': ExpositionText.FIRST_FRIENDLY,
-      'Hostile': ExpositionText.FIRST_HOSTILE,
-      'Uninhabited': ExpositionText.FIRST_UNINHABITED
     }
 
 ship_image_number = {

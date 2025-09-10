@@ -16,7 +16,20 @@ from exposition import ExpositionText
 SUN_SIZE_MULT = 3   
 SYSTEM_HIGHLIGHT = 3 # FIXME: DUP in galaxy_
   
-  
+capital_to_exposition = {
+    const.hostile_capital : ExpositionText.HOSTILE_HOMEWORLD,
+    const.neutral_capital : ExpositionText.NEUTRAL_HOMEWORLD,
+    const.friendly_capital : ExpositionText.FRIENDLY_HOMEWORLD
+}
+
+system_to_exposition = {
+    'Neutral': ExpositionText.FIRST_NEUTRAL,
+    'Friendly': ExpositionText.FIRST_FRIENDLY,
+    'Hostile': ExpositionText.FIRST_HOSTILE,
+    'Uninhabited': ExpositionText.FIRST_UNINHABITED
+}
+
+
 class SolarView(GameView):
     
     def __init__(self):
@@ -49,10 +62,10 @@ class SolarView(GameView):
             else:
                 self.show_exposition(ExpositionText.FINAL_BATTLE)
         else:
-            self.show_exposition(const.system_to_exposition[self.system.system_type])
+            self.show_exposition(system_to_exposition[self.system.system_type])
             
-        if self.system.name in const.capital_to_exposition.keys():
-            self.show_exposition(const.capital_to_exposition[self.system.name])
+        if self.system.name in capital_to_exposition.keys():
+            self.show_exposition(capital_to_exposition[self.system.name])
 
         
     def process_event(self, event):
