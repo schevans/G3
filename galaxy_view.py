@@ -62,7 +62,7 @@ class GalaxyView(GameView):
             
         keys = pygame.key.get_pressed() 
         self.is_waiting = False
-        if keys[pygame.K_z] and not self.current_ship.is_moving():
+        if keys[pygame.K_z] and not self.flagship.is_moving():
             self.is_waiting = True  
                 
     def update(self):
@@ -135,9 +135,9 @@ class GalaxyView(GameView):
         GameView.draw(self, screen)
             
         for system in systems.syslist:          
-            pygame.draw.circle(screen, utils.fade_color_to(system.color, pygame.Color('black'), 2/3), system.xy, system.r+2)
-            pygame.draw.circle(screen, utils.fade_color_to(system.color, pygame.Color('black'), 1/3), system.xy, system.r+1)
-            pygame.draw.circle(screen, system.color, system.xy, system.r )
+            pygame.draw.circle(screen, utils.fade_color_to(system.color, pygame.Color('black'), 2/3), system.xy, system.star.size+2)
+            pygame.draw.circle(screen, utils.fade_color_to(system.color, pygame.Color('black'), 1/3), system.xy, system.star.size+1)
+            pygame.draw.circle(screen, system.color, system.xy, system.star.size )
         
         # draw red halo around home
         pygame.draw.circle(screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
@@ -149,7 +149,7 @@ class GalaxyView(GameView):
             
             if self.current_ship.can_jump(self.selected_item.xy):
                 pygame.draw.line(screen, 'white', self.current_ship.xy, self.selected_item.xy)
-                pygame.draw.circle(screen, 'white', self.selected_item.xy, self.selected_item.r+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
+                pygame.draw.circle(screen, 'white', self.selected_item.xy, self.selected_item.star.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
             else:
                 jump_cost = self.current_ship.jump_cost(self.selected_item.xy)

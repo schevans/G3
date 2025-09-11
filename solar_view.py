@@ -96,7 +96,7 @@ class SolarView(GameView):
     def update(self):
         GameView.update(self)
     
-        self.get_selected_item(self.system.planets + self.mobs)
+        self.get_selected_item([self.system.star] + self.system.planets + self.mobs)
     
     def draw(self, screen):
         GameView.draw(self, screen)
@@ -106,9 +106,9 @@ class SolarView(GameView):
             pygame.draw.circle(screen, 'white', self.selected_item.xy, self.selected_item.size+SYSTEM_HIGHLIGHT, SYSTEM_HIGHLIGHT )
 
         
-        pygame.draw.circle(screen, utils.fade_color_to(self.system.color, pygame.Color('black'), 2/3), const.screen_center, (self.system.r+2)*SUN_SIZE_MULT)
-        pygame.draw.circle(screen, utils.fade_color_to(self.system.color, pygame.Color('black'), 1/3), const.screen_center, (self.system.r+1)*SUN_SIZE_MULT)
-        pygame.draw.circle(screen, self.system.color, const.screen_center, self.system.r*SUN_SIZE_MULT )
+        pygame.draw.circle(screen, utils.fade_color_to(self.system.color, pygame.Color('black'), 2/3), self.system.star.xy, (self.system.star.size+2)*SUN_SIZE_MULT)
+        pygame.draw.circle(screen, utils.fade_color_to(self.system.color, pygame.Color('black'), 1/3), self.system.star.xy, (self.system.star.size+1)*SUN_SIZE_MULT)
+        pygame.draw.circle(screen, self.system.color, self.system.star.xy, self.system.star.size*SUN_SIZE_MULT )
         
         for planet in self.system.planets:
             planet.solar_view_draw(screen)
@@ -121,7 +121,7 @@ class SolarView(GameView):
         if self.selected_item:
             text.append(self.selected_item.description(self.current_ship.scanner_lvl()))
             for mob in self.mobs:
-                if mob.planet == self.selected_item:
+                if mob.planet == self.selected_item or mob.xy == self.selected_item.xy:
                     text.append(mob.description(self.current_ship.scanner_lvl()))
                     
         return text

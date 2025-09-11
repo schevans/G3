@@ -87,6 +87,7 @@ class GameView():
         self.font = utils.fonts[20]
         self.ships = GameView.shiplist
         self.current_ship = GameView.my_ship
+        self.flagship = GameView.my_ship
         
         self.mobs = []
         self.threat_level = 3

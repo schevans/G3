@@ -109,9 +109,9 @@ class System():
     def __init__(self, name, xy, r, color, system_type):
         self.name = name
         self.xy = Vector2(xy)
-        self.r = r
         self.color = color
         self.system_type = system_type
+        self.star = Star(name, r)
         self.planets = []
         
         for i in range(0, my_random.my_randint(1, 4)):
@@ -156,5 +156,19 @@ class System():
     def object_type(self):
         return "System"
 
+
+class Star:
+    
+    def __init__(self, name, r):
+        self.name = name
+        self.xy = const.screen_center
+        self.size = r
+
+
+    def description(self, scanner_lvl):
+        return self.name
+
+    def object_type(self):
+            return "Star"
 
 
