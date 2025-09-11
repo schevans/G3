@@ -37,9 +37,9 @@ def init_systems(num_systems):
     syslist.append(System(const.our_capital, const.home_xy, HOME_STAR_SIZE, const.species_color[const.our_capital], 'Home'))
     
     # capitals
-    syslist.append(System(const.neutral_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX), const.species_color[const.neutral_capital], 'Neutral')) # FIXME: Much redundancy
-    syslist.append(System(const.friendly_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX), const.species_color[const.friendly_capital], 'Friendly'))
-    syslist.append(System(const.hostile_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN, STAR_SIZE_MAX), const.species_color[const.hostile_capital], 'Hostile'))
+    syslist.append(System(const.neutral_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN*2, STAR_SIZE_MAX), const.species_color[const.neutral_capital], 'Neutral')) # FIXME: Much redundancy
+    syslist.append(System(const.friendly_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN*2, STAR_SIZE_MAX), const.species_color[const.friendly_capital], 'Friendly'))
+    syslist.append(System(const.hostile_capital, get_random_sys_location(), my_random.my_randint(STAR_SIZE_MIN*2, STAR_SIZE_MAX), const.species_color[const.hostile_capital], 'Hostile'))
     
     for i in range(0,num_systems):
         
