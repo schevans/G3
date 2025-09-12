@@ -9,7 +9,7 @@ import my_random
 from pygame.math import Vector2
 from pygame import Color
 import math
-import pandas as pd
+
 
 import constants as const
 import planets
@@ -28,8 +28,9 @@ HOME_STAR_SIZE = 10
 
 syslist = []
 
-star_names = pd.read_csv('./data/star_names.csv')
-star_names = star_names.Name.tolist()
+with open('./data/star_names.csv') as f:
+    star_names = f.read().splitlines()
+
 
 def init_systems(num_systems):
         
