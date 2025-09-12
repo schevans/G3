@@ -9,7 +9,7 @@ Created on Fri Feb 28 19:27:39 2025
 import os
 import pygame
 import opensimplex
-import numpy as np
+import pickle
 
 import utils
 import constants as const
@@ -28,35 +28,37 @@ LARGE_FEATURES = 40
 def gen_data(data, feature_size):
     for y in range(0, BLOCK_SIZE):
         for x in range(0, BLOCK_SIZE):
-            data[x,y] = opensimplex.noise2(x/feature_size,y/feature_size)
+            data[x][y] = opensimplex.noise2(x/feature_size,y/feature_size)
 
 class PlanetaryTextures():
     
     def __init__(self):
         
-        small_filename = './data/SmallFeatures_' + str(const.random_seed) + '.npy'
-        large_filename = './data/LargeFeatures_' + str(const.random_seed) + '.npy'
+        small_filename = './data/SmallFeatures_' + str(const.random_seed) + '.pkl'
+        large_filename = './data/LargeFeatures_' + str(const.random_seed) + '.pkl'
         
-        self.small_features = np.zeros([BLOCK_SIZE, BLOCK_SIZE])
-        self.large_features = np.zeros([BLOCK_SIZE, BLOCK_SIZE])
+        self.small_features = [[0 for x in range(BLOCK_SIZE)] for y in range(BLOCK_SIZE)] 
+        self.large_features = [[0 for x in range(BLOCK_SIZE)] for y in range(BLOCK_SIZE)] 
+        self.combined_features = [[0 for x in range(BLOCK_SIZE)] for y in range(BLOCK_SIZE)]
         
-
         if os.path.isfile(small_filename):
-            self.small_features = np.load(small_filename)
+            self.small_features = self.unpickle(small_filename)
         else:
             print('First time planetary texture generation for seed ' + str(const.random_seed) + '...')
             gen_data(self.small_features, SMALL_FEATURES)
             print('...')
-            np.save(small_filename, self.small_features)
+            self.pickle(small_filename, self.small_features)
             
         if os.path.isfile(large_filename):
-            self.large_features = np.load(large_filename)
+            self.large_features = self.unpickle(large_filename)
         else:
-            gen_data(self.large_features, LARGE_FEATURES)       
-            np.save(large_filename, self.large_features)
+            gen_data(self.large_features, LARGE_FEATURES)  
+            self.pickle(large_filename, self.large_features)
             print('Done.')
 
-        self.combined_features = self.small_features * self.large_features
+        for x in range(BLOCK_SIZE):
+            for y in range(BLOCK_SIZE):
+                self.combined_features[x][y] = self.small_features[x][y] * self.large_features[x][y]
 
 
     def get_image(self, planet):
@@ -107,7 +109,17 @@ class PlanetaryTextures():
         
         return (RotatableImage(const.screen_center, surface), RotatableImage(planet.xy, small_image))
 
+    def pickle(self, filename, data):
+        with open(filename, "wb") as f:
+            pickle.dump(data, f)
+            f.close()
 
+    def unpickle(self, filename)    :
+        with open(filename, "rb") as f:
+            data = pickle.load(f)
+            f.close()
+        return data
+    
 
 
 
