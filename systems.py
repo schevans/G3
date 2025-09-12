@@ -117,8 +117,8 @@ class System():
         
         for i in range(0, my_random.my_randint(1, 4)):
             r = utils.get_random_r(r, max(const.planet_size_freq), self.planets)            
-            p =  math.radians(my_random.my_random() * 360)            
-            planet_type = planets.planet_type_data.columns.values[my_random.my_randint(0,len(planets.planet_type_data.columns.values)-1)]
+            p =  math.radians(my_random.my_random() * 360)     
+            planet_type = list(planets.planet_type_data.keys())[my_random.my_randint(0,len(planets.planet_type_data.keys())-1)]
             size = const.planet_size_freq[my_random.my_randint(0,len(const.planet_size_freq)-1)]
             planet_name = self.name + ' ' + utils.numbers_to_roman(i)
             

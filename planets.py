@@ -9,14 +9,17 @@ Created on Mon Nov  4 19:20:56 2024
 import pygame
 import math
 from pygame.math import Vector2
-import pandas as pd
+import json
   
 import constants as const
 import my_random
 from planetary_textures import PlanetaryTextures
 
-planet_type_data = pd.read_csv('./data/planet_types.csv', index_col=0) 
 
+with open('./data/planet_types.json', 'r' ) as f:
+    planet_type_data = json.load(f)
+
+    
 MINING_HIT_COUNTER = 20
 PLANET_VIEW_RADIUS_MULT = 8
 UMBRA_COLOR = ( 0, 0, 0, 128)
@@ -31,8 +34,8 @@ class Planet():
         self.p = p
         self.planet_type = planet_type
         self.size = size
-        self.color1 = pygame.Color(planet_type_data[planet_type].color1)
-        self.color2 = pygame.Color(planet_type_data[planet_type].color2)
+        self.color1 = pygame.Color(planet_type_data[planet_type]['color1'])
+        self.color2 = pygame.Color(planet_type_data[planet_type]['color2'])
         self.system = system
         self.station = station
         
