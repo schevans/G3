@@ -116,11 +116,11 @@ class TradePanel():
             
             if button_type != ButtonType.ACCEPT and button_type != ButtonType.CANCEL:
   
-                if self.our_resources['credits'] < 1 and self.their_ship.liege != 'Hero':       # FIXME - hardcode
+                if self.our_resources['credits'] < 1 and self.their_ship.liege != const.our_capital:
                     if button_type == ButtonType.BUY:
                         button.is_disabled = True
                         
-                if self.their_resources['credits'] < 1 and self.their_ship.liege != 'Hero':       # FIXME - hardcode
+                if self.their_resources['credits'] < 1 and self.their_ship.liege != const.our_capital:
                     if button_type == ButtonType.SELL:
                         button.is_disabled = True                    
                 
@@ -169,7 +169,7 @@ class TradePanel():
             buysell = 1 if button_type == ButtonType.BUY else -1
             
             amount = 0
-            if self.their_ship.liege != 'Hero':   # FIXME - hardcode
+            if self.their_ship.liege != const.our_capital:
                 amount = const.fx_rates[self.their_ship.liege][resource] * buysell    
                 
             self.transaction[resource] += buysell

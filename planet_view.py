@@ -73,7 +73,7 @@ class PlanetView(GameView):
                     
                     self.is_paused = True
                     
-                if mob.liege == 'Hero':
+                if mob.liege == const.our_capital:
                     self.show_exposition(ExpositionText.FIRST_RECRUIT)
         
         if self.planet:
@@ -97,7 +97,7 @@ class PlanetView(GameView):
                 self.is_paused = not self.is_paused
             if event.key == pygame.K_w:
                 for mob in self.mobs:
-                    if mob.object_type() in ['Ship', 'Station'] and mob.name != 'Hero' and self.current_ship.xy.distance_to(mob.xy) < DOCK_RADIUS:
+                    if mob.object_type() in ['Ship', 'Station'] and not mob.is_hero and self.current_ship.xy.distance_to(mob.xy) < DOCK_RADIUS:
                         if mob.object_type() == 'Ship': 
                             self.shared_dict['other_ship'] = mob.tmpship
                         else:   # station
@@ -187,7 +187,7 @@ class PlanetView(GameView):
                             mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
                     self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
                     mob.tmpship.is_alive = False
-                    if mob.name == 'Hero':      # FIXME hardcode
+                    if mob.is_hero:
                         self.shared_dict['game_state'] = State.GAME_OVER
                 elif mob.object_type() == 'Explosion':
                     self.mobs.append(LootBox(mob.xy, mob.resources))

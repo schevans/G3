@@ -20,12 +20,13 @@ import my_random
 class Ship():
         
 
-    def __init__(self, name, xy, system, planet, is_npc, fit_string=None):
+    def __init__(self, name, xy, system, planet, is_npc, fit_string=None, is_hero=False):
         self.name = name
         self.xy = Vector2(xy)
         self.system = system
         self.planet = planet
         self.is_npc = is_npc
+        self.is_hero = is_hero
 
         self.fit = fit.Fit(fit_string)
         self.fuel_modifier = 1
@@ -65,7 +66,7 @@ class Ship():
         self.weapons = Weapons()
 
         # dev mode
-        if const.dev_mode and self.name == 'Hero':
+        if const.dev_mode and self.is_hero:
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
             self.fit.upgrade('engine')
@@ -142,28 +143,25 @@ class Ship():
 
     def description(self, scanner_lvl):
         
-        retval = self.name
-        if self.name == 'Hero':
-            retval += ' [' + self.fit.to_string() + ']'
+        retval = ''
+        if self.is_hero:
+            retval = self.name
         else:
             if self.name in const.species_color.keys():
-                title = 'First Lord '
+                retval = 'First Lord ' + self.name
             else:
-                title = 'Lord '
-                
-            retval = title + self.name
+                retval = 'Lord ' + self.name
             
-            fit_str = ''
-            
-            if self.liege == 'Hero':
+        fit_str = ''
+        if self.liege == const.our_capital:
+            fit_str = ' [' + self.fit.to_string() + ']'
+        else:
+            if scanner_lvl == const.ScanTarget.FIT_AVE:
+                fit_str = ' (' + self.fit.to_string_ave() + ')'
+            elif scanner_lvl >= const.ScanTarget.FIT_DETAIL:
                 fit_str = ' [' + self.fit.to_string() + ']'
-            else:
-                if scanner_lvl == const.ScanTarget.FIT_AVE:
-                    fit_str = ' (' + self.fit.to_string_ave() + ')'
-                elif scanner_lvl >= const.ScanTarget.FIT_DETAIL:
-                    fit_str = ' [' + self.fit.to_string() + ']'
                 
-            retval += fit_str
+        retval += fit_str
             
         return retval
         
@@ -192,7 +190,7 @@ class Ship():
             
     def recruit(self):
         self.is_npc = False
-        self.liege = 'Hero'
+        self.liege = const.our_capital
 
         # ensure allies have enough fuel to get about
         self.resources['fuel'] = const.our_initial_resources['fuel']

@@ -60,7 +60,7 @@ class GameView():
     home_system = systems.syslist[0]
     home_planet = home_system.planets[0]
 
-    my_ship = ships.Ship(hero_name, const.initial_ship_position, None, None, False)
+    my_ship = ships.Ship(hero_name, const.initial_ship_position, None, None, False, None, True)
     my_ship.is_current = True
 
     shiplist = [ my_ship ]
