@@ -59,7 +59,7 @@ class PlanetView(GameView):
             
             for mob in applicable_mobs:                                 
                 angle_radians += angle_increment
-                orbital_ship = OrbitalShip(mob, self.planet, utils.get_random_r(self.planet.planet_view_r, const.ship_width, self.mobs), angle_radians)
+                orbital_ship = OrbitalShip(mob, self.planet, utils.get_random_r(self.planet.planet_view_r, 0, self.mobs, 20), angle_radians)
 
                 self.mobs.append(orbital_ship)
                 if orbital_ship.tmpship == shared_dict['current_ship']:

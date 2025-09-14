@@ -131,14 +131,13 @@ def scale_and_monochrome_ship_image(ship):
     return pygame.transform.scale_by(ship_image, const.screen_height/height)
     
 
-def get_random_r(body_r, object_r, object_collection):
+def get_random_r(body_r, object_r, object_collection, fuzz=40):
     
     r = body_r + my_random.my_gauss() * (const.screen_height/2 - body_r)
     
-    fuzz = 40
     for obj in object_collection:
         if math.isclose(r, obj.r, abs_tol=(object_r + fuzz*my_random.my_random())):
-            return get_random_r(body_r, object_r, object_collection)
+            return get_random_r(body_r, object_r, object_collection, fuzz)
     return r
     
 
