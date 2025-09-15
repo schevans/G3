@@ -19,15 +19,13 @@ import my_random
 
 MAX_BOX_BORDER = 100
 
-
 MAX_BOX_WIDTH = 1000
 MAX_BOX_HEIGHT = 600
-
-
 
 MIN_BOX_WIDTH = 800
 MIN_BOX_HEIGHT = 140
 
+exposition_increment = 5.5 
 
 class ExpositionText(Enum):
     OPENING = 'OPENING'
@@ -80,6 +78,7 @@ class ExpositionBox():
         self.checkbox_callback = checkbox_callback
         self.font = utils.fonts[20]
         self.is_help = True
+        self.fast_text = False
         
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
         
@@ -206,6 +205,10 @@ class ExpositionBox():
         
     def process_event(self, event):
         
+        self.fast_text = False
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
+            self.fast_text = True
+        
         self.button.process_event(event)
         
         if self.checkbox:
@@ -229,7 +232,10 @@ class ExpositionBox():
     
     def white_fade(self, color):
 
-        return tuple([min(255, rgb + const.exposition_increment) for rgb in list(color)])
+        if self.fast_text:
+            return tuple([min(255, rgb + 100) for rgb in list(color)])
+        else:
+            return tuple([min(255, rgb + exposition_increment) for rgb in list(color)])
     
     
     def draw(self, screen):   
