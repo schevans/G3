@@ -25,6 +25,7 @@ class Station():
         self.p = ( math.pi * 2 )
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
         self.is_alive = True
+        self.is_hero = False
         
         self.resources = const.our_initial_resources.fromkeys(const.our_initial_resources, const.station_resources)
 
