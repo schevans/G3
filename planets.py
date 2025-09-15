@@ -81,7 +81,7 @@ class Planet():
         
         mining_hit = bullet.shield_damage + bullet.armour_damage
 
-        if sum(self.resources.values()) > mining_hit:
+        if sum(self.resources.values()) >= mining_hit:
             for i in range(int(mining_hit)):
                 
                 available_resources = [k for k in self.resources.keys() if self.resources[k] > 0]
