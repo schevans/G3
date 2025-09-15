@@ -290,8 +290,6 @@ class GameView():
         
         self.shared_dict['fogofwar_mask'] = fogofwar_mask
         
-        self.next_view = (self.shared_dict['history'][-1], self.shared_dict)
-        
         
     def save_game(self, filename):
 
