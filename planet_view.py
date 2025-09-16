@@ -87,6 +87,7 @@ class PlanetView(GameView):
 
     def process_event(self, event):
         
+        len_expo = len(self.exposition)
         GameView.process_event(self, event)
         
         if event.type == pygame.KEYDOWN:
@@ -110,9 +111,10 @@ class PlanetView(GameView):
             self.current_ship.lock_target(pygame.mouse.get_pos(), self.mobs)
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == const.left_mouse_click:
         #if event.type == pygame.KEYDOWN and event.key == pygame.K_TAB:
-            bullet = self.current_ship.shoot()
-            if bullet:
-                self.mobs.append(bullet)
+            if len_expo == len(self.exposition):
+                bullet = self.current_ship.shoot()
+                if bullet:
+                    self.mobs.append(bullet)
                         
         keys = pygame.key.get_pressed() 
         self.current_ship.acceleration = 0
