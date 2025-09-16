@@ -98,7 +98,6 @@ class TradePanel():
         self.button_map[('Cancel', ButtonType.CANCEL)] = Button((const.screen_width/2 + spacer/2, y), (label_width, button_height), 'Cancel', const.game_color, None, False, self.button_callback)
     
         self.rev_button_map = dict((v, k) for k, v in self.button_map.items())
-        self.rev_label_map = dict((v, k) for k, v in self.label_map.items())
 
     def process_event(self, event):
              

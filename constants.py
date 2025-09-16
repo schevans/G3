@@ -34,8 +34,6 @@ num_systems = 96
 
 planet_size_freq = [4,4,4,4,4,4,5,5,5,5,5,6,6,6,7,7,8,9,10]
 
-ship_width = 18
-
 our_initial_resources = {
     'credits': 0,
     'fuel': 20,

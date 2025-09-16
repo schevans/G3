@@ -10,16 +10,9 @@ import pygame
 
 class Timer():
     
-    def __init__(self):
-        
+    def __init__(self):        
         self.start_time = 0
 
-    def start(self):
-        self.start_time = pygame.time.get_ticks()
-
-    def start_delta(self):
-        return pygame.time.get_ticks() - self.start_time
-        
     def get_next_second(self):
         
         if self.start_time == 0:

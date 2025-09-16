@@ -39,41 +39,6 @@ def draw_stars(screen):
         pygame.draw.circle(screen, 'white', star, 1)  
 
 
-
-
-class MaxableAmount():
-    
-    def __init__(self, max_amount, amount=None):
-        self.max = max_amount
-        self.amount = amount if amount else max_amount
-        
-    def dec(self, change):      
-        if self.amount >= change:
-            self.amount -= change
-            return True
-        else:
-            return False
-        
-    def inc(self, change):       
-        self.amount = min(self.max, self.amount + change)
-    
-    def inc_max(self, max_amount, fill):
-        self.max = max_amount
-        if fill:
-            self.amount = self.max
-        
-    def __call__(self):
-        return self.amount
-
-class Location():
-
-    def __init__(self, galaxy_xy, system, planet):      
-        self.galaxy_xy = Vector2(galaxy_xy)
-        self.system = system
-        self.planet = planet
-        
-        
-        
 def csv_loader(filename):
     
     output = collections.defaultdict(dict)

@@ -17,8 +17,6 @@ import utils
 import my_random
 
 
-MAX_BOX_BORDER = 100
-
 MAX_BOX_WIDTH = 1000
 MAX_BOX_HEIGHT = 600
 
