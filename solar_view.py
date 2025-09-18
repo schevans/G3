@@ -115,6 +115,7 @@ class SolarView(GameView):
        
         GameView.draw_objects(self, screen)
         
+        self.current_ship.draw_minifig(screen, self.current_ship.image.original_image)
         
     def get_mouse_text(self):
         text = []

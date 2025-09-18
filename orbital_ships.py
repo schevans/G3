@@ -144,7 +144,9 @@ class OrbitalShip(Ship):
         new_rect = rotated_image.get_rect(center = surface.get_rect(topleft = self.xy).center)
         
         screen.blit(rotated_image, (new_rect[0]-new_rect[2]/2, new_rect[1]-new_rect[3]/2))
-
+        
+        if self.is_current:
+            self.draw_minifig(screen, surface)
 
     def shoot(self):
         return self.weapons.fire(self, self.locked_target)

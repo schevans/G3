@@ -116,6 +116,31 @@ class Ship():
 
         self.image.draw(screen)
 
+
+    def draw_minifig(self, screen, ship_surface):
+
+        # pic
+        ship_surface = pygame.transform.scale_by(ship_surface, 2)
+        ship_surface_width, ship_surface_height = ship_surface.get_size()
+
+        # name
+        name_surface = utils.fonts[20].render(self.name, True, 'white')
+        name_surface_width, name_surface_height = name_surface.get_size()
+
+        # fit
+        fit_surface = utils.fonts[20].render('[' + self.fit.to_string() + ']', True, 'white')
+        fit_surface_width, fit_surface_height = fit_surface.get_size()
+
+        # new surface
+        minifig_surface = pygame.Surface((max(ship_surface_width, name_surface_width, fit_surface_width), (ship_surface_height + name_surface_height + fit_surface_height)), pygame.SRCALPHA)
+        minifig_surface_width, minifig_surface_height = minifig_surface.get_size()
+
+        # blits
+        minifig_surface.blit(ship_surface, ((minifig_surface_width-ship_surface_width)/2, 0))
+        minifig_surface.blit(name_surface, ((minifig_surface_width-name_surface_width)/2, ship_surface_height))
+        minifig_surface.blit(fit_surface, ((minifig_surface_width-fit_surface_width)/2, ship_surface_height + fit_surface_height))
+        screen.blit(minifig_surface, Vector2((const.screen_width - minifig_surface_width - 20), 20))
+
         
     def is_current_outline(self):
         if not self.is_npc:
