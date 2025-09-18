@@ -77,9 +77,15 @@ class TradePanel():
                     button = Button((sell_x, y), (button_width, button_height), '>', const.game_color, None, False, self.button_callback)
                     self.button_map[key] = button
                     
-                
+                amount = None
+                if self.their_ship.liege != const.our_capital:
+                    if resource != 'credits':
+                        amount = const.fx_rates[self.their_ship.liege][resource]
+                else:
+                    amount = '0'
+                    
                 label_key = (resource, LabelType.LABEL)
-                self.label_map[label_key] = Label((label_x,y), (label_width, button_height), resource.title(), 'gray')
+                self.label_map[label_key] = Label((label_x,y), (label_width, button_height), resource.title(), 'gray', amount)
                 
                 label_key = (resource, LabelType.OUR_AMOUNT)
                 self.label_map[label_key] = Label((our_x,y), (resource_width, button_height), str(self.our_resources[resource]), 'gray')
@@ -104,7 +110,10 @@ class TradePanel():
         for key in self.button_map.keys():
             self.button_map[key].process_event(event)
 
-
+        for key in self.label_map.keys():
+            self.label_map[key].process_event(event)
+            
+            
     def update(self):  
 
         for key in self.button_map.keys():
@@ -128,6 +137,16 @@ class TradePanel():
                     
                 if self.their_resources[resource] < 1 and button_type == ButtonType.BUY:
                     button.is_disabled = True 
+                    
+                amount = 0
+                if self.their_ship.liege != const.our_capital:
+                    amount = const.fx_rates[self.their_ship.liege][resource]
+                    
+                if self.our_resources['credits'] < amount and button_type == ButtonType.BUY:
+                    button.is_disabled = True
+                    
+                if self.their_resources['credits'] < amount and button_type == ButtonType.SELL:
+                    button.is_disabled = True   
                     
             button.update()
             
@@ -179,6 +198,12 @@ class TradePanel():
             self.our_resources['credits'] -= amount
             self.their_resources['credits'] += amount
     
+    def get_mouseover_text(self):
+        
+        for widget in list(self.button_map.values()) + list(self.label_map.values()):
+            if widget.is_active and widget.mouseover_text:
+                return ['Price: ' + str(widget.mouseover_text)]
+
     
 class ApproachPanel():
     
@@ -205,7 +230,10 @@ class ApproachPanel():
     def draw(self, screen):
         self.button.draw(self.surface)
     
-
+    def get_mouseover_text(self):
+        pass
+    
+    
 class BoardPanel():
     
     def __init__(self):
@@ -221,6 +249,10 @@ class BoardPanel():
 
     def draw(self, screen):
         pass
+    
+    def get_mouseover_text(self):
+        pass
+    
     
 class RepairPanel():
     
@@ -320,6 +352,11 @@ class RepairPanel():
         elif button == self.cancel_button:
             self.metal_paid = 0
             self.armour_added = 0
+
+            
+    def get_mouseover_text(self):
+        pass
+    
 
 
 

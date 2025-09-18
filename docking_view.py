@@ -175,7 +175,10 @@ class DockingView(GameView):
 
         GameView.draw_objects(self, screen) 
 
-
+        if self.panel:
+            text = self.panel.get_mouseover_text()
+            if text:
+                self.draw_mouseover_text(screen, text)
 
 
 
