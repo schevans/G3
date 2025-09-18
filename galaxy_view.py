@@ -91,7 +91,7 @@ class GalaxyView(GameView):
         if self.fogofwar_mask.get_rect().collidepoint(mousepos) and self.fogofwar_mask.get_at(mousepos) != const.fogofwar_black:
             self.get_selected_item(systems.syslist + self.mobs)
         
-        if self.current_ship == self.my_ship and ( self.current_ship.is_moving() or self.is_waiting):
+        if self.flagship.is_moving() or self.is_waiting:
             self.master_timer.increment()
             
         if self.opening_timer <= OPENING_TIMER:
