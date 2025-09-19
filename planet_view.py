@@ -202,13 +202,7 @@ class PlanetView(GameView):
     def draw(self, screen):
         
         GameView.draw(self, screen)
-        
-        self.draw_resource_bar(screen)
-        self.current_ship.weapons.draw_icons(screen,self.current_ship.resources, WEAPON_ICON_SIZE, OFFSET)
-        self.draw_tooltips(screen)
-        
-        self.planet.planet_view_draw(screen)
-        
+
         for mob in self.mobs:
             if mob.object_type() == 'Ship' and mob.locked_target:
                 pygame.draw.circle(screen, RED_FADE, mob.locked_target.xy, 20, 1)
@@ -216,14 +210,21 @@ class PlanetView(GameView):
         
         GameView.draw_objects(self, screen)
         
+        self.planet.planet_view_draw(screen)
+
+        self.draw_resource_bar(screen)
+        self.current_ship.weapons.draw_icons(screen,self.current_ship.resources, WEAPON_ICON_SIZE, OFFSET)
+        self.draw_tooltips(screen)
+        
         if self.is_paused:
             text = '[ Paused ]'
             text_surface = utils.fonts[30].render(text, True, 'white', 'black')
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, text_height + 10)
             screen.blit(text_surface, text_pos )
-          
-           
+            
+        self.draw_game_state(screen)   
+
           
     def draw_tooltips(self, screen):
         

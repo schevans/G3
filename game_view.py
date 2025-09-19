@@ -184,8 +184,6 @@ class GameView():
                
         if self.exposition and (not self.exposition[0].is_help or self.shared_dict['show_help']):
             self.exposition[0].draw(screen)
-            
-        self.draw_game_state(screen)
 
 
     def draw_mouseover_text(self, screen, text_arr):

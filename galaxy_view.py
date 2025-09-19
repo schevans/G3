@@ -166,7 +166,9 @@ class GalaxyView(GameView):
         screen.blit(text_surface, (15, 15) )
         
         GameView.draw_objects(self, screen) 
-
+        
+        self.draw_game_state(screen)
+        
         
     def get_mouse_text(self):
         text = []
