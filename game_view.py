@@ -90,7 +90,7 @@ class GameView():
         self.flagship = GameView.my_ship
         
         self.mobs = []
-        self.threat_level = 3
+        self.threat_level = 4
         
         self.selected_item = None
         

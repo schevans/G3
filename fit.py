@@ -44,9 +44,10 @@ class ShipSystem():
         return text
 
     def upgrade_system(self):
-        self.level += 1
-        self.maximum = self.data[str(self.level)]
-        self.value = self.maximum
+        if self.level < 3:
+            self.level += 1
+            self.maximum = self.data[str(self.level)]
+            self.value = self.maximum
         
         
     def add_value(self, value):

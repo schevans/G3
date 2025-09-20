@@ -15,7 +15,7 @@ from game_view import GameView, View, State
 from exposition import ExpositionText
 
 SYSTEM_HIGHLIGHT = 3
-SHIP_LAUNCH_TIMER = 50   
+SHIP_LAUNCH_TIMER = 50
 OPENING_TIMER = 50
 
 FOW_ENEMY_HALO = 20
@@ -99,8 +99,7 @@ class GalaxyView(GameView):
                 self.show_exposition(ExpositionText.OPENING)
             self.opening_timer += 1
         
-        if self.master_timer() % SHIP_LAUNCH_TIMER == 0 and self.master_timer() != 0:
-            self.master_timer.increment()
+        if sum(1 for ship in self.mobs if ship.is_npc) == 0 and self.master_timer() >= SHIP_LAUNCH_TIMER:
             
             suitable = []
             for ship in self.ships:
@@ -114,6 +113,9 @@ class GalaxyView(GameView):
             fresh_mob.destination = self.home_system
             fresh_mob.system = None
             fresh_mob.planet = None
+            fresh_mob.fit.upgrade('engine')
+            fresh_mob.fit.upgrade('engine')
+
             self.mobs.append(fresh_mob)
             self.show_exposition(ExpositionText.FIRST_ENEMY_LAUNCH)
             
@@ -142,7 +144,7 @@ class GalaxyView(GameView):
         # draw red halo around home
         pygame.draw.circle(screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
 
-        if self.threat_level >= 11:
+        if self.threat_level >= 12:
             self.shared_dict['game_state'] = State.GAME_OVER
 
         if self.selected_item and self.selected_item.object_type() != 'Ship':
