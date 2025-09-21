@@ -16,6 +16,7 @@ from statistics import mean
 import webbrowser
 from collections import deque
 import math
+import json
 
 import ships
 import systems
@@ -250,13 +251,42 @@ class GameView():
     def exposition_checkbox_callback(self, is_checked):
         self.shared_dict['show_help'] = is_checked
  
-    def draw_game_state(self, screen):       
+    def draw_game_state(self, screen):
         if self.shared_dict['game_state'] != State.IN_PROGRESS:
             text = self.shared_dict['game_state'].name.replace('_', ' ') +'!'
             text_surface = utils.fonts[100].render(text, False, 'white', 'black')
             text_width, text_height = text_surface.get_size()
             text_pos = Vector2(const.screen_width / 2 - text_width / 2, const.screen_height / 2 - text_height / 2)
             screen.blit(text_surface, text_pos )   
+            
+            if self.shared_dict['game_state'] == State.VICTORY:
+                self.victory_dump()
+                
+    
+    def victory_dump(self):
+        
+        with open('./data/VictoryDump' + str(const.random_seed) + '.json', 'w') as f:
+            
+            data = []
+            data.append(self.shared_dict['master_timer'].days)
+            
+            is_dead = []
+            ship_data = {}
+            for ship in self.ships:
+                if ship.is_alive:
+                    if not ship.is_npc:
+                        ship_data[ship.name] = {}
+                        ship_data[ship.name]['resources'] = ship.resources
+                        ship_data[ship.name]['fit'] = ship.fit.to_string()
+                else:
+                    is_dead.append(ship.name + ' (' + ship.liege + ')')
+            
+            data.append(ship_data)
+            data.append(is_dead)
+            
+            json.dump(data, f, indent=4)
+            f.close()
+        
  
     def pickle(self):
         
