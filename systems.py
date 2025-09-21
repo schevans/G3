@@ -124,7 +124,7 @@ class System():
             
             station = None 
             if self.system_type == 'Uninhabited' and i == 0:
-                station = Station(planet_name, const.screen_height/4)
+                station = Station(planet_name, size, const.screen_height/4)
     
             if self.name == const.our_capital:
                 if i == 0:

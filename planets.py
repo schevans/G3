@@ -38,6 +38,7 @@ class Planet():
         self.color2 = pygame.Color(planet_type_data[planet_type]['color2'])
         self.system = system
         self.station = station
+        self.mass = const.planetary_density * size
         
         self.xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
         self.planet_view_r = self.size * PLANET_VIEW_RADIUS_MULT

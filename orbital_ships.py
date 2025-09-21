@@ -69,10 +69,10 @@ class OrbitalShip(Ship):
         self.cap_timer = Timer()
         self.dmg_timer = Timer()
         
-        self.mass = 7000 / planet.size # FIXME. Also check planet.planet_view_r
+        self.planetary_mass = planet.mass
         self.planet_view_r = planet.planet_view_r
         
-        self.w = math.sqrt(const.G*self.mass/math.pow(r, 3)) 
+        self.w = math.sqrt(const.G*self.planetary_mass/math.pow(r, 3)) 
 
         
     def update(self):
@@ -84,7 +84,7 @@ class OrbitalShip(Ship):
             self.image = self.image_still 
             
         self.p += self.w
-        self.w = math.sqrt(const.G*self.mass/math.pow(self.r, 3)) 
+        self.w = math.sqrt(const.G*self.planetary_mass/math.pow(self.r, 3)) 
         
         self.xy[0] = const.screen_center.x - math.cos(self.p)*self.r
         self.xy[1] = const.screen_center.y - math.sin(self.p)*self.r

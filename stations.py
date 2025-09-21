@@ -14,14 +14,14 @@ import rotatable_image
 
 class Station():
     
-    def __init__(self, planet_name, r):
+    def __init__(self, planet_name, planet_size, r):
 
         self.r = r
         self.planet_name = planet_name
 
         self.name = 'Sister\'s Station, ' + self.planet_name
-        self.mass = 1000 # FIXME. Also check planet.planet_view_r
-        self.w = math.sqrt(const.G*self.mass/math.pow(r, 3)) 
+        self.planetary_mass = planet_size * const.planetary_density
+        self.w = math.sqrt(const.G*self.planetary_mass/math.pow(r, 3)) 
         self.p = ( math.pi * 2 )
         self.xy = Vector2(const.screen_center.x - math.cos(self.p)*self.r,  const.screen_center.y - math.sin(self.p)*self.r)
         self.is_alive = True
@@ -36,7 +36,7 @@ class Station():
     def update(self):
         
         self.p -= self.w
-        self.w = math.sqrt(const.G*self.mass/math.pow(self.r, 3)) 
+        self.w = math.sqrt(const.G*self.planetary_mass/math.pow(self.r, 3)) 
         
         self.xy[0] = const.screen_center.x - math.sin(self.p)*self.r
         self.xy[1] = const.screen_center.y - math.cos(self.p)*self.r
