@@ -176,7 +176,7 @@ class Ship():
             if self.name in const.species_color.keys():
                 retval = 'First Lord ' + self.name
             else:
-                retval = 'Lord ' + self.name
+                retval = 'Lord ' + self.name + ' (' + self.liege[0] +')'
             
         fit_str = ''
         if self.liege == const.our_capital:
