@@ -19,6 +19,9 @@ exposition_on = True
 screen_width = 1200
 screen_height = 800
 
+# movement points per turn
+base_movement_points = 30
+
 screen_center = Vector2(screen_width/2, screen_height/2)
 
 random_seed = 43

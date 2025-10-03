@@ -11,7 +11,7 @@
 
 "FIRST_COMBAT" : "We're entering combat. Good luck. Did you remember to switch off the coffee machine? It says here 'Entering combat, p3.4.23.6: Switch off the coffee machine.\nFrankly if the worst thing that happens to you today is getting burned by hot coffee I think you'll have done ok.\n\nIn case you've forgotten what to do, and are too lazy to read my manual:\nWeapons select: 1-5. Note only some weapons are homing (denoted by the crosshairs on the icon)\nRight-click: Lock (homing weapons only)\nLeft-click: Fire\nSpacebar to unpause\n\nAgain: Good Luck. I'll have my eyes closed.",
 
-"FIRST_COMBAT_WITH_ALLIES" : "You'll be familiar with most of this this, but now it gets hard. You'll know now how to drop in and out of the various relativities, but now you'll have to dance with others. Use your pause menu (realtime) to switch between your ships ([/]) to mark targets. You'll only need to actually fly one ship - just switch to the others to give orders.\n\nJust remember: your remote ships can only use homing weapons, so make sure they have plenty of those before battle. You can dock with them to resupply mid-battle if needed.",
+"FIRST_COMBAT_WITH_ALLIES" : "Another fight, but now we have help. Pause to switch between your ships ([/]) to mark targets. You'll only need to actually fly one ship - just switch to the others to give orders.\n\nJust remember: your remote ships can only use homing weapons, so make sure they have plenty of those before battle. You can dock with them to resupply mid-battle if needed.",
 
 "FIRST_ENEMY_LAUNCH" : "Cap, I've just detected a long range launch. Looks like a Zaurakian on intercept with Polaris. They must be reinforcing the blockade.",
 
@@ -21,7 +21,7 @@
 
 "FINAL_BATTLE_WITH_ALLIES" : "Here we go Cap, this is it.\n\nMight be a good idea to take a moment at an undefended planet to distribute ammo among your fleet before the battle.\n\nGood luck. I've downloaded all my data to base. I wish I could do the same for yours.",
 
-"FIRST_RECRUIT" : "We now have company! Another ship will really help us out - we can cover more space.\n\nA note on navigation:\nIn general you can switch ships by pushing ([/]) on your console. In Planetary and System views, you then control their ship. In Galaxy view however you can switch to their ships and issue orders, but they will only jump when you jump. Remember you're in hypersleep when you jump? Well, so are they, so you can't communicate. ",
+"FIRST_RECRUIT" : "We now have company! Another ship will really help us out - we can cover more space.\n\nA note on navigation:\nIn general you can switch ships by pushing ([/]) on your console. From then on, you can control their ship. They will of course have their own movement points so think before you move them between systems. You'll all be looking for fuel so split up, but of course gather together for the final fight. Not all of you allies may make it.",
 
 "FIRST_PLANET" : "Mining is easy - just shoot the planet from within weapons range. Your weapon system won't matter too much, so stick to your lasers, which just take cap to fire. Do get into the habit of watching your cap, though, as running out during a battle is problematic.\nDon't forget to pick up the cans the planet ejects. There's a bar on the top left that shows your progress.",
 
@@ -33,5 +33,7 @@
 
 "NEUTRAL_HOMEWORLD" : "The Alcorian homeworld, home to First Lord Alcor himself. His is the most heavily armed ship in his heavily armed fleet, so don't go picking any fights now.",
 
-"FRIENDLY_HOMEWORLD" : "This is the Castorian homeworld. First Lord Castor should join our cause, and his ship's arms and armor should fight well alongside ours."
+"FRIENDLY_HOMEWORLD" : "This is the Castorian homeworld. First Lord Castor should join our cause, and his ship's arms and armor should fight well alongside ours.",
+
+"MOVEMENT_POINTS" : "You're out of movement points. These are things we ships introduced to try and make relativistic travel easier for you guys to tolerate. Try not to think about it too much. To end turn, hit the big button on the bottom center of your screen or hit N on your console."
 }

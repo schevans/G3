@@ -48,7 +48,7 @@ class LoadSaveView(GameView):
         self.save_select_button = Button((const.screen_width/2+space, 100), (button_width, 30), 'Save Menu', available_color, None, False, self.button_callback)
         self.load_save_button = Button((const.screen_width/2-button_width/2, 700), (button_width, 30), 'Load', const.game_color, None, True, self.button_callback)
         
-        legend ='Key: RtP SaveNum RandomSeed DaysPassed NumAllies CurrentShip'
+        legend ='Key: RtP SaveNum RandomSeed WeeksPassed NumAllies CurrentShip'
         self.legend_surface = utils.fonts[20].render(legend, True, available_color, False)
         legend_width = self.legend_surface.get_size()[0]
         self.legend_xy = Vector2(const.screen_width / 2 - legend_width / 2, 150)

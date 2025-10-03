@@ -30,6 +30,7 @@ class Ship():
 
         self.fit = fit.Fit(fit_string)
         self.fuel_modifier = 1
+        self.movement_points = const.base_movement_points
         
         if system:
             self.liege = const.species[system.system_type]
@@ -227,7 +228,7 @@ class Ship():
         system = self.system.name if self.system else None
         planet = self.planet.name if self.planet else None
         
-        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive]
+        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive, self.movement_points]
         
         return data
 
@@ -250,6 +251,7 @@ class Ship():
         self.liege = data[8]
         self.heading = data[9]
         self.is_alive = data[10]
+        self.movement_points = data[11]
         
         self.load_and_color_images()
         

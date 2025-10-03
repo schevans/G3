@@ -88,7 +88,6 @@ class GameView():
         self.font = utils.fonts[20]
         self.ships = GameView.shiplist
         self.current_ship = GameView.my_ship
-        self.flagship = GameView.my_ship
         
         self.mobs = []
         self.threat_level = 4
@@ -268,7 +267,7 @@ class GameView():
         with open('./data/VictoryDump' + str(const.random_seed) + '.json', 'w') as f:
             
             data = []
-            data.append(self.shared_dict['master_timer'].days)
+            data.append(self.shared_dict['master_timer']())
             
             is_dead = []
             ship_data = {}
@@ -475,14 +474,14 @@ class ViewManager():
         
 class MasterTimer():
 
-    def __init__(self, days):
-        self.days = days
+    def __init__(self, weeks):
+        self.weeks = weeks
 
     def __call__(self):
-        return self.days
+        return self.weeks
 
     def increment(self):
-        self.days += 1        
+        self.weeks += 1        
 
             
 
