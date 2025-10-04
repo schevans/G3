@@ -61,6 +61,7 @@ font_file = './fonts/'+ font_dir + '/' + font_name + '.otf'
 fonts = {
     12: pygame.font.Font(font_file, 12),
     14: pygame.font.Font(font_file, 14),
+    18: pygame.font.Font(font_file, 18),
     20: pygame.font.Font(font_file, 20),
     30: pygame.font.Font(font_file, 30),
     100: pygame.font.Font(font_file, 100)

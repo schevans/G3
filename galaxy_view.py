@@ -183,7 +183,12 @@ class GalaxyView(GameView):
         
         text = 'Weeks passed: ' + str(self.master_timer())
         text_surface = utils.fonts[20].render(text, True, 'white', 'black')
+        text_height = text_surface.get_height()
         screen.blit(text_surface, (15, 15) )
+        
+        text = 'Ship: ' + self.current_ship.name
+        text_surface = utils.fonts[18].render(text, True, 'white', 'black')
+        screen.blit(text_surface, (15, 15 + text_height + 4 ))
         
         GameView.draw_objects(self, screen) 
         
