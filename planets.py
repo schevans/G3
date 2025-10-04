@@ -104,13 +104,13 @@ class Planet():
                 self.mining_can = {}
             
         else:
-            if sum(self.mining_can.values()):
-                retval = self.mining_can.copy()
-                self.mining_can = {}    
-                for key in self.resources:
-                    self.resources[key] = 0
+            retval = self.mining_can.copy()
+            self.mining_can = {}    
+            for key in self.resources:
+                self.resources[key] = 0
             
         return retval
+
     
     def update(self):
         # defer planet gen 'till needed for perf

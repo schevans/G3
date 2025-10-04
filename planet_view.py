@@ -22,7 +22,7 @@ DOCK_RADIUS = 15
 
 OFFSET = 5
 WEAPON_ICON_SIZE = (44, 52)
-RESOURCE_BAR = 5
+RESOURCE_BAR = 10
 RED_FADE = pygame.Color(207, 1, 0, 64)
 
 class PlanetView(GameView):
