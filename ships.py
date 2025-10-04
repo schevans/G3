@@ -228,7 +228,7 @@ class Ship():
         system = self.system.name if self.system else None
         planet = self.planet.name if self.planet else None
         
-        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive, self.movement_points]
+        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive, self.movement_points, self.is_current]
         
         return data
 
@@ -252,6 +252,7 @@ class Ship():
         self.heading = data[9]
         self.is_alive = data[10]
         self.movement_points = data[11]
+        self.is_current = data[12]
         
         self.load_and_color_images()
         
