@@ -73,7 +73,7 @@ class PlanetView(GameView):
                     
                     self.is_paused = True
                     
-                if mob.liege == const.our_capital:
+                if not mob.is_hero and mob.liege == const.our_capital:
                     self.show_exposition(ExpositionText.FIRST_RECRUIT)
         
         if self.planet:
