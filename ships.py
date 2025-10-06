@@ -156,6 +156,9 @@ class Ship():
 
     def jump_cost(self, destination):
         return self.xy.distance_to(destination.xy) / ( const.distance_per_fuel * self.fuel_modifier )
+    
+    def jump_range(self):
+        return self.resources['fuel'] * const.distance_per_fuel * self.fuel_modifier 
 
     def can_jump(self, destination):
            distance = self.jump_cost(destination)

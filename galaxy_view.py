@@ -194,7 +194,11 @@ class GalaxyView(GameView):
         
         for mob in self.mobs:
             if self.our_turn and not mob.is_npc or not self.our_turn and mob.is_npc:
+                # movement_points
                 pygame.draw.circle(screen, mob.color, mob.xy, mob.movement_points * mob.fit.speed(), 1)
+                if mob.is_current and not mob.is_moving():
+                    # fuel
+                    pygame.draw.circle(screen, 'red4', mob.xy, mob.jump_range(), 1)
         
         self.end_turn_button.draw(screen)
         
