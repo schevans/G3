@@ -68,7 +68,8 @@ class TradePanel():
         y = 150 + INNER_BORDER_HIGHT
         for resource in const.our_initial_resources.keys():
             if resource != 'laser':
-                if resource != 'credits':
+                
+                if resource != 'credits' or self.their_ship.liege == const.our_capital:
                     key = (resource, ButtonType.BUY)
                     button = Button((buy_x, y), (button_width, button_height), '<', const.game_color, None, False, self.button_callback)
                     self.button_map[key] = button
