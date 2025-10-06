@@ -22,7 +22,8 @@ DOCK_RADIUS = 15
 
 OFFSET = 5
 WEAPON_ICON_SIZE = (44, 52)
-RESOURCE_BAR = 10
+RESOURCE_BAR_Y = 10
+RESOURCE_BAR_X = 5
 RED_FADE = pygame.Color(207, 1, 0, 64)
 
 class PlanetView(GameView):
@@ -41,7 +42,7 @@ class PlanetView(GameView):
         
         self.planet = shared_dict['planet']
         
-        self.max_resource_rect = pygame.Rect((OFFSET, WEAPON_ICON_SIZE[1] + OFFSET*2), (sum(self.planet.resources.values()) * RESOURCE_BAR, RESOURCE_BAR ))
+        self.max_resource_rect = pygame.Rect((OFFSET, WEAPON_ICON_SIZE[1] + OFFSET*2), (sum(self.planet.resources.values()) * RESOURCE_BAR_X, RESOURCE_BAR_Y ))
         
         angle_radians = 0
         
@@ -265,7 +266,7 @@ class PlanetView(GameView):
 
         pygame.draw.rect(screen, 'white', self.max_resource_rect, 1)    
 
-        rect = (xy, (sum(self.planet.resources.values()) * RESOURCE_BAR, RESOURCE_BAR))
+        rect = (xy, (sum(self.planet.resources.values()) * RESOURCE_BAR_X, RESOURCE_BAR_Y))
         pygame.draw.rect(screen, 'white', rect)   
 
 
