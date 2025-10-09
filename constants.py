@@ -191,4 +191,12 @@ class ScanTarget():
     FIT_AVE = 2
     SOLAR_RESOURCES = 2
     FIT_DETAIL = 3
-    
+
+# threat_level start - sets the red halo round home
+threat_level_start = 4
+
+# end game condition - halo complete
+threat_level_end = 12
+
+
+

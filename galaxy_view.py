@@ -38,6 +38,8 @@ class GalaxyView(GameView):
     def cleanup(self):
         self.mobs = []
         
+        self.shared_dict['threat_level'] = self.threat_level
+        
         # stash the galaxy_xy as we're changing views
         for ship in self.ships:
             if ship.is_alive and ship.is_moving() or not ship.is_npc:
@@ -50,6 +52,7 @@ class GalaxyView(GameView):
         self.current_ship = self.shared_dict['current_ship']
         self.master_timer = self.shared_dict['master_timer']
         self.fogofwar_mask = self.shared_dict['fogofwar_mask']
+        self.threat_level = self.shared_dict['threat_level']
         
         for ship in self.ships:
             if ship.is_alive and ship.is_moving() or not ship.is_npc:
@@ -171,7 +174,7 @@ class GalaxyView(GameView):
         # draw red halo around home
         pygame.draw.circle(screen, 'red', (const.screen_width - const.free_space_in_corners, const.free_space_in_corners), systems.HOME_STAR_SIZE+2, self.threat_level )
 
-        if self.threat_level >= 12:
+        if self.threat_level >= const.threat_level_end:
             self.shared_dict['game_state'] = State.GAME_OVER
 
         if self.selected_item and self.selected_item.object_type() != 'Ship':
@@ -230,6 +233,9 @@ class GalaxyView(GameView):
             
             # always show invading ships if selected_item is our homeworld
             if self.selected_item.name == const.our_capital:
+                
+                text.append('Threat Level: ' + str(self.threat_level - const.threat_level_start) + '/' + str(const.threat_level_end - const.threat_level_start))
+                
                 for ship in self.ships:
                     if ship.system == self.selected_item:
                         text.append(ship.description(self.current_ship.scanner_lvl()))

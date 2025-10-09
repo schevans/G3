@@ -90,7 +90,6 @@ class GameView():
         self.current_ship = GameView.my_ship
         
         self.mobs = []
-        self.threat_level = 4
         
         self.selected_item = None
         
@@ -379,7 +378,8 @@ class ViewManager():
             'fogofwar_mask': fogofwar_mask,
             'show_help': const.exposition_on,
             'expositions_done': [],
-            'game_state': State.IN_PROGRESS
+            'game_state': State.IN_PROGRESS,
+            'threat_level': const.threat_level_start
         }
         
         self.view.startup(shared_dict)
