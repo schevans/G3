@@ -227,6 +227,13 @@ class GalaxyView(GameView):
                         planets_text = ', ' + str(num_planets) + ' planet'
                 
             text.append(self.selected_item.description(self.current_ship.scanner_lvl()) + planets_text)
+            
+            # always show invading ships if selected_item is our homeworld
+            if self.selected_item.name == const.our_capital:
+                for ship in self.ships:
+                    if ship.system == self.selected_item:
+                        text.append(ship.description(self.current_ship.scanner_lvl()))
+            
             for mob in self.mobs:
                 if mob.system == self.selected_item:
                     text.append(mob.description(self.current_ship.scanner_lvl()))
