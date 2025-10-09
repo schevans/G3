@@ -15,6 +15,8 @@ from game_view import GameView, View, State
 from exposition import ExpositionText
 from gui import Button
 
+
+
 SYSTEM_HIGHLIGHT = 3
 SHIP_LAUNCH_TIMER = 4
 OPENING_TIMER = 50
@@ -36,6 +38,12 @@ class GalaxyView(GameView):
     def cleanup(self):
         self.mobs = []
         
+        # stash the galaxy_xy as we're changing views
+        for ship in self.ships:
+            if ship.is_alive and ship.is_moving() or not ship.is_npc:
+                ship.galaxy_xy = ship.xy.copy()
+
+                
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
         self.shared_dict['history'] = [(View.GALAXY)]
@@ -46,10 +54,11 @@ class GalaxyView(GameView):
         for ship in self.ships:
             if ship.is_alive and ship.is_moving() or not ship.is_npc:
                 self.mobs.append(ship)
-                if self.current_ship.system and ship.system == self.current_ship.system:
-                    ship.reset_xy(ship.system.xy)
+                # restore galaxy_xy and update image
+                ship.xy = ship.galaxy_xy.copy()
+                ship.image.update(ship.xy, ship.heading)   
 
-        
+
     def process_event(self, event):
         
         GameView.process_event(self, event)

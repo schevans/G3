@@ -81,9 +81,13 @@ class Ship():
                 self.resources = self.resources.fromkeys(self.resources, 70)
             self.resources['laser'] = math.inf
 
+        self.galaxy_xy = self.xy.copy()
+
     def update(self):
         
         if self.destination:
+            
+            
             
             if self.xy.distance_to(self.destination.xy) <= self.fit.speed():
                 # arrived
@@ -231,7 +235,7 @@ class Ship():
         system = self.system.name if self.system else None
         planet = self.planet.name if self.planet else None
         
-        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive, self.movement_points, self.is_current]
+        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive, self.movement_points, self.is_current, self.galaxy_xy]
         
         return data
 
@@ -256,6 +260,7 @@ class Ship():
         self.is_alive = data[10]
         self.movement_points = data[11]
         self.is_current = data[12]
+        self.galaxy_xy = data[13]
         
         self.load_and_color_images()
         
