@@ -117,7 +117,7 @@ weapon_cost = {
 
 fx_rates = {}
 fx_rates[neutral_capital] = {
-    'fuel': 1,
+    'fuel': 5,
     'metal': 2,
     'tech': 1,
     'cannon': weapon_cost['cannon'],
@@ -126,7 +126,7 @@ fx_rates[neutral_capital] = {
     'mine': weapon_cost['mine']
     }
 fx_rates[hostile_capital] = {
-    'fuel': 1,
+    'fuel': 10,
     'metal': 1,
     'tech': 2,
     'cannon': weapon_cost['cannon']*4,
@@ -135,7 +135,7 @@ fx_rates[hostile_capital] = {
     'mine': weapon_cost['mine']*4
     }
 fx_rates[friendly_capital] = {
-    'fuel': 1,
+    'fuel': 5,
     'metal': 1,
     'tech': 1,
     'cannon': weapon_cost['cannon'],
