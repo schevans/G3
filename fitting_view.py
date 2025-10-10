@@ -23,8 +23,6 @@ with open('./data/ship_system_descriptions.json') as f:
 
 class FittingView(GameView):
     
-
-    
     def __init__(self):
         GameView.__init__(self)   
         
@@ -104,7 +102,7 @@ class FittingView(GameView):
             upgrade_cost = self.current_ship.fit.systems[key].get_upgrade_cost_str(level)  
             
             button.is_disabled = True
-            button.mousover_text = [function]
+            button.mouseover_text = [function]
             color = unavilable_color
             if level <= current_level:
                 color = got_color                  
@@ -112,12 +110,11 @@ class FittingView(GameView):
                 if self.current_ship.can_upgrade(key):
                     color = available_color
                     button.is_disabled = False
-                button.mousover_text += upgrade_cost
+                button.mouseover_text += upgrade_cost
             else:
-                button.mousover_text += upgrade_cost   
+                button.mouseover_text += upgrade_cost
                 
             button.set_color(color)
-            
 
         for button in self.button_map.keys():
             button.update()       
