@@ -86,7 +86,7 @@ class DockingView(GameView):
         
         if self.other_ship.object_type() == 'Ship':
             x = ( const.screen_width - self.button_width ) / 2
-            self.top_buttons[Panel.APPROACH] = Button((x, y), (self.button_width, self.button_height), 'Approach', const.game_color, None, False, self.button_callback)
+            self.top_buttons[Panel.APPROACH] = Button((x, y), (self.button_width, self.button_height), 'Approach', const.game_color, None, not self.other_ship.is_npc, self.button_callback)
             x = const.screen_width - INNER_BORDER_WIDTH - self.button_width
             self.top_buttons[Panel.BOARD] = Button((x, y), (self.button_width, self.button_height), 'Board', const.game_color, None, False, self.button_callback)
         else: # station
@@ -108,6 +108,9 @@ class DockingView(GameView):
     def update(self):
         
         GameView.update(self)
+        
+        if self.other_ship.object_type() == 'Ship':
+            self.top_buttons[Panel.APPROACH].is_disabled = self.other_ship.liege == const.our_capital
         
         for key in self.top_buttons:
             self.top_buttons[key].update()
