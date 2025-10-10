@@ -48,7 +48,7 @@ class LoadSaveView(GameView):
         self.save_select_button = Button((const.screen_width/2+space, 100), (button_width, 30), 'Save Menu', available_color, None, False, self.button_callback)
         self.load_save_button = Button((const.screen_width/2-button_width/2, 700), (button_width, 30), 'Load', const.game_color, None, True, self.button_callback)
         
-        legend ='Key: RtP SaveNum RandomSeed WeeksPassed NumAllies CurrentShip'
+        legend ='Key: RtP SaveNum RandomSeed WeeksPassed NumShips CurrentShip'
         self.legend_surface = utils.fonts[20].render(legend, True, available_color, False)
         legend_width = self.legend_surface.get_size()[0]
         self.legend_xy = Vector2(const.screen_width / 2 - legend_width / 2, 150)
@@ -183,8 +183,8 @@ class LoadSaveView(GameView):
             if self.is_load_view:
                 self.file_name = self.save_slot_lables[index].text 
             else:                  
-                num_alies = sum(x.is_npc == False and x.is_alive for x in self.ships) - 1
-                self.file_name = 'RtP_' + self.save_slot_buttons[index].text + '_' + str(const.random_seed) + '_' + str(self.master_timer()) + '_' + str(num_alies) + '_' + self.current_ship.name
+                num_ships = sum(x.is_npc == False and x.is_alive for x in self.ships)
+                self.file_name = 'RtP_' + self.save_slot_buttons[index].text + '_' + str(const.random_seed) + '_' + str(self.master_timer()) + '_' + str(num_ships) + '_' + self.current_ship.name
                 
                 if self.save_slot_lables[index].text:
                     self.overwrite_file = self.save_slot_lables[index].text
@@ -198,6 +198,7 @@ class LoadSaveView(GameView):
                 if self.overwrite_file:
                     full_path = data_dir + self.overwrite_file + '.pkl'
                     os.remove(full_path)
+                    os.remove(full_path.replace('pkl', 'png'))
                     self.overwrite_file = None
                 
                 full_path = data_dir + self.file_name + '.pkl'
