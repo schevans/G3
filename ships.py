@@ -174,8 +174,8 @@ class Ship():
         self.destination = None
         self.image.update(self.xy, self.heading)
       
-
-    def description(self, scanner_lvl):
+        
+    def get_long_name(self):
         
         retval = ''
         if self.is_hero:
@@ -184,7 +184,16 @@ class Ship():
             if self.name in const.species_color.keys():
                 retval = 'First Lord ' + self.name
             else:
-                retval = 'Lord ' + self.name + ' (' + self.liege[0] +')'
+                retval = 'Lord ' + self.name
+                
+            retval += ' (' + self.liege[0] +')'   
+            
+        return retval
+
+
+    def description(self, scanner_lvl):
+        
+        retval = self.get_long_name()
             
         fit_str = ''
         if self.liege == const.our_capital:

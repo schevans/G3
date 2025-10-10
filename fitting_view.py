@@ -128,6 +128,15 @@ class FittingView(GameView):
         width, height = ship_image.get_size()
         
         screen.blit(ship_image, (const.screen_width/2 - width/2, const.screen_height/2 - height/2 + 60))        
+
+        # ship name
+        ship_name = self.current_ship.get_long_name()
+        text_y = const.screen_height - 50
+        text_surface = utils.fonts[20].render(ship_name, True, 'white')    
+        text_width = utils.fonts[20].size(ship_name)[0]
+        text_x = const.screen_width/2 - text_width/2
+        screen.blit(text_surface, (text_x, text_y))
+            
     
     def draw(self, screen):
 
