@@ -235,6 +235,7 @@ class GameView():
             index = (index + 1) % len(allied_ships)   
         
         self.current_ship.is_current = False
+        self.current_ship.acceleration = 0
         self.current_ship = allied_ships[index]
         self.current_ship.is_current = True
         
