@@ -115,7 +115,7 @@ class Planet():
     def update(self):
         # defer planet gen 'till needed for perf
         if not self.image:
-            (self.image, self.small_image) = planetary_textures.get_image(self)
+            self.generate_image()
             
         self.image.angle_deg = self.spin
         self.spin += 0.3
@@ -126,10 +126,8 @@ class Planet():
 
         # defer planet gen 'till needed for perf
         if not self.image:
-            (self.image, self.small_image) = planetary_textures.get_image(self)
+            self.generate_image()
         self.image.draw(screen)
-        
-        
         
         self.shadow_surface.fill((0,0,0,0))
         theta = self.p + math.pi/2
@@ -145,17 +143,19 @@ class Planet():
         
         pygame.draw.polygon(self.shadow_surface, UMBRA_COLOR, (umbra1, umbra2, extent2, extent1))
         screen.blit(self.shadow_surface, (0,0))
+
         
     def solar_view_draw(self, screen):
         # defer planet gen 'till needed for perf
         if not self.small_image:
-            (self.image, self.small_image) = planetary_textures.get_image(self)
+            self.generate_image()
            
         pygame.draw.circle(screen, 'gray', const.screen_center, self.r, 1)
         self.small_image.draw(screen)
         
 
-
+    def generate_image(self):
+        (self.image, self.small_image) = planetary_textures.get_image(self)
 
 
 
