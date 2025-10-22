@@ -33,9 +33,14 @@ class PlanetView(GameView):
         
         
     def cleanup(self):
-        self.mobs = []
+        
         self.shared_dict['current_ship'] = self.current_ship.tmpship
+        
+        for lootbox in (x for x in self.mobs if x.object_type() in ['LootBox']):
+            self.planet.lootboxes.append({'xy': lootbox.xy, 'resources': lootbox.resources})
 
+        self.mobs = []
+        
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
         self.shared_dict['history'] = [(View.PLANET)]
@@ -47,8 +52,7 @@ class PlanetView(GameView):
         angle_radians = 0
         
         applicable_mobs = []
-
-        
+            
         for ship in self.ships:
             if ship.is_alive and ship.planet == self.planet:
                 applicable_mobs.append(ship)
@@ -79,12 +83,14 @@ class PlanetView(GameView):
         
         if self.planet:
             self.show_exposition(ExpositionText.FIRST_PLANET)
-        
-        
+
         if self.planet.station:
             self.mobs.append(self.planet.station)
             self.show_exposition(ExpositionText.FIRST_SISTERS)
 
+        for lootbox in self.planet.lootboxes:
+            self.mobs.append(LootBox(lootbox['xy'], lootbox['resources']))
+            
 
     def process_event(self, event):
         

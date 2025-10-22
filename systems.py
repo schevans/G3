@@ -90,6 +90,7 @@ def pickle():
         for planet in system.planets:
             data[system.name][planet.name] = {}
             data[system.name][planet.name]['resources'] = planet.resources
+            data[system.name][planet.name]['lootboxes'] = planet.lootboxes
             if planet.station:
                 data[system.name][planet.name]['station'] = planet.station.resources
             
@@ -101,6 +102,7 @@ def unpickle(data):
      for system in syslist:
          for planet in system.planets:
              planet.resources = data[system.name][planet.name]['resources']
+             planet.lootboxes = data[system.name][planet.name]['lootboxes']
              if planet.station:
                  planet.station.resources = data[system.name][planet.name]['station']
                  
