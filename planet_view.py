@@ -36,9 +36,14 @@ class PlanetView(GameView):
         
         self.shared_dict['current_ship'] = self.current_ship.tmpship
         
-        for lootbox in (x for x in self.mobs if x.object_type() in ['LootBox']):
+        self.planet.lootboxes.clear()
+        for lootbox in (x for x in self.mobs if x.object_type() == 'LootBox'):
             self.planet.lootboxes.append({'xy': lootbox.xy, 'resources': lootbox.resources})
 
+        self.planet.orbital_ships.clear()
+        for orbital_ship in (x for x in self.mobs if x.object_type() == 'Ship'):
+            self.planet.orbital_ships[orbital_ship.name] = {'r': orbital_ship.r, 'p': orbital_ship.p}
+        
         self.mobs = []
         
     def startup(self, shared_dict):
@@ -52,7 +57,7 @@ class PlanetView(GameView):
         angle_radians = 0
         
         applicable_mobs = []
-            
+        
         for ship in self.ships:
             if ship.is_alive and ship.planet == self.planet:
                 applicable_mobs.append(ship)
@@ -62,11 +67,17 @@ class PlanetView(GameView):
         if applicable_mobs:
             angle_increment = ( math.pi * 2 ) / len(applicable_mobs)
             
-            for mob in applicable_mobs:                                 
+            for mob in applicable_mobs:
+                
                 angle_radians += angle_increment
-                orbital_ship = OrbitalShip(mob, self.planet, utils.get_random_r(self.planet.planet_view_r, 0, self.mobs, 20), angle_radians)
-
+                
+                if mob.name in self.planet.orbital_ships:
+                    orbital_ship = OrbitalShip(mob, self.planet, self.planet.orbital_ships[mob.name]['r'], self.planet.orbital_ships[mob.name]['p'])                 
+                else:
+                    orbital_ship = OrbitalShip(mob, self.planet, utils.get_random_r(self.planet.planet_view_r, 0, self.mobs, 20), angle_radians)
+    
                 self.mobs.append(orbital_ship)
+                    
                 if orbital_ship.tmpship == shared_dict['current_ship']:
                     self.current_ship = orbital_ship
                     

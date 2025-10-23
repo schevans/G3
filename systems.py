@@ -91,6 +91,7 @@ def pickle():
             data[system.name][planet.name] = {}
             data[system.name][planet.name]['resources'] = planet.resources
             data[system.name][planet.name]['lootboxes'] = planet.lootboxes
+            data[system.name][planet.name]['orbital_ships'] = planet.orbital_ships
             if planet.station:
                 data[system.name][planet.name]['station'] = planet.station.resources
             
@@ -103,6 +104,7 @@ def unpickle(data):
          for planet in system.planets:
              planet.resources = data[system.name][planet.name]['resources']
              planet.lootboxes = data[system.name][planet.name]['lootboxes']
+             planet.orbital_ships = data[system.name][planet.name]['orbital_ships']
              if planet.station:
                  planet.station.resources = data[system.name][planet.name]['station']
                  
