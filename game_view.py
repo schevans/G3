@@ -66,13 +66,30 @@ class GameView():
 
     shiplist = [ my_ship ]
 
+    start_end_distance = const.initial_ship_position.distance_to(const.home_xy)
+
     for system in systems.syslist:
         if system.system_type != 'Uninhabited' and system.name != const.our_capital:
+            
             planet = system.planets[my_random.my_randint(0, len(system.planets)-1)]
             if system.name in const.species_color.keys():
-                shiplist.append(ships.Ship(system.name, system.xy, system, planet, True, '22222222'))
+                ship = ships.Ship(system.name, system.xy, system, planet, True, '22222222')
             else:
-                shiplist.append(ships.Ship(system.name, system.xy, system, planet, True))
+                ship = ships.Ship(system.name, system.xy, system, planet, True)
+    
+            # upgrade ship hardness - closer to polaris => harder
+            hardness = (start_end_distance - system.xy.distance_to(const.home_xy) - const.npc_hardness_offset) / const.npc_hardness_divisor
+            hardness = min(hardness, const.npc_hardness_max)
+            
+            # engine removed so to not break game timing due to fast enemy ships
+            ship_systems = list(ships.fit.ship_systems_data.keys())
+            ship_systems.remove('engine')       
+            while hardness > 1:
+                hardness -= 1
+                ship_system = my_random.my_choices(ship_systems)[0]
+                ship.fit.upgrade(ship_system)
+    
+            shiplist.append(ship)
     
     # dev mode for testing recruits
     if const.dev_mode >= 3:

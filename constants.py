@@ -30,7 +30,7 @@ free_space_in_corners = 20
 
 home_xy = Vector2(screen_width - free_space_in_corners, free_space_in_corners)
 
-initial_ship_position = (free_space_in_corners, screen_height - free_space_in_corners)
+initial_ship_position = Vector2(free_space_in_corners, screen_height - free_space_in_corners)
 
 num_stars = 600
 num_systems = 96
@@ -198,5 +198,9 @@ threat_level_start = 4
 # end game condition - halo complete
 threat_level_end = 12
 
+# npc hardness - used in a function with distance to polaris
+npc_hardness_offset = 120
+npc_hardness_max = 10
+npc_hardness_divisor = 100
 
 
