@@ -49,11 +49,14 @@ class Planet():
         if self.planet_type in ['rocky', 'earth-like']:
             self.atmos_color = self.color2
         
-        self.resources = {}
         self.mining_hit_counter = MINING_HIT_COUNTER
         self.mining_can = {}
+        
+        self.resources = {}
+        loot_modifier = (system.xy.distance_to(const.home_xy) + system.xy.distance_to(const.initial_ship_position)) / const.start_end_distance
+
         for resource in const.initial_planetary_resources:
-            self.resources[resource] = int(const.initial_planetary_resources[resource] *  my_random.my_random())
+            self.resources[resource] = int(const.initial_planetary_resources[resource] * my_random.my_random() * loot_modifier**const.loot_modifier_exponent)
                 
         self.resources_max = sum(self.resources.values())
         

@@ -66,8 +66,6 @@ class GameView():
 
     shiplist = [ my_ship ]
 
-    start_end_distance = const.initial_ship_position.distance_to(const.home_xy)
-
     for system in systems.syslist:
         if system.system_type != 'Uninhabited' and system.name != const.our_capital:
             
@@ -78,7 +76,7 @@ class GameView():
                 ship = ships.Ship(system.name, system.xy, system, planet, True)
     
             # upgrade ship hardness - closer to polaris => harder
-            hardness = (start_end_distance - system.xy.distance_to(const.home_xy) - const.npc_hardness_offset) / const.npc_hardness_divisor
+            hardness = (const.start_end_distance - system.xy.distance_to(const.home_xy) - const.npc_hardness_offset) / const.npc_hardness_divisor
             hardness = min(hardness, const.npc_hardness_max)
             
             # engine removed so to not break game timing due to fast enemy ships

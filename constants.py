@@ -32,6 +32,8 @@ home_xy = Vector2(screen_width - free_space_in_corners, free_space_in_corners)
 
 initial_ship_position = Vector2(free_space_in_corners, screen_height - free_space_in_corners)
 
+start_end_distance = initial_ship_position.distance_to(home_xy)
+
 num_stars = 600
 num_systems = 96
 
@@ -203,4 +205,6 @@ npc_hardness_offset = 120
 npc_hardness_max = 10
 npc_hardness_divisor = 100
 
+# modifies the loot_modifier - increases the loot gradient towards the corners.
+loot_modifier_exponent = 2
 
