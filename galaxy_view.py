@@ -139,17 +139,23 @@ class GalaxyView(GameView):
         movement_points_remaining[IS_NPC] = 0
         movement_points_remaining[not IS_NPC] = 0
         
+        mobs_moving = False
         for mob in self.mobs:
-            if mob.is_npc:
-                if not mob.is_moving():
+            if not mob.is_moving():
+                if mob.is_npc:
                     self.mobs.remove(mob)
                     if mob.xy == const.home_xy:
                         mob.system = GameView.home_system
                         mob.planet = GameView.home_planet
                         self.threat_level += 1
                         self.show_exposition(ExpositionText.FIRST_ENEMY_LAND)
-    
+            else:
+                if mob.movement_points > 0:
+                    mobs_moving = True
+                
             movement_points_remaining[mob.is_npc] += mob.movement_points
+        
+        self.end_turn_button.is_disabled = mobs_moving
             
         if not self.our_turn and movement_points_remaining[IS_NPC] == 0:
             self.our_turn = True
