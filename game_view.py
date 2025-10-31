@@ -360,7 +360,8 @@ class GameView():
             if self.ships[i].liege == const.our_capital:
                 if self.ships[i].system:
                     for planet in self.ships[i].system.planets:
-                        planet.generate_image()
+                        if not planet.image:
+                            planet.generate_image()
 
         systems.unpickle(data[2])  
         
