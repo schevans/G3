@@ -147,74 +147,77 @@ class PlanetView(GameView):
             
               
     def update(self):
-        if not self.is_paused:
-            GameView.update(self) 
-        elif self.shared_dict['show_help'] and self.exposition:
-                self.exposition[0].update()
- 
+        
         self.get_selected_item(self.mobs)
         
-        self.planet.update()
-        
-        for mob in self.mobs:
-            if mob.object_type() == 'Ship':
-                
-                bullet = mob.do_ai(self.mobs)
-                if bullet:
-                   self.mobs.append(bullet)
-                   
-                mob.check_lock()
-                    
-                # has been hit by bullet?
-                for bullet in (x for x in self.mobs if x.object_type() == 'Bullet' and not x.homing):
-                    if bullet.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
-                        bullet.hit(mob)
-                        
-                # has picked up lootbox?
-                for lootbox in (x for x in self.mobs if x.object_type() == 'LootBox'):
-                    if lootbox.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
-                        mob.loot(lootbox)
-                        
-                # enough resources for first upgrade?
-                if self.shared_dict['show_help'] and ExpositionText.FIRST_UPGRADE not in self.shared_dict['expositions_done']:
-                    if self.current_ship.can_do_first_upgrade():
-                        self.show_exposition(ExpositionText.FIRST_UPGRADE)
-                        
-                # has ship hit planet?      
-                if mob.r <= self.planet.planet_view_r + mob.image.width:
-                    mob.hit(3,3)
-                    mob.r += 5  # and bounce
-                        
-            # has bullet hit planet => mining
-            elif mob.object_type() == 'Bullet' and mob.is_alive:
-                if mob.xy.distance_to(const.screen_center) <= self.planet.planet_view_r:
-                    resources = self.planet.mine(mob)
-                    mob.is_alive = False
-                    if resources:
-                        r = self.planet.planet_view_r * 4
-                        p = my_random.my_random() * ( math.pi * 2 ) 
-                        xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
-                        self.mobs.append(LootBox(xy, resources))
+        if not self.is_paused:
 
-            # remove the dead things
-            if not mob.is_alive:
-                self.mobs.remove(mob)
-                
+            GameView.update(self) 
+
+            self.planet.update()
+            
+            for mob in self.mobs:
                 if mob.object_type() == 'Ship':
-                    loot_fairy = my_random.my_random()
-                    for resource in mob.resources:
-                        if resource != 'laser':
-                            mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
-                    self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
-                    mob.tmpship.is_alive = False
-                    if mob.is_hero:
-                        self.shared_dict['game_state'] = State.GAME_OVER
-                elif mob.object_type() == 'Explosion':
-                    self.mobs.append(LootBox(mob.xy, mob.resources))
+                    
+                    bullet = mob.do_ai(self.mobs)
+                    if bullet:
+                       self.mobs.append(bullet)
+                       
+                    mob.check_lock()
+                        
+                    # has been hit by bullet?
+                    for bullet in (x for x in self.mobs if x.object_type() == 'Bullet' and not x.homing):
+                        if bullet.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
+                            bullet.hit(mob)
+                            
+                    # has picked up lootbox?
+                    for lootbox in (x for x in self.mobs if x.object_type() == 'LootBox'):
+                        if lootbox.xy.distance_to(mob.xy) <= const.weapon_hit_radius:
+                            mob.loot(lootbox)
+                            
+                    # enough resources for first upgrade?
+                    if self.shared_dict['show_help'] and ExpositionText.FIRST_UPGRADE not in self.shared_dict['expositions_done']:
+                        if self.current_ship.can_do_first_upgrade():
+                            self.show_exposition(ExpositionText.FIRST_UPGRADE)
+                            
+                    # has ship hit planet?      
+                    if mob.r <= self.planet.planet_view_r + mob.image.width:
+                        mob.hit(3,3)
+                        mob.r += 5  # and bounce
+                            
+                # has bullet hit planet => mining
+                elif mob.object_type() == 'Bullet' and mob.is_alive:
+                    if mob.xy.distance_to(const.screen_center) <= self.planet.planet_view_r:
+                        resources = self.planet.mine(mob)
+                        mob.is_alive = False
+                        if resources:
+                            r = self.planet.planet_view_r * 4
+                            p = my_random.my_random() * ( math.pi * 2 ) 
+                            xy = Vector2(const.screen_center.x - math.cos(p)*r,  const.screen_center.y - math.sin(p)*r)
+                            self.mobs.append(LootBox(xy, resources))
+    
+                # remove the dead things
+                if not mob.is_alive:
+                    self.mobs.remove(mob)
+                    
+                    if mob.object_type() == 'Ship':
+                        loot_fairy = my_random.my_random()
+                        for resource in mob.resources:
+                            if resource != 'laser':
+                                mob.resources[resource] += int(mob.resources[resource] * loot_fairy)
+                        self.mobs.append(Explosion(mob.xy, 30, 1, mob.resources))
+                        mob.tmpship.is_alive = False
+                        if mob.is_hero:
+                            self.shared_dict['game_state'] = State.GAME_OVER
+                    elif mob.object_type() == 'Explosion':
+                        self.mobs.append(LootBox(mob.xy, mob.resources))
+                    
+            if self.home_planet == self.planet and not len(list(mob for mob in self.mobs if mob.object_type() == 'Ship' and mob.is_npc)):
+                self.shared_dict['game_state'] = State.VICTORY
                 
-        
-        if self.home_planet == self.planet and not len(list(mob for mob in self.mobs if mob.object_type() == 'Ship' and mob.is_npc)):
-            self.shared_dict['game_state'] = State.VICTORY
+        # GameView.update() handles the expo update, but that's not called if it's paused, so..
+        elif self.shared_dict['show_help'] and self.exposition:
+            self.exposition[0].update()
             
 
     def draw(self, screen):
