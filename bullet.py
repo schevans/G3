@@ -24,7 +24,7 @@ class Bullet():
         self.shooter_xy = shooter.xy
         self.target = target
         
-        self.speed = data['speed']
+        self.speed = data['speed'] * shooter.fit('wep range')
         self.shield_damage = data['shield_damage'] * shooter.fit('wep dmg')
         self.armour_damage = data['armour_damage'] * shooter.fit('wep dmg')
         self.homing = data['homing']

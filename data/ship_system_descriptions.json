@@ -6,7 +6,7 @@
 "reactor" : ["Charges our Capacitor.", "We want this.", "Unit: Farads/second."],
 "engine" : ["Makes us go faster.", "Useful if we want to get home in time.", "Unit: Ly/second at warp."],
 "wep dmg" : ["Increase weapon damage.", "Unit: Multiple of base."],
-"wep range" : ["Increases weapon range.", "Unit: Multiple of base."],
+"wep range" : ["Increases weapon range and speed.", "Unit: Multiple of base."],
 "scanner" : ["Allows us to see more detail at a further range.", "I want this.", "Unit: Ly."]
 }
 

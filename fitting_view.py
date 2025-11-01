@@ -43,7 +43,7 @@ class FittingView(GameView):
         y = pos[1]
         for key in self.current_ship.fit.system_names:   
             x = pos[0]
-            mouseover_text = system_descriptions.get(key, [['#MISSING# from data/system_descriptions.json']])
+            mouseover_text = system_descriptions.get(key, [['#MISSING# from data/ship_system_descriptions.json']])
             self.labels.append(Label((x,y), (label_width, 30), key.title(), 'gray', mouseover_text))
             
             x += label_width+space
