@@ -25,7 +25,8 @@ HIT_FLASH_INTERVAL = 100 # ms
 AI_DITHER = 1000  #ms
 AI_MIN = 250 # ms
 AI_ACCELERATION = 0.3
-AI_LOW_ORBIT_BUFFER = 10
+AI_MINE_SEP = 30 # degrees behind
+AI_RANGE_SEP = 20
 
 def unobstructed_view(xy1, xy2, cpt, r):
     
@@ -147,7 +148,7 @@ class OrbitalShip(Ship):
         
         if self.is_current:
             self.draw_minifig(screen, surface)
-
+            
     def shoot(self):
         return self.weapons.fire(self, self.locked_target)
 
@@ -186,74 +187,78 @@ class OrbitalShip(Ship):
                 if mob.xy.distance_to(xy) <= LOCK_RADIUS:
                     if unobstructed_view(self.xy, mob.xy, const.screen_center, self.planet_view_r):
                         self.locked_target = mob
-                        if not self.is_current:
-                            self.ai_target = self.locked_target 
-                        else:
-                            self.ai_target = None
+
 
     def do_ai(self, mobs):     
 
         bullet = None        
-
-        is_ally = not self.is_npc and not self.is_current
-        is_hostile = self.is_npc and self.is_hostile()
-
-        if is_ally or is_hostile: 
-
-            if not self.ai_target:
-                enemies = []
-                for enemy in mobs:
-                    if enemy.object_type() == 'Ship' and enemy.is_alive and (( is_hostile and not enemy.is_npc) or (is_ally and enemy.is_npc)):
-                        if unobstructed_view(self.xy, enemy.xy, const.screen_center, self.planet_view_r):
-                            enemies.append(enemy)
-                enemies.sort(key=lambda x: x.xy.distance_to(enemy.xy))
-                if enemies:
-                    self.ai_target = enemies[0]  
-    
-            if self.ai_target and not self.locked_target:
-                if unobstructed_view(self.xy, self.ai_target.xy, const.screen_center, self.planet_view_r):
-                    self.locked_target = self.ai_target        
-         
-            if self.locked_target:
-                if self.locked_target.is_alive:
-            
-                    in_range = True            
         
-                    if abs(self.r - self.locked_target.r) < const.weapon_hit_radius * 2 and self.p - self.locked_target.p > 0.3:
-                        self.weapons.selected_weapon = ('mine')
-                    elif self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['torpedo']['range'] * self.fit('wep range'):
-                        self.weapons.selected_weapon = ('torpedo')
-                    elif self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['rocket']['range'] * self.fit('wep range'):
-                        self.weapons.selected_weapon = ('rocket')
-                    else:
-                        in_range = False        
+        if self.is_current:
+            self.locked_target = None
+            return None
+        
+        # get targets
+        targets = [mob for mob in mobs if mob.object_type() == 'Ship' and mob.is_alive and mob.liege != self.liege]
+        
+        #targets = [target for target in targets if target.name != 'Hero']       # TEMP TEMP ****   [dev_level 5??]
+        
+        # select target
+        if len(targets) == 0:
+            return bullet
+        elif len(targets) == 1:
+            self.ai_target = targets[0]
+        else:
             
-                    if self.ai_timer.get_next_ms_interval(AI_MIN + (AI_DITHER * my_random.my_random())):
-                        if in_range:
-                            bullet = self.shoot()
+            self.ai_target = min(targets, key=lambda x:self.xy.distance_to(x.xy))
+            
+            # is lockable?
+            targets = [target for target in targets if unobstructed_view(self.xy, target.xy, const.screen_center, self.planet_view_r)]
+            if len(targets) != 0:
+                self.ai_target = min(targets, key=lambda x:self.xy.distance_to(x.xy))
+                
+            # is behind? (moar shootable 'cause relative velocity)
+            targets = [target for target in targets if math.pi - (target.p - self.p) % (2*math.pi) < 0]
+            if len(targets) != 0:
+               self.ai_target = min(targets, key=lambda x:self.xy.distance_to(x.xy))           
 
-                    if in_range:
-                        # match enemy r
-                        if abs(self.r - self.locked_target.r) > const.weapon_hit_radius:
-                            self.acceleration = AI_ACCELERATION if self.r < self.locked_target.r else -AI_ACCELERATION
-                        else:
-                            self.acceleration = 0 
-                    else:
-                        # close on enemy - go lower if ahead and higher if behind
-                        if self.p - self.locked_target.p > math.pi:
-                            self.acceleration = AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
-                        elif self.r > self.planet_view_r + self.image.width + AI_LOW_ORBIT_BUFFER:
-                            self.acceleration = 0
-                        else:
-                            self.acceleration = -AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
-                            
-                    
+        self.locked_target = self.ai_target
+
+               
+        # select weapon, check range and fire
+        in_range = True 
+        if self.locked_target and self.ai_timer.get_next_ms_interval(AI_MIN + (AI_DITHER * my_random.my_random())):
+
+            if abs(self.r - self.locked_target.r) < const.weapon_hit_radius and (self.locked_target.p - self.p) % (2*math.pi) > (2*math.pi) - math.radians(AI_MINE_SEP): 
+                self.weapons.selected_weapon = ('mine')
+            elif self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['torpedo']['range'] * self.fit('wep range'):
+                self.weapons.selected_weapon = ('torpedo')
+            elif self.xy.distance_to(self.locked_target.xy) <= self.weapons.data['rocket']['range'] * self.fit('wep range'):
+                self.weapons.selected_weapon = ('rocket')
+            else:
+                in_range = False
+    
+            if in_range:
+                bullet = self.shoot()
+        
+        
+        near_hemisphere =  abs(math.pi - (self.locked_target.p - self.p) % (2*math.pi)) > math.pi/2 
+
+        if abs(self.r -self.ai_target.r) > AI_RANGE_SEP:
+        
+            if near_hemisphere:
+                if self.r < self.ai_target.r:
+                   self.acceleration = AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
                 else:
-                    self.locked_target = None
-                    self.ai_target = None
-                    self.acceleration = 0
-
-
+                   self.acceleration = -AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
+            else:
+                if self.r > self.ai_target.r:
+                   self.acceleration = AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
+                else:
+                   self.acceleration = -AI_ACCELERATION * const.acc_over_speed * self.fit.speed()
+        else:
+            self.acceleration = 0
+            
+    
         return bullet
 
 
