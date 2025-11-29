@@ -115,7 +115,8 @@ class SolarView(GameView):
        
         GameView.draw_objects(self, screen)
         
-        self.current_ship.draw_minifig(screen, self.current_ship.image.original_image)
+        if self.current_ship.is_alive:
+            self.current_ship.draw_minifig(screen, self.current_ship.image.original_image)
         
     def get_mouse_text(self):
         text = []
@@ -131,7 +132,7 @@ class SolarView(GameView):
     def get_local_allies(self):
         allies = []
         for ship in self.ships:
-            if not ship.is_npc and ship.system == self.current_ship.system:
+            if not ship.is_npc and ship.system == self.current_ship.system and ship.is_alive:
                 allies.append(ship)
         return allies     
     

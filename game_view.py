@@ -240,23 +240,27 @@ class GameView():
                     break
         
     def do_ship_swap(self, event_key):
-        
 
         allied_ships = self.get_local_allies()
-        index = allied_ships.index(self.current_ship)
-        if event_key == pygame.K_LEFTBRACKET:
-            index = (index - 1) % len(allied_ships)
-        else:
-            index = (index + 1) % len(allied_ships)   
-        
-        self.current_ship.is_current = False
-        self.current_ship.acceleration = 0
-        self.current_ship = allied_ships[index]
-        self.current_ship.is_current = True
+        if allied_ships:
+            if self.current_ship.is_alive:
+                index = allied_ships.index(self.current_ship)
+            else:
+                index = 0
+                
+            if event_key == pygame.K_LEFTBRACKET:
+                index = (index - 1) % len(allied_ships)
+            else:
+                index = (index + 1) % len(allied_ships)   
+            
+            self.current_ship.is_current = False
+            self.current_ship.acceleration = 0
+            self.current_ship = allied_ships[index]
+            self.current_ship.is_current = True
         
         return self.current_ship
     
-    def get_local_allies(self):
+    def get_local_allies(self):         # FIXME: This needed? 'Overridden' on views.
         return [self.current_ship]
     
     def exposition_ok_callback(self, button):

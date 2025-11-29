@@ -301,7 +301,7 @@ class PlanetView(GameView):
     def get_local_allies(self): # FIXME: This needed/can be consolodated?
         allies = []
         for mob in self.mobs:
-            if mob.object_type() == 'Ship' and not mob.is_npc:
+            if mob.object_type() == 'Ship' and not mob.is_npc and mob.is_alive:
                 allies.append(mob)
         return allies   
     

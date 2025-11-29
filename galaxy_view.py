@@ -42,7 +42,7 @@ class GalaxyView(GameView):
         
         # stash the galaxy_xy as we're changing views
         for ship in self.ships:
-            if ship.is_alive and ship.is_moving() or not ship.is_npc:
+            if ship.is_alive and (ship.is_moving() or not ship.is_npc):
                 ship.galaxy_xy = ship.xy.copy()
 
                 
@@ -55,7 +55,7 @@ class GalaxyView(GameView):
         self.threat_level = self.shared_dict['threat_level']
         
         for ship in self.ships:
-            if ship.is_alive and ship.is_moving() or not ship.is_npc:
+            if ship.is_alive and (ship.is_moving() or not ship.is_npc):
                 self.mobs.append(ship)
                 # restore galaxy_xy and update image
                 ship.xy = ship.galaxy_xy.copy()
@@ -255,7 +255,7 @@ class GalaxyView(GameView):
     def get_local_allies(self):
         allies = []
         for ship in self.ships:
-            if not ship.is_npc:
+            if not ship.is_npc and ship.is_alive:
                 allies.append(ship)
         return allies        
 
