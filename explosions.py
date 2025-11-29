@@ -68,7 +68,7 @@ class LootBox():
         
         for resource in self.resources:
             if resource != 'laser':
-                retval.append(resource.capitalize() + ': ' + str(self.resources[resource]))
+                retval.append(resource.capitalize() + ': ' + str(round(self.resources[resource], 2)))
         
         return retval
         
