@@ -169,8 +169,9 @@ class GameView():
         
         self.draw_textbox(screen)
   
-    def draw_textbox(self, screen): 
+    def draw_textbox(self, screen):
         
+        pygame.draw.rect(screen, 'black', [0, const.screen_height , const.screen_width, TEXTBOX_HEIGHT])
         pygame.draw.rect(screen, 'white', [0, const.screen_height , const.screen_width, 2])
         
         resource_str = ''

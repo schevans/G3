@@ -218,6 +218,9 @@ class GalaxyView(GameView):
                     # fuel
                     pygame.draw.circle(screen, 'red4', mob.xy, mob.jump_range(), 1)
         
+        # redraw textbox as movement/fuel circles can impinge
+        self.draw_textbox(screen)
+        
         self.end_turn_button.draw(screen)
         
         self.draw_game_state(screen)
