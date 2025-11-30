@@ -40,6 +40,9 @@ class SolarView(GameView):
     def cleanup(self):
         self.mobs = []
         
+        self.shared_dict['system'] = self.system
+        self.shared_dict['planet'] = self.current_ship.planet
+        
     def startup(self, shared_dict):  
         self.shared_dict = shared_dict
         self.shared_dict['history'] = [(View.SOLAR)]
@@ -73,14 +76,13 @@ class SolarView(GameView):
         GameView.process_event(self, event)
         
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                self.shared_dict['system'] = self.system
-                self.next_view = (View.GALAXY, self.shared_dict)
-            if event.key == pygame.K_RETURN:
-                if self.current_ship.planet and not self.current_ship.is_moving():
-                    self.current_ship.destination = None
-                    self.shared_dict['planet'] = self.current_ship.planet
-                    self.next_view = (View.PLANET, self.shared_dict)
+            # check for no moving ships before allowing view change
+            if not len(list(x for x in self.get_local_allies() if x.is_moving())):
+                if event.key == pygame.K_ESCAPE:
+                    self.next_view = (View.GALAXY, self.shared_dict)
+                if event.key == pygame.K_RETURN:
+                    if self.current_ship.planet:
+                        self.next_view = (View.PLANET, self.shared_dict)
                     
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == const.left_mouse_click:
             if self.doubleclick_timer.tick() < const.doubleclick_delay:

@@ -99,6 +99,7 @@ class Ship():
                 else:
                     self.system = self.destination
                     self.planet = None
+                self.destination = None
             else:
                 # still moving
                 self.heading = utils.angle_between_points(self.xy ,self.destination.xy)
