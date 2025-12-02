@@ -195,7 +195,10 @@ class OrbitalShip(Ship):
         
         if self.is_current:
             self.locked_target = None
-            return None
+            return bullet
+        
+        if not self.is_hostile():
+            return bullet
         
         # get targets
         targets = [mob for mob in mobs if mob.object_type() == 'Ship' and mob.is_alive and mob.liege != self.liege]
