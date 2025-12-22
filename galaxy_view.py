@@ -55,7 +55,7 @@ class GalaxyView(GameView):
         self.threat_level = self.shared_dict['threat_level']
         
         for ship in self.ships:
-            if ship.is_alive and (ship.is_moving() or not ship.is_npc):
+            if ship.is_alive and (ship.is_moving() or not ship.is_npc) and not ship.in_fleet:
                 self.mobs.append(ship)
                 # restore galaxy_xy and update image
                 ship.xy = ship.galaxy_xy.copy()
@@ -252,13 +252,14 @@ class GalaxyView(GameView):
             for mob in self.mobs:
                 if mob.system == self.selected_item:
                     text.append(mob.description(self.current_ship.scanner_lvl()))
+                    text += self.get_fleet_description(mob)
                     
         return text
         
     def get_local_allies(self):
         allies = []
         for ship in self.ships:
-            if not ship.is_npc and ship.is_alive:
+            if not ship.is_npc and ship.is_alive and not ship.in_fleet:
                 allies.append(ship)
         return allies        
 

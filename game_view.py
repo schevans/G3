@@ -230,6 +230,20 @@ class GameView():
     
         screen.blit(surface, text_pos )
 
+
+    def get_fleet_description(self, mob):
+        
+        text = []
+        if mob.object_type() == 'Ship':
+            if mob.in_fleet:
+                text.append('  In fleet: ' + mob.in_fleet.name)
+            elif len(mob.fleet):
+                text.append('  Fleet:')
+                for ship in mob.fleet:
+                    text.append('  ' + ship.name + ' [' + ship.fit.to_string() + ']')
+                    
+        return text
+    
             
     def get_selected_item(self, items):
         self.selected_item = None
@@ -260,9 +274,7 @@ class GameView():
             self.current_ship.is_current = True
         
         return self.current_ship
-    
-    def get_local_allies(self):         # FIXME: This needed? 'Overridden' on views.
-        return [self.current_ship]
+
     
     def exposition_ok_callback(self, button):
         self.exposition.popleft()
@@ -361,7 +373,7 @@ class GameView():
         self.unpickle(data[0], fogofwar_mask)
         
         for i in range(len(data[1])):
-            self.ships[i].unpickle(systems.syslist, data[1][i])
+            self.ships[i].unpickle(systems.syslist, data[1][i], self.ships)
             if self.ships[i].liege == const.our_capital:
                 if self.ships[i].system:
                     for planet in self.ships[i].system.planets:

@@ -50,7 +50,7 @@ class SolarView(GameView):
         self.system = shared_dict['system']
 
         for ship in self.ships:
-            if ship.is_alive and ship.system == self.system:
+            if ship.is_alive and ship.system == self.system and not ship.in_fleet:
                 
                 if ship.planet:
                     ship.reset_xy(ship.planet.xy)
@@ -124,9 +124,11 @@ class SolarView(GameView):
         text = []
         if self.selected_item:
             text.append(self.selected_item.description(self.current_ship.scanner_lvl()))
+            
             for mob in self.mobs:
                 if mob.planet == self.selected_item or mob.xy == self.selected_item.xy:
                     text.append(mob.description(self.current_ship.scanner_lvl()))
+                    text += self.get_fleet_description(mob)
                     
         return text
     
@@ -134,7 +136,7 @@ class SolarView(GameView):
     def get_local_allies(self):
         allies = []
         for ship in self.ships:
-            if not ship.is_npc and ship.system == self.current_ship.system and ship.is_alive:
+            if not ship.is_npc and ship.system == self.current_ship.system and ship.is_alive and not ship.in_fleet:
                 allies.append(ship)
         return allies     
     

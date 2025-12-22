@@ -13,14 +13,14 @@ import utils
 import constants as const
 from game_view import GameView, View
 from gui import Button
-from docking_panels import TradePanel, ApproachPanel, BoardPanel, RepairPanel, INNER_BORDER_WIDTH
+from docking_panels import TradePanel, ApproachPanel, FleetPanel, RepairPanel, INNER_BORDER_WIDTH
 from exposition import ExpositionBox, ExpositionText
 
 
 class Panel(Enum):
     TRADE = 1
     APPROACH = 2
-    BOARD = 3,
+    FLEET = 3,
     REPAIR = 4
 
 class DockingView(GameView):
@@ -54,6 +54,9 @@ class DockingView(GameView):
         
     def repair_callback(self, button):
         pass
+    
+    def fleet_callback(self, button):        
+        self.other_ship.join_fleet(self.current_ship)
         
     def button_callback(self, button):
         panel = Panel[button.text.upper()]
@@ -62,8 +65,8 @@ class DockingView(GameView):
             self.panel = TradePanel(self.current_ship, self.other_ship)
         elif panel == Panel.APPROACH:
             self.panel = ApproachPanel(self.current_ship, self.other_ship, self.approach_callback)
-        elif panel == Panel.BOARD:
-            self.panel = BoardPanel()
+        elif panel == Panel.FLEET:
+            self.panel = FleetPanel(self.current_ship, self.other_ship, self.fleet_callback)
         elif panel == Panel.REPAIR:
             self.panel = RepairPanel(self.current_ship, self.repair_callback)
             
@@ -88,7 +91,7 @@ class DockingView(GameView):
             x = ( const.screen_width - self.button_width ) / 2
             self.top_buttons[Panel.APPROACH] = Button((x, y), (self.button_width, self.button_height), 'Approach', const.game_color, None, not self.other_ship.is_npc, self.button_callback)
             x = const.screen_width - INNER_BORDER_WIDTH - self.button_width
-            self.top_buttons[Panel.BOARD] = Button((x, y), (self.button_width, self.button_height), 'Board', const.game_color, None, False, self.button_callback)
+            self.top_buttons[Panel.FLEET] = Button((x, y), (self.button_width, self.button_height), 'Fleet', const.game_color, None, False, self.button_callback)
         else: # station
             x = const.screen_width - INNER_BORDER_WIDTH - self.button_width
             self.top_buttons[Panel.REPAIR] = Button((x, y), (self.button_width, self.button_height), 'Repair', const.game_color, None, False, self.button_callback)
@@ -111,7 +114,8 @@ class DockingView(GameView):
         
         if self.other_ship.object_type() == 'Ship':
             self.top_buttons[Panel.APPROACH].is_disabled = self.other_ship.liege == const.our_capital
-        
+            self.top_buttons[Panel.FLEET].is_disabled = (self.other_ship.liege != const.our_capital or self.other_ship.in_fleet)
+            
         for key in self.top_buttons:
             self.top_buttons[key].update()
            

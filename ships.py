@@ -31,6 +31,8 @@ class Ship():
         self.fit = fit.Fit(fit_string)
         self.fuel_modifier = 1
         self.movement_points = const.base_movement_points
+        self.fleet = []
+        self.in_fleet = None
         
         if system:
             self.liege = const.species[system.system_type]
@@ -86,10 +88,7 @@ class Ship():
     def update(self):
         
         if self.destination:
-            
-            
-            
-            if self.xy.distance_to(self.destination.xy) <= self.fit.speed():
+            if self.xy.distance_to(self.destination.xy) <= self.speed():
                 # arrived
                 self.xy = Vector2(self.destination.xy)
                 self.heading = 0
@@ -105,14 +104,12 @@ class Ship():
                 self.heading = utils.angle_between_points(self.xy ,self.destination.xy)
                 self.image = self.image_flying
                 
-                self.xy.x -= math.sin(math.radians(self.heading)) * self.fit.speed()
-                self.xy.y -= math.cos(math.radians(self.heading)) * self.fit.speed()
-                
-            
-        
-            
+                self.xy.x -= math.sin(math.radians(self.heading)) * self.speed()
+                self.xy.y -= math.cos(math.radians(self.heading)) * self.speed()
+
         self.image.update(self.xy, self.heading)
-    
+
+
     def draw(self, screen):
 
         self.is_current_outline()        
@@ -244,13 +241,14 @@ class Ship():
         destination = [self.destination.object_type(), self.destination.name] if self.destination else None
         system = self.system.name if self.system else None
         planet = self.planet.name if self.planet else None
+        fleet = [ship.name for ship in self.fleet]
         
-        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive, self.movement_points, self.is_current, self.galaxy_xy]
+        data = [self.xy, system, planet, destination, self.resources, self.fit, self.weapons.pickle(), self.is_npc, self.liege, self.heading, self.is_alive, self.movement_points, self.is_current, self.galaxy_xy, self.in_fleet.name if self.in_fleet else None, fleet]
         
         return data
 
 
-    def unpickle(self, syslist, data):
+    def unpickle(self, syslist, data, shiplist):
         
         self.xy = data[0]
         self.system = next((x for x in syslist if x.name == data[1]), None)
@@ -271,6 +269,8 @@ class Ship():
         self.movement_points = data[11]
         self.is_current = data[12]
         self.galaxy_xy = data[13]
+        self.in_fleet = next((x for x in shiplist if x.name == data[14]), None)
+        self.fleet = [next(x for x in shiplist if x.name == ship) for ship in data[15]]  
         
         self.load_and_color_images()
         
@@ -292,12 +292,42 @@ class Ship():
     def load_and_color_images(self):
         
         ship_image_number = str(const.ship_image_number[self.species])
+        
         self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship' + ship_image_number + '.png'))
         self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying' + ship_image_number + '.png'))
         
+        if len(self.fleet) and self.liege == const.our_capital:
+            self.image_still = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_fleet' + ship_image_number + '.png'))
+            self.image_flying = rotatable_image.RotatableImage(self.xy, pygame.image.load('./graphics/Ship_flying_fleet' + ship_image_number + '.png')) 
+      
         if not self.is_hero:
             self.image_still.change_color(pygame.Color('white'), self.orig_color)
             self.image_flying.change_color(pygame.Color('white'), self.orig_color)
+            
 
+    def join_fleet(self, fleet_leader):
+        
+        self.in_fleet = fleet_leader
+        fleet_leader.fleet.append(self)
+        
+        # note: load_and_color_images called on fleet leader, not self
+        fleet_leader.load_and_color_images()
+        
+        
+    def leave_fleet(self):
+        
+        # note: load_and_color_images called on fleet leader, not self
+        self.in_fleet.load_and_color_images()
+        
+        self.in_fleet.fleet.remove(self)
+        self.in_fleet = None
+        
+
+    def speed(self):     
+        if len(self.fleet) == 0:
+            return self.fit.speed()
+        else:
+            return (sum([ship.fit.speed() for ship in self.fleet]) + self.fit.speed()) / (len(self.fleet) + 1)
+        
 
 

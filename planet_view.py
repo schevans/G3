@@ -34,6 +34,9 @@ class PlanetView(GameView):
         
     def cleanup(self):
         
+        if self.current_ship.in_fleet:
+            self.current_ship.tmpship.leave_fleet()
+        
         self.shared_dict['current_ship'] = self.current_ship.tmpship
         
         self.planet.lootboxes.clear()
@@ -49,6 +52,7 @@ class PlanetView(GameView):
     def startup(self, shared_dict):
         self.shared_dict = shared_dict
         self.shared_dict['history'] = [(View.PLANET)]
+        self.current_ship = self.shared_dict['current_ship']
         
         self.planet = shared_dict['planet']
         
@@ -59,7 +63,7 @@ class PlanetView(GameView):
         applicable_mobs = []
         
         for ship in self.ships:
-            if ship.is_alive and ship.planet == self.planet:
+            if ship.is_alive and (ship.planet == self.planet or ship.in_fleet == self.current_ship):
                 applicable_mobs.append(ship)
            
         self.is_paused = False 

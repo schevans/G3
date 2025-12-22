@@ -235,21 +235,29 @@ class ApproachPanel():
         pass
     
     
-class BoardPanel():
+class FleetPanel():
     
-    def __init__(self):
+    def __init__(self, current_ship, other_ship, callback):
         
         self.surface = pygame.Surface((const.screen_width, const.screen_height), pygame.SRCALPHA)
 
+        text = 'Invite ' + other_ship.description(current_ship.scanner_lvl()) + ' to fleet.'   
+        text_width = utils.fonts[20].size(text)[0]
+        button_width = text_width + 60
+        button_height = 50
+        button_x = (const.screen_width - button_width) / 2
+        button_y = 130 + INNER_BORDER_HIGHT
+        
+        self.button = Button((button_x, button_y), (button_width, button_height), text, const.game_color, None, False, callback)
 
     def process_event(self, event):
-        pass
+        self.button.process_event(event)
 
     def update(self):
-        pass
+        self.button.update()
 
     def draw(self, screen):
-        pass
+        self.button.draw(self.surface)
     
     def get_mouseover_text(self):
         pass
